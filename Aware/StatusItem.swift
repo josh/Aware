@@ -12,6 +12,13 @@ class StatusItem: NSObject {
 
     override func awakeFromNib() {
         self.item.menu = menu
+
+        AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true])
+
+        setDuration(NSTimeInterval())
+        UserActivityTimer(onUpdate: { duration in
+            self.setDuration(duration)
+        }).start()
     }
 
     func setDuration(duration: NSTimeInterval) {

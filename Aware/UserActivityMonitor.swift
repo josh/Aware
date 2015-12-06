@@ -1,9 +1,9 @@
 import Cocoa
 
-class UserActivityMonitor: NSObject {
+class UserActivityMonitor {
     private let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask]
-    private let sampleInterval: NSTimeInterval = 30
 
+    private let sampleInterval: NSTimeInterval
     private var lastEventTimestamp: NSDate
     private var eventMonitor: AnyObject?
     private var timer: NSTimer?
@@ -14,9 +14,9 @@ class UserActivityMonitor: NSObject {
       }
     }
 
-    override init() {
+    init(interval: NSTimeInterval) {
+        self.sampleInterval = interval
         self.lastEventTimestamp = NSDate()
-        super.init()
     }
 
     @objc func start() {
@@ -34,13 +34,9 @@ class UserActivityMonitor: NSObject {
         self.timer = nil
     }
 
-    private func throttle(seconds: NSTimeInterval) {
-        stop()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: Selector("start"), userInfo: nil, repeats: false)
-    }
-
     private func onEvent(event: NSEvent) {
         self.lastEventTimestamp = NSDate()
-        throttle(sampleInterval)
+        stop()
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(sampleInterval, target: self, selector: Selector("start"), userInfo: nil, repeats: false)
     }
 }
