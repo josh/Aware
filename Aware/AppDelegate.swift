@@ -11,7 +11,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         if let button = statusItem.button {
-            button.attributedTitle = NSAttributedString(string: "0s")
+            button.title = "0s"
         }
 
         let menu = NSMenu()
@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func onTick() {
         let sinceStart = NSDate().timeIntervalSinceDate(lastActivity!)
         let secondsSinceStart = NSInteger(sinceStart) % 60
-        statusItem.button!.attributedTitle = NSAttributedString(string: "\(secondsSinceStart)s")
+        statusItem.button!.title = "\(secondsSinceStart)s"
     }
 
     func onGlobalEvent(event: NSEvent) {
