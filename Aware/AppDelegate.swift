@@ -3,11 +3,10 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    @IBOutlet weak var window: NSWindow!
+    @IBOutlet weak var userActivityMonitor: UserActivityMonitor!
 
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
     var timerStart: NSDate?
-    var userActivityMonitor: UserActivityMonitor?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         if let button = statusItem.button {
@@ -22,15 +21,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "onTick", userInfo: nil, repeats: true)
 
         AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true])
-
-        self.userActivityMonitor = UserActivityMonitor()
+        userActivityMonitor.start()
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
     }
 
     func onTick() {
-        let sinceUserActivity = userActivityMonitor!.timeSinceLastEvent
+        let sinceUserActivity = userActivityMonitor.timeSinceLastEvent
         if (NSInteger(sinceUserActivity) > 60) {
             timerStart = NSDate()
         }

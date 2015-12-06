@@ -1,6 +1,6 @@
 import Cocoa
 
-class UserActivityMonitor {
+class UserActivityMonitor: NSObject {
     private let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask]
     private let sampleInterval: NSTimeInterval = 30
 
@@ -9,9 +9,9 @@ class UserActivityMonitor {
 
     var timeSinceLastEvent: NSTimeInterval
 
-    init() {
+    override init() {
         self.timeSinceLastEvent = NSTimeInterval()
-        start()
+        super.init()
     }
 
     @objc func start() {
