@@ -36,6 +36,7 @@ class SampledEvent {
     }
 
     private func onEvent(event: NSEvent) {
+        self.handler(event)
         stop()
         self.timer = NSTimer.scheduledTimerWithTimeInterval(sampleInterval, target: self, selector: Selector("onInterval"), userInfo: nil, repeats: false)
     }
