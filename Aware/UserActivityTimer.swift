@@ -1,32 +1,29 @@
 import Cocoa
 
 class UserActivityTimer {
+    let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask]
 
-    let monitor: UserActivityMonitor
     var startTimestamp: NSDate
-    var timer: NSTimer?
+    var userActivityTimestamp: NSDate
 
     var onUpdate: NSTimeInterval -> Void
 
     init(onUpdate: NSTimeInterval -> Void) {
-        self.monitor = UserActivityMonitor(interval: 30)
+        self.userActivityTimestamp = NSDate()
         self.startTimestamp = NSDate()
         self.onUpdate = onUpdate
     }
 
     func start() {
-        self.monitor.start()
+        NSEvent.addGlobalMonitorForEventsMatchingMask(eventMask, sampleInterval: 30) { event in
+            self.userActivityTimestamp = NSDate()
+        }
+
         NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: Selector("onTick"), userInfo: nil, repeats: true)
     }
 
-    func stop() {
-        self.monitor.stop()
-        self.timer?.invalidate()
-        self.timer = nil
-    }
-
     @objc func onTick() {
-        let sinceUserActivity = monitor.timeSinceLastEvent
+        let sinceUserActivity = NSDate().timeIntervalSinceDate(userActivityTimestamp)
         if (NSInteger(sinceUserActivity) > 60) {
             self.startTimestamp = NSDate()
         }
