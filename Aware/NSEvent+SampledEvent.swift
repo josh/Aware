@@ -21,28 +21,24 @@ class SampledEvent {
     }
 
     private func start() {
-        self.eventMonitor = NSEvent.addGlobalMonitorForEventsMatchingMask(self.mask, handler: onEvent)
-        self.timer = nil
+        eventMonitor = NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler: onEvent)
+        timer = nil
     }
 
     private func stop() {
-        if let eventMonitor = self.eventMonitor {
+        if let eventMonitor = eventMonitor {
             NSEvent.removeMonitor(eventMonitor)
         }
-        self.timer?.invalidate()
+        timer?.invalidate()
 
-        self.eventMonitor = nil
-        self.timer = nil
+        eventMonitor = nil
+        timer = nil
     }
 
     private func onEvent(event: NSEvent) {
-        self.handler(event)
+        handler(event)
         stop()
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(sampleInterval, target: self, selector: Selector("onInterval"), userInfo: nil, repeats: false)
-    }
-
-    @objc func onInterval() {
-        start()
+        timer = NSTimer.scheduledTimerWithTimeInterval(sampleInterval, userInfo: nil, repeats: false, handler: start)
     }
 }
 

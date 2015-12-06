@@ -19,10 +19,10 @@ class UserActivityTimer {
             self.userActivityTimestamp = NSDate()
         }
 
-        NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: Selector("onTick"), userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(30, userInfo: nil, repeats: true, handler: onTick)
     }
 
-    @objc func onTick() {
+    func onTick() {
         let now = NSDate()
 
         let sinceUserActivity = now.timeIntervalSinceDate(userActivityTimestamp)
