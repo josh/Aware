@@ -4,37 +4,43 @@ class UserActivityMonitor: NSObject {
     private let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask]
     private let sampleInterval: NSTimeInterval = 30
 
-    private var lastEventTimestamp: NSTimeInterval?
+    private var lastEventTimestamp: NSDate
     private var eventMonitor: AnyObject?
+    private var timer: NSTimer?
 
-    var timeSinceLastEvent: NSTimeInterval
+    var timeSinceLastEvent: NSTimeInterval {
+      get {
+        return NSDate().timeIntervalSinceDate(lastEventTimestamp)
+      }
+    }
 
     override init() {
-        self.timeSinceLastEvent = NSTimeInterval()
+        self.lastEventTimestamp = NSDate()
         super.init()
     }
 
     @objc func start() {
         self.eventMonitor = NSEvent.addGlobalMonitorForEventsMatchingMask(eventMask, handler: onEvent)
+        self.timer = nil
     }
 
     func stop() {
         if let eventMonitor = self.eventMonitor {
             NSEvent.removeMonitor(eventMonitor)
         }
+        self.timer?.invalidate()
+
+        self.eventMonitor = nil
+        self.timer = nil
     }
 
     private func throttle(seconds: NSTimeInterval) {
         stop()
-        NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: Selector("start"), userInfo: nil, repeats: false)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: Selector("start"), userInfo: nil, repeats: false)
     }
 
     private func onEvent(event: NSEvent) {
-        if let lastTimestamp = self.lastEventTimestamp {
-            self.timeSinceLastEvent = event.timestamp - lastTimestamp
-        }
-
-        self.lastEventTimestamp = event.timestamp
+        self.lastEventTimestamp = NSDate()
         throttle(sampleInterval)
     }
 }

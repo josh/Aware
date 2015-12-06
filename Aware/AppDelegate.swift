@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
+        userActivityMonitor.stop()
     }
 
     func onTick() {
