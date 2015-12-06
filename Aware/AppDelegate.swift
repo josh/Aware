@@ -4,6 +4,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var userActivityMonitor: UserActivityMonitor!
+    @IBOutlet weak var menu: NSMenu!
 
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
     var timerStart: NSDate?
@@ -12,9 +13,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusItem.button {
             button.title = formatDuration(NSTimeInterval())
         }
-
-        let menu = NSMenu()
-        menu.addItemWithTitle("Quit", action: "terminate:", keyEquivalent: "q")
         statusItem.menu = menu
 
         timerStart = NSDate()

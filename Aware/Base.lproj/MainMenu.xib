@@ -14,9 +14,20 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Aware" customModuleProvider="target">
             <connections>
+                <outlet property="menu" destination="099-Sz-hJX" id="FGi-ec-iPe"/>
                 <outlet property="userActivityMonitor" destination="xBr-Ts-TgT" id="FWH-jB-coF"/>
             </connections>
         </customObject>
         <customObject id="xBr-Ts-TgT" customClass="UserActivityMonitor" customModule="Aware" customModuleProvider="target"/>
+        <menu id="099-Sz-hJX">
+            <items>
+                <menuItem title="Quit" keyEquivalent="q" id="nuW-Ky-b5C">
+                    <connections>
+                        <action selector="terminate:" target="-2" id="wSz-0G-0n6"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </menu>
     </objects>
 </document>
