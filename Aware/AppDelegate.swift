@@ -19,6 +19,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusItem.button {
             button.attributedTitle = NSAttributedString(string: "1m")
         }
+
+        let menu = NSMenu()
+        menu.addItemWithTitle("Quit", action: "terminate:", keyEquivalent: "Q")
+        statusItem.menu = menu
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
