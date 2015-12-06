@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  Aware
-//
-//  Created by Joshua Peek on 12/5/15.
-//  Copyright © 2015 Joshua Peek. All rights reserved.
-//
-
 import Cocoa
 
 @NSApplicationMain
@@ -30,7 +22,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
     }
 
     func onTick() {
@@ -38,7 +29,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let secondsSinceStart = NSInteger(sinceStart) % 60
         statusItem.button!.attributedTitle = NSAttributedString(string: "\(secondsSinceStart)s")
     }
-
-
 }
-
