@@ -23,12 +23,14 @@ class UserActivityTimer {
     }
 
     @objc func onTick() {
-        let sinceUserActivity = NSDate().timeIntervalSinceDate(userActivityTimestamp)
+        let now = NSDate()
+
+        let sinceUserActivity = now.timeIntervalSinceDate(userActivityTimestamp)
         if (NSInteger(sinceUserActivity) > 60) {
-            self.startTimestamp = NSDate()
+            self.startTimestamp = now
         }
 
-        let sinceStart = NSDate().timeIntervalSinceDate(startTimestamp)
+        let sinceStart = now.timeIntervalSinceDate(startTimestamp)
         onUpdate(sinceStart)
     }
 }
