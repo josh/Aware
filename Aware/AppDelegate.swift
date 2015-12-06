@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let menu = NSMenu()
-        menu.addItemWithTitle("Quit", action: "terminate:", keyEquivalent: "Q")
+        menu.addItemWithTitle("Quit", action: "terminate:", keyEquivalent: "q")
         statusItem.menu = menu
 
         timerStart = NSDate()
