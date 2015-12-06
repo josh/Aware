@@ -7,6 +7,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
     var timerStart: NSDate?
+    var lastActivity: NSDate?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         if let button = statusItem.button {
@@ -19,14 +20,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         timerStart = NSDate()
         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "onTick", userInfo: nil, repeats: true)
+
+        lastActivity = NSDate()
+        AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true])
+        NSEvent.addGlobalMonitorForEventsMatchingMask([NSEventMask.KeyDownMask, NSEventMask.MouseMovedMask], handler: onGlobalEvent)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
     }
 
     func onTick() {
-        let sinceStart = NSDate().timeIntervalSinceDate(timerStart!)
+        let sinceStart = NSDate().timeIntervalSinceDate(lastActivity!)
         let secondsSinceStart = NSInteger(sinceStart) % 60
         statusItem.button!.attributedTitle = NSAttributedString(string: "\(secondsSinceStart)s")
+    }
+
+    func onGlobalEvent(event: NSEvent) {
+        lastActivity = NSDate()
     }
 }
