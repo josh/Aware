@@ -26,7 +26,7 @@ class UserActivityTimer {
         let now = NSDate()
 
         let sinceUserActivity = now.timeIntervalSinceDate(userActivityTimestamp)
-        if (NSInteger(sinceUserActivity) > 60) {
+        if (NSInteger(sinceUserActivity) > 2 * 60) {
             self.startTimestamp = now
         }
 
