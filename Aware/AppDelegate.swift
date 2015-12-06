@@ -4,16 +4,12 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var userActivityMonitor: UserActivityMonitor!
-    @IBOutlet weak var menu: NSMenu!
+    @IBOutlet weak var statusItem: StatusItem!
 
-    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
     var timerStart: NSDate?
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        if let button = statusItem.button {
-            button.title = formatDuration(NSTimeInterval())
-        }
-        statusItem.menu = menu
+        statusItem.setDuration(NSTimeInterval())
 
         timerStart = NSDate()
         NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "onTick", userInfo: nil, repeats: true)
@@ -32,12 +28,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let sinceStart = NSDate().timeIntervalSinceDate(timerStart!)
-        statusItem.button!.title = formatDuration(sinceStart)
-    }
-
-    func formatDuration(duration: NSTimeInterval) -> String {
-        let seconds = NSInteger(duration)
-        let minutes = seconds / 60
-        return "\(minutes)m"
+        statusItem.setDuration(sinceStart)
     }
 }
