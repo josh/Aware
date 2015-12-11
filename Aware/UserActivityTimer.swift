@@ -19,18 +19,16 @@ class UserActivityTimer {
             self.userActivityTimestamp = NSDate()
         }
 
-        NSTimer.scheduledTimerWithTimeInterval(30, userInfo: nil, repeats: true, handler: onTick)
-    }
+        NSTimer.scheduledTimer(30, userInfo: nil, repeats: true) { _ in
+            let now = NSDate()
 
-    func onTick() {
-        let now = NSDate()
+            let sinceUserActivity = now.timeIntervalSinceDate(self.userActivityTimestamp)
+            if (NSInteger(sinceUserActivity) > 2 * 60) {
+                self.startTimestamp = now
+            }
 
-        let sinceUserActivity = now.timeIntervalSinceDate(userActivityTimestamp)
-        if (NSInteger(sinceUserActivity) > 2 * 60) {
-            self.startTimestamp = now
+            let sinceStart = now.timeIntervalSinceDate(self.startTimestamp)
+            self.onUpdate(sinceStart)
         }
-
-        let sinceStart = now.timeIntervalSinceDate(startTimestamp)
-        onUpdate(sinceStart)
     }
 }

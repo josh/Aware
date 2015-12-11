@@ -38,7 +38,9 @@ class SampledEvent {
     private func onEvent(event: NSEvent) {
         handler(event)
         stop()
-        timer = NSTimer.scheduledTimerWithTimeInterval(sampleInterval, userInfo: nil, repeats: false, handler: start)
+        timer = NSTimer.scheduledTimer(sampleInterval, userInfo: nil, repeats: false) { _ in
+            self.start()
+        }
     }
 }
 
