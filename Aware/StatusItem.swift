@@ -10,10 +10,12 @@ class StatusItem: NSObject {
         super.init()
     }
 
+    let TrustedCheckOptionPrompt = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+
     override func awakeFromNib() {
         self.item.menu = menu
 
-        AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true])
+        AXIsProcessTrustedWithOptions([TrustedCheckOptionPrompt: true])
 
         setDuration(NSTimeInterval())
         UserActivityTimer(onUpdate: { duration in
