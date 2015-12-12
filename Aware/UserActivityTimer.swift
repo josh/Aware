@@ -1,7 +1,7 @@
 import Cocoa
 
 class UserActivityTimer {
-    let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask]
+    let eventMask: NSEventMask = [.KeyDownMask, .MouseMovedMask, .LeftMouseDownMask]
 
     var startTimestamp: NSDate
     var userActivityTimestamp: NSDate
