@@ -15,7 +15,7 @@ class UserActivityTimer {
     }
 
     func start() {
-        NSEvent.addGlobalMonitorForEventsMatchingMask(eventMask, sampleInterval: 30) { event in
+        NSEvent.addGlobalMonitorForEventsMatchingMask(eventMask, interval: 30) { event in
             self.userActivityTimestamp = NSDate()
         }
 
