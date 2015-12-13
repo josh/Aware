@@ -20,7 +20,7 @@
         </customObject>
         <menu id="099-Sz-hJX">
             <items>
-                <menuItem title="Quit" id="nuW-Ky-b5C">
+                <menuItem title="Quit Aware" id="nuW-Ky-b5C">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="terminate:" target="-2" id="wSz-0G-0n6"/>
