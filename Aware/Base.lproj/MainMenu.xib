@@ -20,6 +20,13 @@
         </customObject>
         <menu id="099-Sz-hJX">
             <items>
+                <menuItem title="Enable Keyboard Monitoring" id="o5y-5N-gZN">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="enableKeyboardMonitoring" target="9bV-Jf-Y2W" id="O6O-rh-jAD"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="gOL-aE-bl2"/>
                 <menuItem title="Quit Aware" id="nuW-Ky-b5C">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -27,6 +34,9 @@
                     </connections>
                 </menuItem>
             </items>
+            <connections>
+                <outlet property="delegate" destination="9bV-Jf-Y2W" id="TZQ-Lk-Gvt"/>
+            </connections>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </menu>
     </objects>

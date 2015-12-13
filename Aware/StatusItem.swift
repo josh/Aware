@@ -1,6 +1,6 @@
 import Cocoa
 
-class StatusItem: NSObject {
+class StatusItem: NSObject, NSMenuDelegate {
     let item: NSStatusItem
 
     @IBOutlet weak var menu: NSMenu!
@@ -14,8 +14,6 @@ class StatusItem: NSObject {
 
     override func awakeFromNib() {
         self.item.menu = menu
-
-        AXIsProcessTrustedWithOptions([TrustedCheckOptionPrompt: true])
 
         setDuration(NSTimeInterval())
         UserActivityTimer(onUpdate: { duration in
@@ -33,5 +31,13 @@ class StatusItem: NSObject {
         let seconds = NSInteger(duration)
         let minutes = seconds / 60
         return "\(minutes)m"
+    }
+
+    @IBAction func enableKeyboardMonitoring(sender: NSMenuItem) {
+        AXIsProcessTrustedWithOptions([TrustedCheckOptionPrompt: true])
+    }
+
+    func menuNeedsUpdate(menu: NSMenu) {
+        menu.itemArray[0].hidden = AXIsProcessTrusted()
     }
 }
