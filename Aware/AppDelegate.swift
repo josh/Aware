@@ -21,6 +21,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
+
+        let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
+        notificationCenter.addObserverForName(NSWorkspaceWillSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+        notificationCenter.addObserverForName(NSWorkspaceDidWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+    }
+
+    func resetTimer() {
+        timerStart = NSDate()
+        self.updateButton()
     }
 
     func updateButton() {
