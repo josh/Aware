@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		030D3DAD1C142E1B00502A03 /* StatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D3DAC1C142E1B00502A03 /* StatusItem.swift */; };
-		030D3DB11C143A5A00502A03 /* UserActivityTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030D3DB01C143A5A00502A03 /* UserActivityTimer.swift */; };
 		0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337E7861C14E37B003A8150 /* NSTimer+Block.swift */; };
 		036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036EBD181C1408C200121D0B /* AppDelegate.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -17,7 +16,6 @@
 
 /* Begin PBXFileReference section */
 		030D3DAC1C142E1B00502A03 /* StatusItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
-		030D3DB01C143A5A00502A03 /* UserActivityTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserActivityTimer.swift; sourceTree = "<group>"; };
 		0337E7861C14E37B003A8150 /* NSTimer+Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimer+Block.swift"; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036EBD181C1408C200121D0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 			children = (
 				036EBD181C1408C200121D0B /* AppDelegate.swift */,
 				030D3DAC1C142E1B00502A03 /* StatusItem.swift */,
-				030D3DB01C143A5A00502A03 /* UserActivityTimer.swift */,
 				0337E7861C14E37B003A8150 /* NSTimer+Block.swift */,
 				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
 				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
@@ -140,7 +137,6 @@
 				030D3DAD1C142E1B00502A03 /* StatusItem.swift in Sources */,
 				036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */,
 				0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */,
-				030D3DB11C143A5A00502A03 /* UserActivityTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
