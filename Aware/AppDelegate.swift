@@ -45,7 +45,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let sinceUserActivity = CGEventSourceSecondsSinceLastEventType(.CombinedSessionState, AnyInputEventType)
         if (sinceUserActivity > userIdleSeconds) {
             timerStart = NSDate()
-            updateButton()
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
