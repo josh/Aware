@@ -11,6 +11,9 @@
 		036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036EBD181C1408C200121D0B /* AppDelegate.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
 		036EBD1E1C1408C200121D0B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1C1C1408C200121D0B /* MainMenu.xib */; };
+		03F9E2311C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */; };
+		03F9E2331C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift */; };
+		03F9E2341C24CDAB001DBE86 /* NSTimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +35,8 @@
 		036EBD1F1C1408C200121D0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F9E22A1C24CAD3001DBE86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeIntervalFormatter.swift; sourceTree = "<group>"; };
+		03F9E2321C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeIntervalFormatterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				036EBD181C1408C200121D0B /* AppDelegate.swift */,
+				03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */,
 				0337E7861C14E37B003A8150 /* NSTimer+Block.swift */,
 				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
 				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
@@ -85,6 +91,7 @@
 		03F9E2271C24CAD3001DBE86 /* AwareTests */ = {
 			isa = PBXGroup;
 			children = (
+				03F9E2321C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift */,
 				03F9E22A1C24CAD3001DBE86 /* Info.plist */,
 			);
 			path = AwareTests;
@@ -190,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03F9E2311C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift in Sources */,
 				036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */,
 				0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */,
 			);
@@ -199,6 +207,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03F9E2331C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift in Sources */,
+				03F9E2341C24CDAB001DBE86 /* NSTimeIntervalFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -49,7 +49,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
-        let minutes = NSInteger(duration) / 60
-        statusItem.button!.title = "\(minutes)m"
+        statusItem.button!.title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
     }
 }
