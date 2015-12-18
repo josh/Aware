@@ -13,6 +13,16 @@
 		036EBD1E1C1408C200121D0B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1C1C1408C200121D0B /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		03F9E22B1C24CAD3001DBE86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 036EBD0D1C1408C200121D0B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 036EBD141C1408C200121D0B;
+			remoteInfo = Aware;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0337E7861C14E37B003A8150 /* NSTimer+Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimer+Block.swift"; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,10 +30,19 @@
 		036EBD1A1C1408C200121D0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		036EBD1D1C1408C200121D0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		036EBD1F1C1408C200121D0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03F9E22A1C24CAD3001DBE86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		036EBD121C1408C200121D0B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03F9E2231C24CAD3001DBE86 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -37,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				036EBD171C1408C200121D0B /* Aware */,
+				03F9E2271C24CAD3001DBE86 /* AwareTests */,
 				036EBD161C1408C200121D0B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -45,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				036EBD151C1408C200121D0B /* Aware.app */,
+				03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,6 +80,14 @@
 				036EBD1F1C1408C200121D0B /* Info.plist */,
 			);
 			path = Aware;
+			sourceTree = "<group>";
+		};
+		03F9E2271C24CAD3001DBE86 /* AwareTests */ = {
+			isa = PBXGroup;
+			children = (
+				03F9E22A1C24CAD3001DBE86 /* Info.plist */,
+			);
+			path = AwareTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -81,18 +110,40 @@
 			productReference = 036EBD151C1408C200121D0B /* Aware.app */;
 			productType = "com.apple.product-type.application";
 		};
+		03F9E2251C24CAD3001DBE86 /* AwareTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03F9E22F1C24CAD3001DBE86 /* Build configuration list for PBXNativeTarget "AwareTests" */;
+			buildPhases = (
+				03F9E2221C24CAD3001DBE86 /* Sources */,
+				03F9E2231C24CAD3001DBE86 /* Frameworks */,
+				03F9E2241C24CAD3001DBE86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03F9E22C1C24CAD3001DBE86 /* PBXTargetDependency */,
+			);
+			name = AwareTests;
+			productName = AwareTests;
+			productReference = 03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		036EBD0D1C1408C200121D0B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Joshua Peek";
 				TargetAttributes = {
 					036EBD141C1408C200121D0B = {
 						CreatedOnToolsVersion = 7.1.1;
+					};
+					03F9E2251C24CAD3001DBE86 = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 036EBD141C1408C200121D0B;
 					};
 				};
 			};
@@ -110,6 +161,7 @@
 			projectRoot = "";
 			targets = (
 				036EBD141C1408C200121D0B /* Aware */,
+				03F9E2251C24CAD3001DBE86 /* AwareTests */,
 			);
 		};
 /* End PBXProject section */
@@ -121,6 +173,13 @@
 			files = (
 				036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */,
 				036EBD1E1C1408C200121D0B /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03F9E2241C24CAD3001DBE86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		03F9E2221C24CAD3001DBE86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03F9E22C1C24CAD3001DBE86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 036EBD141C1408C200121D0B /* Aware */;
+			targetProxy = 03F9E22B1C24CAD3001DBE86 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		036EBD1C1C1408C200121D0B /* MainMenu.xib */ = {
@@ -254,6 +328,32 @@
 			};
 			name = Release;
 		};
+		03F9E22D1C24CAD3001DBE86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = AwareTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.AwareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
+			};
+			name = Debug;
+		};
+		03F9E22E1C24CAD3001DBE86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = AwareTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.AwareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -274,6 +374,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		03F9E22F1C24CAD3001DBE86 /* Build configuration list for PBXNativeTarget "AwareTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03F9E22D1C24CAD3001DBE86 /* Debug */,
+				03F9E22E1C24CAD3001DBE86 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
