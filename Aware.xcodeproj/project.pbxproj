@@ -392,6 +392,7 @@
 				03F9E22E1C24CAD3001DBE86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
