@@ -49,15 +49,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
-        statusItem.button!.title = formatDuration(duration)
-    }
-
-    func formatDuration(duration: NSTimeInterval) -> String {
-        let minutes = NSInteger(duration) / 60
-        if minutes < 60 {
-            return "\(minutes)m"
-        } else {
-            return "\(minutes / 60)h \(minutes % 60)m"
-        }
+        statusItem.button!.title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
     }
 }
