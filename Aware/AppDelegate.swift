@@ -2,32 +2,33 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    @IBOutlet weak var statusItem: StatusItem!
-
-    var timerStart: NSDate!
+    var timerStart: NSDate = NSDate()
 
     // Redraw button every minute
     let buttonRefreshRate: NSTimeInterval = 60
 
-    // After N seconds, reset the timer
-    var userIdleSeconds: NSTimeInterval = 0
-
     // User configurable idle time in seconds (defaults to 2 minutes)
+    //
     //   defaults write com.github.josh.Aware userIdleSeconds -int 120
-    let defaultUserIdleSecondsKey = "userIdleSeconds"
-    let defaultUserIdleSeconds: NSTimeInterval = 2 * 60
+    lazy var userIdleSeconds: NSTimeInterval = self.readUserIdleSeconds()
+    func readUserIdleSeconds() -> NSTimeInterval {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let defaultsValue = defaults.objectForKey("userIdleSeconds") as? NSTimeInterval
+        return defaultsValue ?? 120
+    }
 
     // kCGAnyInputEventType isn't part of CGEventType enum
     // defined in <CoreGraphics/CGEventTypes.h>
     let AnyInputEventType = CGEventType(rawValue: UInt32.max)!
 
-    let defaults = NSUserDefaults.standardUserDefaults()
+    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    @IBOutlet weak var menu: NSMenu! {
+        didSet {
+            statusItem.menu = menu
+        }
+    }
 
     func applicationDidFinishLaunching(notification: NSNotification) {
-        timerStart = NSDate()
-
-        userIdleSeconds = ((defaults.objectForKey(defaultUserIdleSecondsKey) as? NSTimeInterval) ?? defaultUserIdleSeconds)
-
         updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
@@ -49,6 +50,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
         let minutes = NSInteger(duration) / 60
-        statusItem.button.title = "\(minutes)m"
+        statusItem.button!.title = "\(minutes)m"
     }
 }
