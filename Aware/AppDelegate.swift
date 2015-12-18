@@ -10,12 +10,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let buttonRefreshRate: NSTimeInterval = 60
 
     // After N seconds, reset the timer
-    var userIdleTimeout: NSTimeInterval = 0
+    var userIdleSeconds: NSTimeInterval = 0
 
-    // User configurable idle time in minutes (defaults to 2m)
-    //   defaults write com.github.josh.Aware idle -int 2
-    let defaultIdleKey = "idle"
-    let defaultIdle = 2
+    // User configurable idle time in seconds (defaults to 2 minutes)
+    //   defaults write com.github.josh.Aware userIdleSeconds -int 120
+    let defaultUserIdleSecondsKey = "userIdleSeconds"
+    let defaultUserIdleSeconds: NSTimeInterval = 2 * 60
 
     // kCGAnyInputEventType isn't part of CGEventType enum
     // defined in <CoreGraphics/CGEventTypes.h>
@@ -26,8 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(notification: NSNotification) {
         timerStart = NSDate()
 
-        let idleValue = (defaults.objectForKey(defaultIdleKey) as? Int) ?? defaultIdle
-        userIdleTimeout = Double(idleValue * 60)
+        userIdleSeconds = ((defaults.objectForKey(defaultUserIdleSecondsKey) as? NSTimeInterval) ?? defaultUserIdleSeconds)
 
         updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
@@ -35,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func updateButton() {
         let sinceUserActivity = CGEventSourceSecondsSinceLastEventType(.CombinedSessionState, AnyInputEventType)
-        if (sinceUserActivity > userIdleTimeout) {
+        if (sinceUserActivity > userIdleSeconds) {
             timerStart = NSDate()
             updateButton()
         }
