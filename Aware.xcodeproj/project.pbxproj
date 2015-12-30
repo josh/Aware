@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031DF82B1C3442BA009E00DD /* SessionLoginItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031DF82A1C3442BA009E00DD /* SessionLoginItems.swift */; };
+		031DF82D1C345AF2009E00DD /* SharedFileList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031DF82C1C345AF2009E00DD /* SharedFileList.swift */; };
 		0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337E7861C14E37B003A8150 /* NSTimer+Block.swift */; };
 		036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036EBD181C1408C200121D0B /* AppDelegate.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -27,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		031DF82A1C3442BA009E00DD /* SessionLoginItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionLoginItems.swift; sourceTree = "<group>"; };
+		031DF82C1C345AF2009E00DD /* SharedFileList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedFileList.swift; sourceTree = "<group>"; };
 		0337E7861C14E37B003A8150 /* NSTimer+Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimer+Block.swift"; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036EBD181C1408C200121D0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,11 +83,13 @@
 			isa = PBXGroup;
 			children = (
 				036EBD181C1408C200121D0B /* AppDelegate.swift */,
+				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
+				036EBD1F1C1408C200121D0B /* Info.plist */,
+				031DF82A1C3442BA009E00DD /* SessionLoginItems.swift */,
+				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
 				03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */,
 				0337E7861C14E37B003A8150 /* NSTimer+Block.swift */,
-				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
-				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
-				036EBD1F1C1408C200121D0B /* Info.plist */,
+				031DF82C1C345AF2009E00DD /* SharedFileList.swift */,
 			);
 			path = Aware;
 			sourceTree = "<group>";
@@ -197,8 +203,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				031DF82D1C345AF2009E00DD /* SharedFileList.swift in Sources */,
 				03F9E2311C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift in Sources */,
 				036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */,
+				031DF82B1C3442BA009E00DD /* SessionLoginItems.swift in Sources */,
 				0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
