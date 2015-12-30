@@ -1,3 +1,11 @@
+//
+//  AppDelegate.swift
+//  Aware
+//
+//  Created by Joshua Peek on 12/06/15.
+//  Copyright © 2015 Joshua Peek. All rights reserved.
+//
+
 import Cocoa
 
 @NSApplicationMain
