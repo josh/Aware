@@ -18,6 +18,7 @@ $ defaults write com.github.josh.Aware userIdleSeconds -int 120
 
 ## Development information
 
+Requires Xcode 7.2
 
 ## License
 
