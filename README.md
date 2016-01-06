@@ -12,4 +12,6 @@ Aware is a menubar app for OSX that displays how long you've been actively using
 ## Development information
 
 
-## License & attribution
+## License
+
+Copyright © 2016 Joshua Peek, Patrick Marsceill. All rights reserved.
