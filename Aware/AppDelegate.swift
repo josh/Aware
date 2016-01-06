@@ -15,6 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Redraw button every minute
     let buttonRefreshRate: NSTimeInterval = 60
 
+    // Reference to installed global mouse event monitor
+    var mouseEventMonitor: AnyObject?
+
     // User configurable idle time in seconds (defaults to 2 minutes)
     //
     //   defaults write com.github.josh.Aware userIdleSeconds -int 120
@@ -47,16 +50,47 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func resetTimer() {
         timerStart = NSDate()
-        self.updateButton()
+        updateButton()
+    }
+
+    func onMouseEvent(event: NSEvent) {
+        if let eventMonitor = mouseEventMonitor {
+            NSEvent.removeMonitor(eventMonitor)
+            mouseEventMonitor = nil
+        }
+        updateButton()
     }
 
     func updateButton() {
+        var idle: Bool
+
         let sinceUserActivity = CGEventSourceSecondsSinceLastEventType(.CombinedSessionState, AnyInputEventType)
         if (sinceUserActivity > userIdleSeconds) {
             timerStart = NSDate()
+            idle = true
+        } else {
+            idle = false
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
-        statusItem.button!.title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
+        let title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
+        statusItem.button!.title = title
+
+        if (idle) {
+            statusItem.button!.attributedTitle = updateAttributedString(statusItem.button!.attributedTitle, [
+                NSForegroundColorAttributeName: NSColor.controlTextColor().colorWithAlphaComponent(0.1)
+            ])
+
+            // On next mouse event, immediately update button
+            if mouseEventMonitor == nil {
+                mouseEventMonitor = NSEvent.addGlobalMonitorForEventsMatchingMask([.MouseMovedMask, .LeftMouseDownMask], handler: onMouseEvent)
+            }
+        }
+    }
+
+    func updateAttributedString(attributedString: NSAttributedString, _ attributes: [String: AnyObject]) -> NSAttributedString {
+        let str = NSMutableAttributedString(attributedString: attributedString)
+        str.addAttributes(attributes, range: NSMakeRange(0, str.length))
+        return str
     }
 }
