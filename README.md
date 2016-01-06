@@ -20,7 +20,13 @@ $ defaults write com.github.josh.Aware userIdleSeconds -int 120
 
 ## Development information
 
-Requires Xcode 7.2
+Requires Xcode 7.2.
+
+``` sh
+$ git clone https://github.com/josh/Aware
+$ cd Aware/
+$ open Aware.xcodeproj/
+```
 
 ## License
 
