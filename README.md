@@ -9,6 +9,13 @@ Aware is a menubar app for OSX that displays how long you've been actively using
 2. Unzip the package
 3. Move `Aware.app` to your `Applications` folder.
 
+## Hidden Preferences
+
+``` sh
+# Idle after 2 minutes of inactivity
+$ defaults write com.github.josh.Aware userIdleSeconds -int 120
+```
+
 ## Development information
 
 
