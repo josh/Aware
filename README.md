@@ -9,6 +9,8 @@ Aware is a menubar app for OSX that displays how long you've been actively using
 2. Unzip the package
 3. Move `Aware.app` to your `Applications` folder.
 
+Requires OS X 10.11 El Capitan.
+
 ## Hidden Preferences
 
 ``` sh
