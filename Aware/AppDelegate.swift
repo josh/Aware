@@ -10,6 +10,8 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    let appURL: NSURL = NSURL.fileURLWithPath(NSBundle.mainBundle().bundlePath)
+
     var timerStart: NSDate = NSDate()
 
     // Redraw button every minute
@@ -46,6 +48,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
         notificationCenter.addObserverForName(NSWorkspaceWillSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
         notificationCenter.addObserverForName(NSWorkspaceDidWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+
+        if SessionLoginItems.findURL(appURL) != nil {
+            startAtLoginMenuItem.state = 1
+        }
     }
 
     func resetTimer() {
@@ -92,5 +98,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
+    }
+
+    @IBOutlet weak var startAtLoginMenuItem: NSMenuItem!
+
+    @IBAction func toggleStartAtLogin(menuItem: NSMenuItem) {
+        if menuItem.state == 1 {
+            SessionLoginItems.removeURL(appURL)
+            menuItem.state = 0
+        } else {
+            SessionLoginItems.addURL(appURL)
+            menuItem.state = 1
+        }
     }
 }
