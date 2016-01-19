@@ -33,6 +33,7 @@
 		036EBD1A1C1408C200121D0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		036EBD1D1C1408C200121D0B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		036EBD1F1C1408C200121D0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		038D0B381C4DDD5600040C44 /* Aware.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Aware.entitlements; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F9E22A1C24CAD3001DBE86 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeIntervalFormatter.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 				0337E7861C14E37B003A8150 /* NSTimer+Block.swift */,
 				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
 				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
+				038D0B381C4DDD5600040C44 /* Aware.entitlements */,
 				036EBD1F1C1408C200121D0B /* Info.plist */,
 			);
 			path = Aware;
@@ -147,6 +149,11 @@
 				TargetAttributes = {
 					036EBD141C1408C200121D0B = {
 						CreatedOnToolsVersion = 7.1.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					03F9E2251C24CAD3001DBE86 = {
 						CreatedOnToolsVersion = 7.2;
@@ -318,6 +325,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Aware/Aware.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Aware/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -330,6 +338,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Aware/Aware.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Aware/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
