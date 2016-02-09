@@ -95,24 +95,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return str
     }
 
-    @IBAction func setUserIdleSecondsFromMenuItem(menuItem: NSMenuItem) {
-        var seconds: NSTimeInterval?
-
-        switch menuItem.title {
-        case "1 minute": seconds = 60
-        case "2 minutes": seconds = 120
-        case "5 minutes": seconds = 300
-        case "10 minutes": seconds = 600
-        case "30 minutes": seconds = 1800
-        default: seconds = nil
-        }
-
+    @IBAction func setUserIdleSecondsFromMenuItem(menuItem: TimeIntervalMenuItem) {
         let defaults = NSUserDefaults.standardUserDefaults()
-        if let seconds = seconds {
-            defaults.setDouble(seconds, forKey: "userIdleSeconds")
-        } else {
-            defaults.removeObjectForKey("userIdleSeconds")
-        }
+        defaults.setDouble(menuItem.value, forKey: "userIdleSeconds")
 
         // Recompute lazy userIdleSeconds property
         userIdleSeconds = self.readUserIdleSeconds()
