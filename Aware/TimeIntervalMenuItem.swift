@@ -1,5 +1,5 @@
 //
-//  NumberMenuItem.swift
+//  TimeIntervalMenuItem.swift
 //  Aware
 //
 //  Created by Joshua Peek on 2/8/16.
