@@ -19,8 +19,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var mouseEventMonitor: AnyObject?
 
     // User configurable idle time in seconds (defaults to 2 minutes)
-    //
-    //   defaults write com.github.josh.Aware userIdleSeconds -int 120
     lazy var userIdleSeconds: NSTimeInterval = self.readUserIdleSeconds()
     func readUserIdleSeconds() -> NSTimeInterval {
         let defaults = NSUserDefaults.standardUserDefaults()
