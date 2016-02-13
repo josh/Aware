@@ -15,13 +15,14 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Aware" customModuleProvider="target">
             <connections>
                 <outlet property="menu" destination="099-Sz-hJX" id="FtV-pF-bQq"/>
+                <outlet property="userIdleSecondsMenu" destination="E7T-Ns-G2B" id="oBR-eT-oYL"/>
             </connections>
         </customObject>
         <menu id="099-Sz-hJX">
             <items>
                 <menuItem title="Reset after" id="MxL-Ze-gT6">
                     <modifierMask key="keyEquivalentModifierMask" shift="YES"/>
-                    <menu key="submenu" title="Reset after" id="E7T-Ns-G2B">
+                    <menu key="submenu" title="Reset after" id="E7T-Ns-G2B" customClass="TimeIntervalMenu" customModule="Aware" customModuleProvider="target">
                         <items>
                             <menuItem title="1 Minute" id="Uxu-Qk-tKG" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
                                 <modifierMask key="keyEquivalentModifierMask"/>

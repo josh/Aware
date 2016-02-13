@@ -19,7 +19,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var mouseEventMonitor: AnyObject?
 
     // User configurable idle time in seconds (defaults to 2 minutes)
-    lazy var userIdleSeconds: NSTimeInterval = self.readUserIdleSeconds()
+    var userIdleSeconds: NSTimeInterval = 120 {
+        didSet {
+            userIdleSecondsMenu.setTimeInterval(userIdleSeconds)
+        }
+    }
+
     func readUserIdleSeconds() -> NSTimeInterval {
         let defaults = NSUserDefaults.standardUserDefaults()
         let defaultsValue = defaults.objectForKey("userIdleSeconds") as? NSTimeInterval
@@ -37,8 +42,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    @IBOutlet weak var userIdleSecondsMenu: TimeIntervalMenu!
+
     func applicationDidFinishLaunching(notification: NSNotification) {
         updateButton()
+        self.userIdleSeconds = self.readUserIdleSeconds()
+
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
@@ -99,7 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setDouble(menuItem.value, forKey: "userIdleSeconds")
 
-        // Recompute lazy userIdleSeconds property
+        // Recompute userIdleSeconds property
         userIdleSeconds = self.readUserIdleSeconds()
     }
 }
