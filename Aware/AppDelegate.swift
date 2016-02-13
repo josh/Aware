@@ -68,6 +68,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if (sinceUserActivity > userIdleSeconds) {
             timerStart = NSDate()
             idle = true
+        } else if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
+            timerStart = NSDate()
+            idle = true
         } else {
             idle = false
         }
