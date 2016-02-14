@@ -48,9 +48,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var userIdleSecondsMenu: TimeIntervalMenu!
 
     func applicationDidFinishLaunching(notification: NSNotification) {
-        updateButton()
         self.userIdleSeconds = self.readUserIdleSeconds()
 
+        updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
