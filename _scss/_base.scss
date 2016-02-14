@@ -19,6 +19,24 @@ button {
   font: #{$body-font-size}/1.5 $body-font;
 }
 
+// Rest top margins
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul,
+ol,
+dl,
+button,
+input,
+textarea,
+table {
+  margin-top: 0;
+}
+
 // Flexible images
 img {
   max-width: 100%;
