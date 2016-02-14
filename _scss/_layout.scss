@@ -1,0 +1,74 @@
+// Overrides _container.scss
+
+// Breakpoint mixin
+//
+// Usage:
+// @include breakpoint($medium) {
+//   ..medium and up styles
+// }
+// See _variables-marketing.scss for default breakpoint size variables.
+//
+@mixin breakpoint($bp) {
+  @media screen and ($bp) {
+    @content;
+  }
+}
+
+// flexible width container
+.container {
+  width: auto;
+  max-width: $container-width + ($grid-gutter * 2);
+  padding: 0 $grid-gutter;
+  margin-right: auto;
+  margin-left: auto;
+  @include clearfix;
+}
+
+// a wider container for media that needs to go beyond the normal container by a bit.
+.container-wide {
+  width: auto;
+  max-width: $container-wide-width + ($grid-gutter * 2);
+  padding: 0 $grid-gutter;
+  margin-right: auto;
+  margin-left: auto;
+  @include clearfix;
+}
+
+.container,
+.container-wide {
+  @include breakpoint($small) {
+    padding: 0 $grid-gutter * 2;
+  }
+}
+
+// Grid system
+//
+// Now with mixins!
+//
+@mixin columns {
+  margin-right: -$grid-gutter;
+  margin-left: -$grid-gutter;
+  @include clearfix;
+}
+
+.columnumns {
+  @include columns;
+}
+
+// Base class for every column (requires a column width from below)
+//
+// This is included in the column width mixins below.
+//
+@mixin column {
+  float: left;
+  padding-right: $grid-gutter;
+  padding-left: $grid-gutter;
+
+  > *:first-child {
+    margin-top: 0;
+  }
+}
+
+.column {
+  @include column;
+}

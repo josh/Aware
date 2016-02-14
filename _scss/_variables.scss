@@ -1,0 +1,29 @@
+$container-width: (740 / 16);
+$grid-gutter: 2rem;
+
+// For extra wide content that breaks out of the grid
+$container-wide-width: (1160 / 16) !default;
+
+// Breakpoints
+$largest: #{'min-width: '} $container-wide-width + ($grid-gutter * 2) !default;
+$large: #{'min-width: '} $container-width + ($grid-gutter * 2) !default;
+$medium: #{'min-width: '} 700px !default;
+$small: #{'min-width: '} 500px !default;
+$smallest: #{'min-width: '} 400px !default;
+
+// Font stacks
+$body-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+$display-font: $body-font;
+$monospace-font: Consolas, Menlo, Andale, monospace;
+$body-font-size: 18px;
+
+// Site colors
+
+// $lightest: #f5f5f5;
+// $soft-light: #d6d6d6;
+// $darkest: #1d212a;
+//
+// $grey-dk: #2a323a;
+// $grey-md: #a7a2a2;
+// $red: #df303a;
+// $red-lt: #d09599;

@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $body-font;
+  font-size: 14px;
+  line-height: 1.5;
+
+  @include breakpoint($medium) {
+    font-size: #{$body-font-size};
+  }
+}
+
+input,
+select,
+textarea,
+button {
+  font: #{$body-font-size}/1.5 $body-font;
+}
+
+// Flexible images
+img {
+  max-width: 100%;
+  height: auto;
+}
