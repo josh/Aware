@@ -328,7 +328,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Aware/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.Aware;
+				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -341,7 +341,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Aware/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.Aware;
+				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -353,7 +353,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AwareTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.AwareTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
@@ -366,7 +366,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = AwareTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.josh.AwareTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
