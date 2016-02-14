@@ -18,12 +18,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Reference to installed global mouse event monitor
     var mouseEventMonitor: AnyObject?
 
+    // Default value to initialize userIdleSeconds to
+    static let defaultUserIdleSeconds: NSTimeInterval = 120
+
     // User configurable idle time in seconds (defaults to 2 minutes)
-    lazy var userIdleSeconds: NSTimeInterval = self.readUserIdleSeconds()
+    var userIdleSeconds: NSTimeInterval = defaultUserIdleSeconds
+
     func readUserIdleSeconds() -> NSTimeInterval {
         let defaults = NSUserDefaults.standardUserDefaults()
         let defaultsValue = defaults.objectForKey("userIdleSeconds") as? NSTimeInterval
-        return defaultsValue ?? 120
+        return defaultsValue ?? self.dynamicType.defaultUserIdleSeconds
     }
 
     // kCGAnyInputEventType isn't part of CGEventType enum
@@ -38,6 +42,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(notification: NSNotification) {
+        self.userIdleSeconds = self.readUserIdleSeconds()
+
         updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
