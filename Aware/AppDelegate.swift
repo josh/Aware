@@ -108,10 +108,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func setUserIdleSecondsFromMenuItem(menuItem: TimeIntervalMenuItem) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setDouble(menuItem.value, forKey: "userIdleSeconds")
+        userIdleSeconds = menuItem.value
 
-        // Recompute userIdleSeconds property
-        userIdleSeconds = self.readUserIdleSeconds()
+        // Persist new value
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setDouble(userIdleSeconds, forKey: "userIdleSeconds")
     }
 }
