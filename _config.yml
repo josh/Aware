@@ -17,4 +17,5 @@ url: "http://awaremac.com" # the base hostname & protocol for your site
 # Build settings
 markdown: kramdown
 sass:
-    sass_dir: _scss
+  sass_dir: _scss
+  style: compressed

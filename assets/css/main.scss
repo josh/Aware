@@ -3,7 +3,9 @@
 
 @charset "utf-8";
 
+//
 // Import partials
+//
 
 // Dependancies
 @import "normalize";
@@ -18,9 +20,11 @@
 
 // Type
 @import "type";
-@import "syntax-highlighting";
-@import "code";
+// @import "syntax-highlighting";
+// @import "code";
 
 // Modules
 @import "header";
 @import "footer";
+@import "buttons";
+@import "monitor";
