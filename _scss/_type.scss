@@ -1,7 +1,6 @@
 //
 // Body
 //
-
 body {
   font-family: $body-font;
   font-size: 15px;
@@ -16,7 +15,6 @@ body {
 //
 // Headings
 //
-
 // Display headings
 .displaytext-alpha {
   margin-bottom: 0.25em;
@@ -60,7 +58,6 @@ h1,
     font-weight: 500;
   }
 }
-
 
 h2,
 .heading-beta {
@@ -129,9 +126,8 @@ h5,
 }
 
 //
-// Modifiers
+// Modifiers / Utils
 //
-
 small,
 .text-small {
   font-size: 13px;

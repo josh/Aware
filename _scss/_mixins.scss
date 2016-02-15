@@ -1,7 +1,7 @@
+//
 // Clearfix
 //
 // Clears floats via mixin (avoid using as a class).
-
 @mixin clearfix {
   &::before {
     display: table;

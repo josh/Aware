@@ -1,12 +1,10 @@
-// Overrides _container.scss
-
+//
 // Breakpoint mixin
 //
 // Usage:
 // @include breakpoint($medium) {
 //   ..medium and up styles
 // }
-// See _variables-marketing.scss for default breakpoint size variables.
 //
 @mixin breakpoint($bp) {
   @media screen and ($bp) {
@@ -41,24 +39,21 @@
   }
 }
 
+//
 // Grid system
 //
-// Now with mixins!
-//
+// Base class for every row
 @mixin columns {
   margin-right: -$grid-gutter;
   margin-left: -$grid-gutter;
   @include clearfix;
 }
 
-.columnumns {
+.columns {
   @include columns;
 }
 
-// Base class for every column (requires a column width from below)
-//
-// This is included in the column width mixins below.
-//
+// Base class for every column
 @mixin column {
   float: left;
   padding-right: $grid-gutter;
