@@ -1,0 +1,55 @@
+@mixin btn-theme($foreground, $background) {
+  color: $foreground;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background-color: $background;
+  background-image: linear-gradient(lighten($background, 10%), $background);
+  border-color: darken($background, 5%);
+
+  &:hover {
+    color: #fff;
+    background-color: darken($background, 5%);
+    background-image: linear-gradient($background, darken($background, 5%));
+    border-color: darken($background, 10%);
+  }
+
+  &:active {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+    background-color: darken($background, 5%);
+    background-image: none;
+    border-color: darken($background, 5%);
+  }
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.45em 1em;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #767676;
+  border-radius: 4px;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.btn-primary {
+  @include btn-theme(#fff, $red);
+}
+
+.btn-disabled {
+  color: #aaa;
+  cursor: default;
+  background-color: #eee;
+  background-image: linear-gradient(lighten(#eee, 10%), #eee);
+  border-color: darken(#eee, 5%);
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #aaa;
+  }
+}

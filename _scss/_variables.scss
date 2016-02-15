@@ -2,11 +2,11 @@ $container-width: (740 / 16);
 $grid-gutter: 2rem;
 
 // For extra wide content that breaks out of the grid
-$container-wide-width: (1160 / 16) !default;
+$container-wide-width: (1360 / 16) !default;
 
 // Breakpoints
-$largest: #{'min-width: '} $container-wide-width + ($grid-gutter * 2) !default;
-$large: #{'min-width: '} $container-width + ($grid-gutter * 2) !default;
+$largest: #{'min-width: '} 1200px !default;
+$large: #{'min-width: '} 1000px !default;
 $medium: #{'min-width: '} 700px !default;
 $small: #{'min-width: '} 500px !default;
 $smallest: #{'min-width: '} 400px !default;
@@ -19,11 +19,9 @@ $body-font-size: 18px;
 
 // Site colors
 
-// $lightest: #f5f5f5;
-// $soft-light: #d6d6d6;
-// $darkest: #1d212a;
-//
-// $grey-dk: #2a323a;
-// $grey-md: #a7a2a2;
-// $red: #df303a;
-// $red-lt: #d09599;
+$body-color: #474747;
+$heading-color: #312f34;
+
+$red: #f10138;
+$red-lt: #f0a6a6;
+$red-dk: #901b36;

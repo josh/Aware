@@ -1,0 +1,150 @@
+.monitor {
+  position: relative;
+  padding: 11% 8.5% 0 0;
+  margin: 3rem 0;
+  background-image: url("/assets/images/macbook_bg.png");
+  background-repeat: no-repeat;
+  background-position: 85% top;
+  background-size: 250% auto;
+
+  &::before {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    content: "";
+    border-bottom: 1px solid #eee;
+  }
+
+
+  @include breakpoint($large) {
+    padding: 4.1% 12.4% 0;
+    background-position: center top;
+    background-size: 100% auto;
+  }
+}
+
+.os {
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+  background-image: url("/assets/images/desktop_bg.jpg");
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+
+  @include breakpoint($large) {
+    background-size: cover;
+    border-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.menubar {
+  @include clearfix;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 6px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #7b7a7b;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.35);
+  opacity: 0.9;
+}
+
+.menubar-menu {
+  padding-left: 0;
+  margin-top: -1px;
+  margin-bottom: 0;
+  margin-left: 0;
+  line-height: 1px;
+
+  &.menuleft {
+    display: none;
+    float: left;
+
+    @include breakpoint($large) {
+      display: block;
+    }
+  }
+
+  &.menuright {
+    float: right;
+  }
+}
+
+.menuitem {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 14px;
+  color: #474747;
+  vertical-align: middle;
+}
+
+.menuitem-aware {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 160px;
+    padding: 3px;
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    content: "This is where Aware lives.";
+    background-color: $heading-color;
+    border-radius: 2px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  &::before {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    display: block;
+    width: 0;
+    height: 0;
+    margin-left: -5px;
+    content: "";
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid $heading-color;
+    border-left: 6px solid transparent;
+  }
+}
+
+.menuitem-svg {
+  width: 14px;
+  height: 14px;
+
+  svg {
+    g {
+      fill: #474747;
+    }
+  }
+}
+
+.menuitem-apple {
+  margin-left: 6px;
+  svg {
+    margin-top: -2px;
+  }
+}
+
+.menuitem-wifi {
+  width: 20px;
+}
+
+.menuitem-search {
+  width: 15px;
+}
+
+.menuitem-notifications {
+  width: 18px;
+}
