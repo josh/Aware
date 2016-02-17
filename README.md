@@ -7,6 +7,8 @@ Aware is a menubar app for OSX that displays how long you've been actively using
 
 ## Installing the app
 
+![aware icon](https://cloud.githubusercontent.com/assets/896475/13116060/6fb38d0c-d568-11e5-923c-9e50d540e84f.png)
+
 1. To install Aware, begin by [downloading the latest release](https://github.com/josh/Aware/releases/latest/).
 2. Unzip the package
 3. Move `Aware.app` to your `Applications` folder.
