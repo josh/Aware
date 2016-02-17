@@ -1,6 +1,6 @@
 .monitor {
   position: relative;
-  padding: 11% 8.5% 0 0;
+  padding: 10% 8.3% 0 0;
   margin: 3rem 0;
   background-image: url("/assets/images/macbook_bg.png");
   background-repeat: no-repeat;
@@ -30,7 +30,6 @@
   height: 70px;
   overflow: hidden;
   background-image: url("/assets/images/desktop_bg.jpg");
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 
   @include breakpoint($medium) {
     height: 100px;
@@ -49,10 +48,26 @@
   left: 0;
   width: 100%;
   padding: 6px;
+  cursor: pointer;
   background-color: #fafafa;
   border-bottom: 1px solid #7b7a7b;
   box-shadow: 0 1px 20px rgba(0, 0, 0, 0.35);
   opacity: 0.9;
+}
+
+.menubar-dark {
+  background-color: #312f34;
+  border-color: transparent;
+
+  .menuitem {
+    color: #fafafa;
+
+    svg {
+      g {
+        fill: #fafafa;
+      }
+    }
+  }
 }
 
 .menubar-menu {
@@ -79,8 +94,8 @@
 .menuitem {
   display: inline-block;
   margin-bottom: 0;
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 14px;
+  line-height: 14px;
   color: #474747;
   vertical-align: middle;
 
@@ -89,9 +104,6 @@
   }
 
   @include breakpoint($small) {
-    font-size: 14px;
-    line-height: 14px;
-
     &:not(:last-child) {
       margin-right: 10px;
     }
