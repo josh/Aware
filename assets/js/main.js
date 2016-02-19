@@ -34,3 +34,15 @@
   updateTimer();
   updateClock();
 })()
+
+(function() {
+  window.GoogleAnalyticsObject = 'ga';
+  window.ga = function ga() {
+    ga.q.push(arguments);
+  };
+  ga.q = [];
+  ga.l = (new Date()).getTime();
+
+  ga('create', 'UA-74056549-2', 'auto');
+  ga('send', 'pageview');
+})()
