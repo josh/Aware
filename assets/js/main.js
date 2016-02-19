@@ -33,7 +33,7 @@
 
   updateTimer();
   updateClock();
-})()
+})();
 
 (function() {
   window.GoogleAnalyticsObject = 'ga';
@@ -45,4 +45,4 @@
 
   ga('create', 'UA-74056549-2', 'auto');
   ga('send', 'pageview');
-})()
+})();
