@@ -22,9 +22,9 @@
 **Bitcode Auto-Recompilation** Use bitcode auto-recompilation  
 ## Version Information
 
-**Screenshots**  *TODO*  
-**Description**  *TODO*  
-**Keywords**  *TODO*  
+**Screenshots** *TODO*  
+**Description** *TODO*  
+**Keywords**  aware,time,timer,activity,usage,break
 **Support URL** http://awaremac.com  
 **Marketing URL** http://awaremac.com  
 
