@@ -35,7 +35,7 @@ Aware tells you how long you've been using your computer in hours and minutes. I
 
 There are no assumptions made as to what you do with this information. No popups or alarms to tell you to take a break, just a record of time tracked in your menubar for easy access.
 
-**Keywords**  aware,time,timer,activity,usage,break
+**Keywords**  aware,time,timer,activity,usage,break  
 **Support URL** http://awaremac.com  
 **Marketing URL** http://awaremac.com  
 
