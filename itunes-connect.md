@@ -22,7 +22,11 @@
 **Bitcode Auto-Recompilation** Use bitcode auto-recompilation  
 ## Version Information
 
-**Screenshots** *TODO*  
+**Screenshots**
+
+![](https://github.com/josh/Aware/blob/01eafd94e497221940242d4489e9c7f702472b89/assets/images/screenshot1.png)
+![](https://github.com/josh/Aware/blob/01eafd94e497221940242d4489e9c7f702472b89/assets/images/screenshot2.png)
+
 **Description**
 
 A simple menubar app for OSX that tracks how long you've been actively using your computer.
