@@ -14,13 +14,15 @@
     timer.textContent = text;
   }
 
+  var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   var clock = document.querySelector('.js-clock');
   function updateClock() {
     var now = new Date();
-    var day = now.toUTCString().split(",")[0];
-    var hour = (now.getHours() % 12);
+    var day = days[now.getDay()];
+    var hour = (now.getHours() + 11) % 12 + 1;
     var min = ("0" + now.getMinutes()).slice(-2);
-    var meridian = now.getHours() > 12 ? "PM" : "AM";
+    var meridian = now.getHours() >= 12 ? "PM" : "AM";
     var text = day + " " + hour + ":" + min + " " + meridian;
 
     clock.textContent = text;
