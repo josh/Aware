@@ -22,7 +22,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     static let defaultUserIdleSeconds: NSTimeInterval = 120
 
     // User configurable idle time in seconds (defaults to 2 minutes)
-    var userIdleSeconds: NSTimeInterval = defaultUserIdleSeconds
+    var userIdleSeconds: NSTimeInterval = defaultUserIdleSeconds {
+        didSet {
+            userIdleSecondsMenu.setTimeInterval(userIdleSeconds)
+        }
+    }
 
     func readUserIdleSeconds() -> NSTimeInterval {
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -40,6 +44,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             statusItem.menu = menu
         }
     }
+
+    @IBOutlet weak var userIdleSecondsMenu: TimeIntervalMenu!
 
     func applicationDidFinishLaunching(notification: NSNotification) {
         self.userIdleSeconds = self.readUserIdleSeconds()
@@ -99,5 +105,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
+    }
+
+    @IBAction func setUserIdleSecondsFromMenuItem(menuItem: TimeIntervalMenuItem) {
+        userIdleSeconds = menuItem.value
+
+        // Persist new value
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setDouble(userIdleSeconds, forKey: "userIdleSeconds")
     }
 }

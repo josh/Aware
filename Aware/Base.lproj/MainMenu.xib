@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -15,10 +15,74 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Aware" customModuleProvider="target">
             <connections>
                 <outlet property="menu" destination="099-Sz-hJX" id="FtV-pF-bQq"/>
+                <outlet property="userIdleSecondsMenu" destination="E7T-Ns-G2B" id="oBR-eT-oYL"/>
             </connections>
         </customObject>
         <menu id="099-Sz-hJX">
             <items>
+                <menuItem title="Reset after" id="MxL-Ze-gT6">
+                    <modifierMask key="keyEquivalentModifierMask" shift="YES"/>
+                    <menu key="submenu" title="Reset after" id="E7T-Ns-G2B" customClass="TimeIntervalMenu" customModule="Aware" customModuleProvider="target">
+                        <items>
+                            <menuItem title="1 Minute" id="Uxu-Qk-tKG" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="60"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setUserIdleSecondsFromMenuItem:" target="Voe-Tx-rLC" id="Eci-m6-2dl"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="2 Minutes" id="gcp-c8-GKt" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="120"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setUserIdleSecondsFromMenuItem:" target="Voe-Tx-rLC" id="sKX-eE-j9c"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="5 Minutes" id="Q1r-Fn-WZP" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="300"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setUserIdleSecondsFromMenuItem:" target="Voe-Tx-rLC" id="xdI-bD-Jfo"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="10 Minutes" id="ybu-UV-FrJ" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="600"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setUserIdleSecondsFromMenuItem:" target="Voe-Tx-rLC" id="l5k-1Y-M3s"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="30 Minutes" id="SgD-zg-YUU" customClass="TimeIntervalMenuItem" customModule="Aware" customModuleProvider="target">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                        <integer key="value" value="1800"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="setUserIdleSecondsFromMenuItem:" target="Voe-Tx-rLC" id="oKb-5M-a6k"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="uxS-lo-hf3"/>
                 <menuItem title="Quit Aware" id="nuW-Ky-b5C">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
