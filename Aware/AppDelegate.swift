@@ -8,9 +8,18 @@
 
 import Cocoa
 
+// Sandboxed ~/Library
+let userLibraryPath = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true)[0]
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     var timerStart: NSDate = NSDate()
+
+    // User activity binary log path
+    let logPath = NSURL(fileURLWithPath: userLibraryPath).URLByAppendingPathComponent("Logs/Aware.log").path!
+
+    // User activity binary log stream
+    var logStream: NSOutputStream?
 
     // Redraw button every minute
     let buttonRefreshRate: NSTimeInterval = 60
@@ -42,6 +51,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(notification: NSNotification) {
+        print("Logging user activity to \(logPath)")
+        self.logStream = NSOutputStream(toFileAtPath: logPath, append: true)
+        self.logStream?.open()
+
         self.userIdleSeconds = self.readUserIdleSeconds()
 
         updateButton()
@@ -50,6 +63,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
         notificationCenter.addObserverForName(NSWorkspaceWillSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
         notificationCenter.addObserverForName(NSWorkspaceDidWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+    }
+
+    func applicationWillTerminate(notification: NSNotification) {
+        self.logStream?.close()
     }
 
     func resetTimer() {
@@ -77,6 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             idle = true
         } else {
             idle = false
+            logUserActivity()
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
@@ -99,5 +117,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
+    }
+
+    func logUserActivity() {
+        let data = NSMutableData()
+        var number: Double = NSDate().timeIntervalSince1970
+        data.appendBytes(&number, length: sizeof(Double))
+
+        let bytes = UnsafePointer<UInt8>(data.bytes)
+        logStream?.write(bytes, maxLength: data.length)
     }
 }
