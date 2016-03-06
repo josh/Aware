@@ -53,3 +53,12 @@
     color: #aaa;
   }
 }
+
+.btn-icon-app {
+  width: 64px;
+  height: auto;
+
+  @include breakpoint($medium) {
+    width: 128px;
+  }
+}
