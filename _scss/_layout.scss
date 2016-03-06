@@ -15,7 +15,7 @@
 // flexible width container
 .container {
   width: auto;
-  max-width: $container-width + ($grid-gutter * 2);
+  max-width: $container-width + ($grid-gutter);
   padding: 0 $grid-gutter;
   margin-right: auto;
   margin-left: auto;

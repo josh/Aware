@@ -1,8 +1,8 @@
-$container-width: (740 / 16);
-$grid-gutter: 2rem;
+$container-width: 760px;
+$grid-gutter: 32px;
 
 // For extra wide content that breaks out of the grid
-$container-wide-width: (1360 / 16) !default;
+$container-wide-width: 1360px !default;
 
 // Breakpoints
 $largest: #{'min-width: '} 1200px !default;
@@ -25,3 +25,12 @@ $heading-color: #312f34;
 $red: #f10138;
 $red-lt: #f0a6a6;
 $red-dk: #901b36;
+
+// Spacers
+
+$spacer: 1rem;
+
+$spacer-sm: $spacer / 2;
+$spacer-md: $spacer * 1.5;
+$spacer-lg: $spacer * 2;
+$spacer-xl: $spacer * 2.5;
