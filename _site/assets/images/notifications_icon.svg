@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="36px" height="20px" viewBox="0 0 36 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.2 (25235) - http://www.bohemiancoding.com/sketch -->
+    <title>Menubar - Notification Centre</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Artboard" sketch:type="MSArtboardGroup" transform="translate(-2800.000000, -13.000000)" fill="#000000">
+            <g id="Menubar" sketch:type="MSLayerGroup">
+                <g id="Menubar---Notification-Centre" transform="translate(2800.000000, 13.000000)" sketch:type="MSShapeGroup">
+                    <path d="M8,16 L8,20 L36,20 L36,16 L8,16 Z M0,16 L0,20 L4,20 L4,16 L0,16 Z M8,8 L8,12 L30,12 L30,8 L8,8 Z M0,8 L0,12 L4,12 L4,8 L0,8 Z M8,0 L8,4 L36,4 L36,0 L8,0 Z M0,0 L0,4 L4,4 L4,0 L0,0 Z" id="Icon---Notification-Centre"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
