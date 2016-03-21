@@ -18,8 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // User activity binary log path
     let logPath = NSURL(fileURLWithPath: userLibraryPath).URLByAppendingPathComponent("Logs/Aware.log").path!
 
-    // User activity binary log stream
-    var logStream: NSOutputStream?
+    // Event log
+    var eventLog: EventLog!
 
     // Redraw button every minute
     let buttonRefreshRate: NSTimeInterval = 60
@@ -52,8 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(notification: NSNotification) {
         print("Logging user activity to \(logPath)")
-        self.logStream = NSOutputStream(toFileAtPath: logPath, append: true)
-        self.logStream?.open()
+        self.eventLog = EventLog(path: logPath)
+        self.eventLog.open()
 
         self.userIdleSeconds = self.readUserIdleSeconds()
 
@@ -66,7 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(notification: NSNotification) {
-        self.logStream?.close()
+        self.eventLog.close()
     }
 
     func resetTimer() {
@@ -94,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             idle = true
         } else {
             idle = false
-            logUserActivity()
+            self.eventLog.logUserActivity()
         }
 
         let duration = NSDate().timeIntervalSinceDate(timerStart)
@@ -117,14 +117,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
-    }
-
-    func logUserActivity() {
-        let data = NSMutableData()
-        var number: Double = NSDate().timeIntervalSince1970
-        data.appendBytes(&number, length: sizeof(Double))
-
-        let bytes = UnsafePointer<UInt8>(data.bytes)
-        logStream?.write(bytes, maxLength: data.length)
     }
 }
