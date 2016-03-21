@@ -55,17 +55,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.eventLog = EventLog(path: logPath)
         self.eventLog.open()
 
+        self.eventLog.logEvent(.Open, timestamp: NSDate())
+
         self.userIdleSeconds = self.readUserIdleSeconds()
 
         updateButton()
         NSTimer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.sharedWorkspace().notificationCenter
-        notificationCenter.addObserverForName(NSWorkspaceWillSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
-        notificationCenter.addObserverForName(NSWorkspaceDidWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+        notificationCenter.addObserverForName(NSWorkspaceWillSleepNotification, object: nil, queue: nil) { _ in
+            self.eventLog.logEvent(.Sleep, timestamp: NSDate())
+            self.resetTimer()
+        }
+        notificationCenter.addObserverForName(NSWorkspaceDidWakeNotification, object: nil, queue: nil) { _ in
+            self.eventLog.logEvent(.Sleep, timestamp: NSDate())
+            self.resetTimer()
+        }
     }
 
     func applicationWillTerminate(notification: NSNotification) {
+        self.eventLog.logEvent(.Quit, timestamp: NSDate())
         self.eventLog.close()
     }
 
@@ -84,20 +93,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func updateButton() {
         var idle: Bool
+        let now = NSDate()
 
         let sinceUserActivity = CGEventSourceSecondsSinceLastEventType(.CombinedSessionState, AnyInputEventType)
         if (sinceUserActivity > userIdleSeconds) {
-            timerStart = NSDate()
+            timerStart = now
             idle = true
+            self.eventLog.logEvent(.Idle, timestamp: now)
         } else if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
-            timerStart = NSDate()
+            timerStart = now
             idle = true
+            self.eventLog.logEvent(.DisplayAsleep, timestamp: now)
         } else {
             idle = false
-            self.eventLog.logUserActivity()
+            self.eventLog.logEvent(.Active, timestamp: now)
         }
 
-        let duration = NSDate().timeIntervalSinceDate(timerStart)
+        let duration = now.timeIntervalSinceDate(timerStart)
         let title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
         statusItem.button!.title = title
 
