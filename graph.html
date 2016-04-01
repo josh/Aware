@@ -1,0 +1,64 @@
+---
+layout: default
+---
+
+<div class="container">
+  <p>Copy Aware's log to your Desktop and upload it.</p>
+  <p><code>$ cp ~/Library/Containers/com.awaremac.Aware/Data/Library/Logs/Aware.log ~/Desktop</code></p>
+
+  <form>
+    <script type="text/javascript">
+      function copyBytes(buffer, byteOffset, byteLength) {
+        var intBytes = Array.from(new Uint8Array(buffer, byteOffset, byteLength));
+        var buf = new ArrayBuffer(byteLength);
+        var bufView = new Uint8Array(buf);
+        for (var i = 0; i < byteLength; i++) {
+          bufView[i] = intBytes[i];
+        }
+        return buf
+      }
+
+      function eventType(int) {
+        switch(int) {
+          case 1:
+            return "open";
+          case 2:
+            return "close";
+          case 3:
+            return "active";
+          case 4:
+            return "idle";
+          case 5:
+            return "displayIsAsleep"
+          case 6:
+            return "sleep"
+        }
+      }
+
+      function handleUpload(file) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          var buffer = reader.result;
+
+          var table = document.getElementById("output");
+          table.innerHTML = ""
+
+          for (var i = 0; i < buffer.byteLength; i += 9) {
+            var type = new Uint8Array(buffer, i, 1)[0]
+            var timestamp = new Float64Array(copyBytes(buffer, i+1, 8))[0]
+
+            var row = document.createElement("tr")
+            row.innerHTML = "<td>" + eventType(type) + "</td>" +
+              "<td>" + new Date(timestamp * 1000) + "</td>"
+            table.appendChild(row)
+          }
+        }
+        reader.readAsArrayBuffer(file);
+      }
+    </script>
+    <input type="file" onchange="handleUpload(this.files[0])">
+  </form>
+
+  <table id="output">
+  </table>
+</div>
