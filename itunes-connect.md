@@ -16,7 +16,7 @@
 
 ## Pricing and Availability
 
-**Price** USD 0.99 (Tier 1)  
+**Price** USD 0 (Free)  
 **Availability** Available in all territories  
 **Volume Purchase Program** Available with a volume discount for educational institutions  
 **Bitcode Auto-Recompilation** Use bitcode auto-recompilation  
