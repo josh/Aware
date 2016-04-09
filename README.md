@@ -5,8 +5,6 @@ Aware is a menubar app for OSX that displays how long you've been actively using
 ![dark](https://cloud.githubusercontent.com/assets/896475/12149285/eee30008-b470-11e5-81e9-de7072a11827.png)
 ![light](https://cloud.githubusercontent.com/assets/896475/12149287/eeeac37e-b470-11e5-9bda-8a2502a39148.png)
 
-## Install from the Mac App Store
-
 ## Installing the app
 
 ![aware icon](https://cloud.githubusercontent.com/assets/896475/13116060/6fb38d0c-d568-11e5-923c-9e50d540e84f.png)
