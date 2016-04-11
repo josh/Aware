@@ -25,7 +25,6 @@
 
 // Modules
 @import "header";
-@import "footer";
 @import "buttons";
 @import "monitor";
 
@@ -36,4 +35,36 @@
 
 .mr-2 {
   margin-right: $spacer !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mt-2 {
+  margin-top: $spacer !important;
+}
+
+.mt-3 {
+  margin-top: $spacer * 2 !important;
+}
+
+.mt-4 {
+  margin-top: $spacer * 3 !important;
+}
+
+.ml--1 {
+  margin-left: $spacer * -0.5 !important;
+}
+
+.pb-2 {
+  padding-bottom: $spacer !important;
+}
+
+.fl-left {
+  float: left !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
 }
