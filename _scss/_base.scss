@@ -34,7 +34,7 @@ img {
 }
 
 // Default link styles
-a {
+a[href]:not([class]) {
   color: $red;
   text-decoration: none;
 
