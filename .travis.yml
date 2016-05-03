@@ -1,6 +1,6 @@
 language: objective-c
 osx_image:
-- xcode7.3
+- xcode7.2
 - xcode7.1
 xcode_project: Aware.xcodeproj
 xcode_scheme: Aware
