@@ -55,6 +55,6 @@ extension NSTimer {
         - Returns: A new `NSTimer` object, configured according to the specified parameters.
      */
     public class func scheduledTimer(ti: NSTimeInterval, userInfo: AnyObject?, repeats: Bool, fire: NSTimer -> Void) -> NSTimer {
-        return NSTimer.scheduledTimerWithTimeInterval(ti, target: NSTimerHandler(fire), selector: Selector("fire:"), userInfo: userInfo, repeats: repeats)
+        return NSTimer.scheduledTimerWithTimeInterval(ti, target: NSTimerHandler(fire), selector: #selector(NSTimerHandler.fire(_:)), userInfo: userInfo, repeats: repeats)
     }
 }
