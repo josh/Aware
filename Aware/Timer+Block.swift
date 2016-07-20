@@ -1,5 +1,5 @@
 //
-//  NSTimer+Block.swift
+//  Timer+Block.swift
 //  Aware
 //
 //  Created by Joshua Peek on 12/06/15.
@@ -30,21 +30,21 @@ import Foundation
 // Alternative API for timer creation with a block.
 // Inspired by proposed Swift corelib interface:
 //   https://github.com/apple/swift-corelibs-foundation/blob/7836f63/Foundation/NSTimer.swift#L52-L60
-extension NSTimer {
-    private class NSTimerHandler {
-        let _fire: NSTimer -> Void
+extension Timer {
+    private class TimerHandler {
+        let _fire: (Timer) -> Void
 
-        init(_ fire: NSTimer -> Void) {
+        init(_ fire: (Timer) -> Void) {
             self._fire = fire
         }
 
-        @objc func fire(timer: NSTimer) {
+        @objc func fire(_ timer: Timer) {
             self._fire(timer)
         }
     }
 
     /**
-        Creates and returns a new `NSTimer` object and schedules it on the current run loop in the default mode.
+        Creates and returns a new `Timer` object and schedules it on the current run loop in the default mode.
 
         - Parameters:
             - seconds: The number of seconds between firings of the timer. If seconds is less than or equal to 0.0, this method chooses the nonnegative value of 0.1 milliseconds instead.
@@ -52,9 +52,9 @@ extension NSTimer {
             - repeats: If true, the timer will repeatedly reschedule itself until invalidated. If false, the timer will be invalidated after it fires.
             - fire: The block to call when the timer fires. The timer maintains a strong reference to target until it (the timer) is invalidated.
 
-        - Returns: A new `NSTimer` object, configured according to the specified parameters.
+        - Returns: A new `Timer` object, configured according to the specified parameters.
      */
-    public class func scheduledTimer(ti: NSTimeInterval, userInfo: AnyObject?, repeats: Bool, fire: NSTimer -> Void) -> NSTimer {
-        return NSTimer.scheduledTimerWithTimeInterval(ti, target: NSTimerHandler(fire), selector: #selector(NSTimerHandler.fire(_:)), userInfo: userInfo, repeats: repeats)
+    public class func scheduledTimer(_ ti: TimeInterval, userInfo: AnyObject?, repeats: Bool, fire: (Timer) -> Void) -> Timer {
+        return Timer.scheduledTimer(timeInterval: ti, target: TimerHandler(fire), selector: #selector(TimerHandler.fire(_:)), userInfo: userInfo, repeats: repeats)
     }
 }
