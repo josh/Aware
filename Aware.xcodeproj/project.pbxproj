@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337E7861C14E37B003A8150 /* NSTimer+Block.swift */; };
+		0337E7871C14E37B003A8150 /* Timer+Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0337E7861C14E37B003A8150 /* Timer+Block.swift */; };
 		036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036EBD181C1408C200121D0B /* AppDelegate.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
 		036EBD1E1C1408C200121D0B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1C1C1408C200121D0B /* MainMenu.xib */; };
@@ -27,7 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0337E7861C14E37B003A8150 /* NSTimer+Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimer+Block.swift"; sourceTree = "<group>"; };
+		0337E7861C14E37B003A8150 /* Timer+Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Timer+Block.swift"; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036EBD181C1408C200121D0B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		036EBD1A1C1408C200121D0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 			children = (
 				036EBD181C1408C200121D0B /* AppDelegate.swift */,
 				03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */,
-				0337E7861C14E37B003A8150 /* NSTimer+Block.swift */,
+				0337E7861C14E37B003A8150 /* Timer+Block.swift */,
 				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
 				036EBD1C1C1408C200121D0B /* MainMenu.xib */,
 				038D0B381C4DDD5600040C44 /* Aware.entitlements */,
@@ -144,11 +144,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Joshua Peek";
 				TargetAttributes = {
 					036EBD141C1408C200121D0B = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -157,6 +158,7 @@
 					};
 					03F9E2251C24CAD3001DBE86 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 036EBD141C1408C200121D0B;
 					};
 				};
@@ -206,7 +208,7 @@
 			files = (
 				03F9E2311C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift in Sources */,
 				036EBD191C1408C200121D0B /* AppDelegate.swift in Sources */,
-				0337E7871C14E37B003A8150 /* NSTimer+Block.swift in Sources */,
+				0337E7871C14E37B003A8150 /* Timer+Block.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +333,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -345,6 +348,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -357,6 +362,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
 			name = Debug;
@@ -370,6 +376,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
 			name = Release;

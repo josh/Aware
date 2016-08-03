@@ -17,7 +17,7 @@ class NSTimeIntervalFormatter {
 
         - Returns: A `String`.
      */
-    func stringFromTimeInterval(interval: NSTimeInterval) -> String {
+    func stringFromTimeInterval(_ interval: TimeInterval) -> String {
         let minutes = NSInteger(interval) / 60
         if minutes < 60 {
             return "\(minutes)m"
