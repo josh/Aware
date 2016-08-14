@@ -84,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if (idle) {
             statusItem.button!.attributedTitle = updateAttributedString(statusItem.button!.attributedTitle, [
-                NSForegroundColorAttributeName: NSColor.controlTextColor().withAlphaComponent(0.1)
+                NSForegroundColorAttributeName: NSColor.controlTextColor.withAlphaComponent(0.1)
             ])
 
             // On next mouse event, immediately update button
@@ -94,7 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func updateAttributedString(_ attributedString: AttributedString, _ attributes: [String: AnyObject]) -> AttributedString {
+    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [String: AnyObject]) -> NSAttributedString {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
