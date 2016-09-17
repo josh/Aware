@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let buttonRefreshRate: TimeInterval = 60
 
     // Reference to installed global mouse event monitor
-    var mouseEventMonitor: AnyObject?
+    var mouseEventMonitor: Any?
 
     // Default value to initialize userIdleSeconds to
     static let defaultUserIdleSeconds: TimeInterval = 120
