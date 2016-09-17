@@ -26,7 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func readUserIdleSeconds() -> TimeInterval {
         let defaultsValue = UserDefaults.standard.object(forKey: "userIdleSeconds") as? TimeInterval
-        return defaultsValue ?? self.dynamicType.defaultUserIdleSeconds
+        return defaultsValue ?? type(of: self).defaultUserIdleSeconds
     }
 
     // kCGAnyInputEventType isn't part of CGEventType enum
