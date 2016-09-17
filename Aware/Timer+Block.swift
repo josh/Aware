@@ -34,7 +34,7 @@ extension Timer {
     private class TimerHandler {
         let _fire: (Timer) -> Void
 
-        init(_ fire: (Timer) -> Void) {
+        init(_ fire: @escaping (Timer) -> Void) {
             self._fire = fire
         }
 
@@ -54,7 +54,7 @@ extension Timer {
 
         - Returns: A new `Timer` object, configured according to the specified parameters.
      */
-    public class func scheduledTimer(_ ti: TimeInterval, userInfo: AnyObject?, repeats: Bool, fire: (Timer) -> Void) -> Timer {
+    public class func scheduledTimer(_ ti: TimeInterval, userInfo: AnyObject?, repeats: Bool, fire: @escaping (Timer) -> Void) -> Timer {
         return Timer.scheduledTimer(timeInterval: ti, target: TimerHandler(fire), selector: #selector(TimerHandler.fire(_:)), userInfo: userInfo, repeats: repeats)
     }
 }
