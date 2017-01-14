@@ -1,64 +1,135 @@
 ---
-layout: default
+layout: none
 ---
+<!DOCTYPE html>
+<html lang="en-us">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-<div class="container">
-  <p>Copy Aware's log to your Desktop and upload it.</p>
-  <p><code>$ cp ~/Library/Containers/com.awaremac.Aware/Data/Library/Logs/Aware.log ~/Desktop</code></p>
+  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
 
-  <form>
-    <script type="text/javascript">
-      function copyBytes(buffer, byteOffset, byteLength) {
-        var intBytes = Array.from(new Uint8Array(buffer, byteOffset, byteLength));
-        var buf = new ArrayBuffer(byteLength);
-        var bufView = new Uint8Array(buf);
-        for (var i = 0; i < byteLength; i++) {
-          bufView[i] = intBytes[i];
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+  <link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl }}">
+
+  <script src="assets/js/vendor/d3.min.js" charset="utf-8"></script>
+
+
+  <body>
+  {% include header.html %}
+
+  <div class="container">
+    <p>Copy Aware's log to your Desktop and upload it.</p>
+    <p><code>$ cp ~/Library/Containers/com.awaremac.Aware/Data/Library/Logs/Aware.log ~/Desktop</code></p>
+
+    <form style="margin-bottom: 14px;">
+      <script type="text/javascript">
+        function copyBytes(buffer, byteOffset, byteLength) {
+          var intBytes = Array.from(new Uint8Array(buffer, byteOffset, byteLength));
+          var buf = new ArrayBuffer(byteLength);
+          var bufView = new Uint8Array(buf);
+          for (var i = 0; i < byteLength; i++) {
+            bufView[i] = intBytes[i];
+          }
+          return buf
         }
-        return buf
-      }
 
-      function eventType(int) {
-        switch(int) {
-          case 1:
-            return "open";
-          case 2:
-            return "close";
-          case 3:
-            return "active";
-          case 4:
-            return "idle";
-          case 5:
-            return "displayIsAsleep"
-          case 6:
-            return "sleep"
-        }
-      }
-
-      function handleUpload(file) {
-        var reader = new FileReader();
-        reader.onloadend = function() {
-          var buffer = reader.result;
-
-          var table = document.getElementById("output");
-          table.innerHTML = ""
-
-          for (var i = 0; i < buffer.byteLength; i += 9) {
-            var type = new Uint8Array(buffer, i, 1)[0]
-            var timestamp = new Float64Array(copyBytes(buffer, i+1, 8))[0]
-
-            var row = document.createElement("tr")
-            row.innerHTML = "<td>" + eventType(type) + "</td>" +
-              "<td>" + new Date(timestamp * 1000) + "</td>"
-            table.appendChild(row)
+        function eventType(int) {
+          switch(int) {
+            case 1:
+              return "open";
+            case 2:
+              return "close";
+            case 3:
+              return "active";
+            case 4:
+              return "idle";
+            case 5:
+              return "displayIsAsleep"
+            case 6:
+              return "sleep"
           }
         }
-        reader.readAsArrayBuffer(file);
-      }
-    </script>
-    <input type="file" onchange="handleUpload(this.files[0])">
-  </form>
 
-  <table id="output">
-  </table>
-</div>
+        function handleUpload(file) {
+          var reader = new FileReader();
+          reader.onloadend = function() {
+            var buffer = reader.result;
+
+            // DOM Elements
+            var table = document.getElementById("output");
+            var jsonTest = document.getElementById("json");
+
+            // Intialize array for data
+            var jsonData = [];
+
+
+            // Reset innerHTML
+            table.innerHTML = ""
+            jsonTest.innerHTML = ""
+
+            // Loop though each event in the log
+            for (var i = 0; i < buffer.byteLength; i += 9) {
+              var type = new Uint8Array(buffer, i, 1)[0]
+              var timestamp = new Float64Array(copyBytes(buffer, i+1, 8))[0]
+
+              // Output table rows
+              var row = document.createElement("tr")
+              row.innerHTML = "<td>" + eventType(type) + "</td>" +
+                "<td>" + new Date(timestamp * 1000) + "</td>"
+              table.appendChild(row)
+
+              // Create JSON attributes
+              var datetime = new String(new Date(timestamp * 1000))
+              var aevent = eventType(type)
+
+              // Create JSON event
+              var jsonEvent = { "dateTime" : datetime, "eventType" : aevent }
+
+              // Load the array with each event
+              jsonData.push(jsonEvent);
+            }
+
+            // Convert the array to a json string
+            var jsonString = JSON.stringify(jsonData);
+
+            // Conver the the string to a json object
+            var jsonObj = JSON.parse(jsonString);
+
+            // Output the JSON string to HTML
+            jsonTest.innerHTML = jsonString;
+          }
+          reader.readAsArrayBuffer(file);
+        }
+      </script>
+      <input type="file" onchange="handleUpload(this.files[0])">
+    </form>
+    <h3>Graph:</h3>
+    <svg id="chart"></svg>
+
+    <h3 class="mt-2">JSON:</h3>
+    <code id="json">
+    </code>
+
+    <h3 class="mt-2">Table:</h3>
+    <table id="output">
+    </table>
+
+
+
+  </div>
+  <footer role="contentinfo" class="site-footer pb-2 mt-4">
+    <div class="container">
+      <p class="d-inline-block mr-2 mb-1" style="margin-left: -3px;">
+        <a href="https://itunes.apple.com/us/app/aware/id1082170746?mt=12" class="badge-btn"><img src="assets/images/aware_icon.png" alt="Aware icon" width="100" height="100" class="va-middle"></a>
+      </p>
+      <div class="d-inline-block">
+        <p class="text-small text-muted mb-0">Copyright &copy; 2016 <a href="http://joshpeek.com">Joshua&nbsp;Peek</a>, <a href="http://patrickmarsceill.com">Patrick&nbsp;Marsceill</a>. All&nbsp;rights&nbsp;reserved.<br>General inquiries &amp; support: <a href="mailto:{{ site.email | escape }}">{{ site.email | escape }}</a></p>
+      </div>
+    </div>
+  </footer>
+
+  </body>
+</html>
