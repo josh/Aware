@@ -67,8 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateButton() {
         var idle: Bool
 
-        let sinceUserActivity = CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: AnyInputEventType)
-        if (sinceUserActivity > userIdleSeconds) {
+        if (self.sinceUserActivity() > userIdleSeconds) {
             timerStart = Date()
             idle = true
         } else if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
@@ -92,6 +91,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved, .leftMouseDown], handler: onMouseEvent)
             }
         }
+    }
+
+    let userActivityEventTypes: [CGEventType] = [
+        .leftMouseDown,
+        .rightMouseDown,
+        .mouseMoved,
+        .keyDown,
+        .scrollWheel
+    ]
+
+    func sinceUserActivity() -> CFTimeInterval {
+        return userActivityEventTypes.map { CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: $0) }.min()!
     }
 
     func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [String: AnyObject]) -> NSAttributedString {
