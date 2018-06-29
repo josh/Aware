@@ -89,7 +89,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // On next mouse event, immediately update button
             if mouseEventMonitor == nil {
-                mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.mouseMoved, .leftMouseDown], handler: onMouseEvent)
+                mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [
+                    NSEvent.EventTypeMask.mouseMoved,
+                    NSEvent.EventTypeMask.leftMouseDown
+                ], handler: onMouseEvent)
             }
         }
     }
