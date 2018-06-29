@@ -33,7 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // defined in <CoreGraphics/CGEventTypes.h>
     let AnyInputEventType = CGEventType(rawValue: UInt32.max)!
 
-    let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     @IBOutlet weak var menu: NSMenu! {
         didSet {
             statusItem.menu = menu
@@ -46,9 +46,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateButton()
         let _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
-        let notificationCenter = NSWorkspace.shared().notificationCenter
-        notificationCenter.addObserver(forName: NSNotification.Name.NSWorkspaceWillSleep, object: nil, queue: nil) { _ in self.resetTimer() }
-        notificationCenter.addObserver(forName: NSNotification.Name.NSWorkspaceDidWake, object: nil, queue: nil) { _ in self.resetTimer() }
+        let notificationCenter = NSWorkspace.shared.notificationCenter
+        notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+        notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
     }
 
     func resetTimer() {
@@ -84,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if (idle) {
             statusItem.button!.attributedTitle = updateAttributedString(statusItem.button!.attributedTitle, [
-                NSForegroundColorAttributeName: NSColor.controlTextColor.withAlphaComponent(0.1)
+                NSAttributedStringKey.foregroundColor: NSColor.controlTextColor.withAlphaComponent(0.1)
             ])
 
             // On next mouse event, immediately update button
@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [String: Any]) -> NSAttributedString {
+    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [NSAttributedStringKey: Any]) -> NSAttributedString {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
