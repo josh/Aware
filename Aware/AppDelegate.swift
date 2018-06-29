@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [String: AnyObject]) -> NSAttributedString {
+    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [String: Any]) -> NSAttributedString {
         let str = NSMutableAttributedString(attributedString: attributedString)
         str.addAttributes(attributes, range: NSMakeRange(0, str.length))
         return str
