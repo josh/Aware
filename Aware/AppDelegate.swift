@@ -48,7 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.saveTimer() }
-        notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { _ in self.rebootTimer() }
+        notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
     }
 
     func resetTimer() {
@@ -93,36 +93,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         resetTimer()
     }
     
-    func rebootTimer() {
-        if let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileUrl = documents.appendingPathComponent("awareData.txt")
-            let today = self.dateToday() + "\n"
-            do {
-                // open the data file
-                let text = try String(contentsOf: fileUrl, encoding: .utf8)
-                
-                // get the last line of the file (aka the most recent one)
-                let dataSlice = text.components(separatedBy: .newlines).suffix(2)
-                let data = dataSlice[dataSlice.startIndex]
-                
-                // get duration by fetching the strings before the colon (the data format is 'duration':'date')
-                let duration = Int(Float(data.components(separatedBy: ":").first!)!)
-                
-                // get the date by fetching the string after the colon
-                let date = text.components(separatedBy: ":").last!
-                if date == today {
-                    timerStart = Date(timeIntervalSinceNow: TimeInterval(-duration))
-                }
-                else {
-                    resetTimer()
-                }
-            }
-            catch {
-                print("error reading the file \(error)")
-            }
-        }
-    }
-        
     func updateButton() {
         var idle: Bool
 
