@@ -67,10 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateButton() {
         var idle: Bool
 
-        if (self.sinceUserActivity() > userIdleSeconds) {
-            timerStart = Date()
-            idle = true
-        } else if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
+        if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
             timerStart = Date()
             idle = true
         } else {
