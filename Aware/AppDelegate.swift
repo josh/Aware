@@ -47,7 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.shared.notificationCenter
-        notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+        notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.saveTimer() }
         notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
     }
 
@@ -64,6 +64,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateButton()
     }
 
+    func dateToday() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MMMM-dd"
+        return dateFormatter.string(from: Date())
+    }
+    
+    func saveTimer() {
+        let duration = String(Date().timeIntervalSince(timerStart))
+        let today = self.dateToday()
+        let data = duration + ":" + today + "\n"
+        if let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            // add a filename
+            let fileUrl = documents.appendingPathComponent("AwareData.txt")
+            do {
+                // read till end of file so we can append the data
+                let fileHandle = try FileHandle(forWritingTo: fileUrl)
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(data.data(using: .utf8)!)
+                fileHandle.closeFile()
+            }
+            catch {
+                print("Error writing to file \(error)")
+            }
+        }
+        
+        resetTimer()
+    }
+    
     func updateButton() {
         var idle: Bool
 
