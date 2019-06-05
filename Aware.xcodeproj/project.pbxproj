@@ -165,10 +165,9 @@
 			};
 			buildConfigurationList = 036EBD101C1408C200121D0B /* Build configuration list for PBXProject "Aware" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
