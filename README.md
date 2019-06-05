@@ -13,7 +13,7 @@ Aware is a menubar app for OSX and macOS that displays how long you've been acti
 
 ## Development information
 
-Requires Xcode 7.2.
+Requires Xcode 10.2
 
 ``` sh
 $ git clone https://github.com/josh/Aware
