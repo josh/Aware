@@ -149,7 +149,7 @@
 				TargetAttributes = {
 					036EBD141C1408C200121D0B = {
 						CreatedOnToolsVersion = 7.1.1;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -158,7 +158,7 @@
 					};
 					03F9E2251C24CAD3001DBE86 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1020;
 						TestTargetID = 036EBD141C1408C200121D0B;
 					};
 				};
@@ -356,7 +356,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -372,7 +372,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.Aware;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -385,7 +385,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
 			name = Debug;
@@ -400,7 +400,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
 			};
 			name = Release;
