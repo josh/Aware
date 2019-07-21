@@ -2,4 +2,4 @@ language: objective-c
 osx_image: xcode10.2
 xcode_project: Aware.xcodeproj
 xcode_scheme: Aware
-script: xcodebuild -project Aware.xcodeproj -scheme Aware test
+script: xcodebuild -project Aware.xcodeproj -scheme Aware test ENABLE_HARDENED_RUNTIME=NO CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=
