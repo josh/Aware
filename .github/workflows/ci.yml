@@ -10,4 +10,4 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Print Xcode version
-      run: xcodebuild -version
+      run: xcodebuild -version -sdk
