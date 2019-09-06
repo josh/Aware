@@ -55,16 +55,19 @@
   opacity: 0.9;
 }
 
-.menubar-dark {
-  background-color: #312f34;
-  border-color: transparent;
+@media (prefers-color-scheme: dark) {
+  .menubar {
+    background-color: #312f34;
+    border-color: transparent;
+    transition: background-color 0.4s;
 
-  .menuitem {
-    color: #fafafa;
+    .menuitem {
+      color: #fafafa;
 
-    svg {
-      g {
-        fill: #fafafa;
+      svg {
+        g {
+          fill: #fafafa;
+        }
       }
     }
   }

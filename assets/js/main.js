@@ -1,9 +1,4 @@
 (function() {
-  // Clicking menubar toggles "dark menu bar"
-  document.querySelector('.js-toggle-dark-menubar').addEventListener('click', function() {
-    this.classList.toggle('menubar-dark');
-  });
-
   var timer = document.querySelector('.js-aware-timer');
   var pageLoad = new Date() - (Math.random() * 1000 * 60 * 30);
   function updateTimer() {
