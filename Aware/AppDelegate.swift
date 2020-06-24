@@ -29,10 +29,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return defaultsValue ?? type(of: self).defaultUserIdleSeconds
     }
 
-    // kCGAnyInputEventType isn't part of CGEventType enum
-    // defined in <CoreGraphics/CGEventTypes.h>
-    let AnyInputEventType = CGEventType(rawValue: UInt32.max)!
-
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     @IBOutlet weak var menu: NSMenu! {
         didSet {
