@@ -72,16 +72,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             idle = false
         }
-
-        let duration = Date().timeIntervalSince(timerStart)
-        let title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
-        statusItem.button!.title = title
+        
+        if let statusButton = statusItem.button {
+            let duration = Date().timeIntervalSince(timerStart)
+            let title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
+            
+            statusButton.title = title
+            statusButton.appearsDisabled = idle
+        }
 
         if (idle) {
-            statusItem.button!.attributedTitle = updateAttributedString(statusItem.button!.attributedTitle, [
-                NSAttributedString.Key.foregroundColor: NSColor.controlTextColor.withAlphaComponent(0.1)
-            ])
-
             // On next mouse event, immediately update button
             if mouseEventMonitor == nil {
                 mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [
@@ -102,11 +102,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func sinceUserActivity() -> CFTimeInterval {
         return userActivityEventTypes.map { CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: $0) }.min()!
-    }
-
-    func updateAttributedString(_ attributedString: NSAttributedString, _ attributes: [NSAttributedString.Key: Any]) -> NSAttributedString {
-        let str = NSMutableAttributedString(attributedString: attributedString)
-        str.addAttributes(attributes, range: NSMakeRange(0, str.length))
-        return str
     }
 }
