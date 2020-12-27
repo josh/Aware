@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [macOS-10.14]
+        platform: [macOS-10.14, macos-10.15, macos-11.0]
 
     runs-on: ${{ matrix.platform }}
 
