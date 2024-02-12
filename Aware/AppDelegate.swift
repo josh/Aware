@@ -45,7 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.menu = menu
 
         updateButton()
-        _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
+        _ = Timer.scheduledTimer(withTimeInterval: buttonRefreshRate, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
