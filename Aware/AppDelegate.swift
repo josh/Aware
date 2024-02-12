@@ -30,14 +30,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    @IBOutlet var menu: NSMenu! {
-        didSet {
-            statusItem.menu = menu
-        }
-    }
 
     func applicationDidFinishLaunching(_: Notification) {
         userIdleSeconds = readUserIdleSeconds()
+
+        let menu = NSMenu()
+        menu.addItem(
+            NSMenuItem(
+                title: "Quit Aware",
+                action: #selector(NSApplication.terminate(_:)),
+                keyEquivalent: "q"
+            )
+        )
+        statusItem.menu = menu
 
         updateButton()
         _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
