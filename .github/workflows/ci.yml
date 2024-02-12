@@ -9,6 +9,7 @@ jobs:
         platform: [macOS-10.14, macos-10.15, macos-11.0]
 
     runs-on: ${{ matrix.platform }}
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v1
