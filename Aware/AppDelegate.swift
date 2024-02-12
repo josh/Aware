@@ -40,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.userIdleSeconds = self.readUserIdleSeconds()
 
         updateButton()
-        let _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
+        _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
 
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
@@ -63,25 +63,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateButton() {
         var idle: Bool
 
-        if (self.sinceUserActivity() > userIdleSeconds) {
+        if self.sinceUserActivity() > userIdleSeconds {
             timerStart = Date()
             idle = true
-        } else if (CGDisplayIsAsleep(CGMainDisplayID()) == 1) {
+        } else if CGDisplayIsAsleep(CGMainDisplayID()) == 1 {
             timerStart = Date()
             idle = true
         } else {
             idle = false
         }
-        
+
         if let statusButton = statusItem.button {
             let duration = Date().timeIntervalSince(timerStart)
             let title = NSTimeIntervalFormatter().stringFromTimeInterval(duration)
-            
+
             statusButton.title = title
             statusButton.appearsDisabled = idle
         }
 
-        if (idle) {
+        if idle {
             // On next mouse event, immediately update button
             if mouseEventMonitor == nil {
                 mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [
