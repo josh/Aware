@@ -13,7 +13,6 @@
 		036EBD1E1C1408C200121D0B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1C1C1408C200121D0B /* MainMenu.xib */; };
 		03F9E2311C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */; };
 		03F9E2331C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift */; };
-		03F9E2341C24CDAB001DBE86 /* NSTimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* NSTimeIntervalFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,7 +220,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03F9E2331C24CD2E001DBE86 /* NSTimeIntervalFormatterTests.swift in Sources */,
-				03F9E2341C24CDAB001DBE86 /* NSTimeIntervalFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

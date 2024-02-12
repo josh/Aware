@@ -1,5 +1,7 @@
 import XCTest
 
+@testable import Aware
+
 class NSTimeIntervalFormatterTests: XCTestCase {
     func testStringFromTimeInterval() {
         let formatter = NSTimeIntervalFormatter()
