@@ -2,9 +2,16 @@ name: CI
 
 on: [push]
 
+env:
+  CI_DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData"
+  CI_RESULT_BUNDLE_PATH: "${{ github.workspace }}/resultbundle.xcresult"
+  CI_XCODE_PROJECT: Aware.xcodeproj
+  CI_XCODE_SCHEME: Aware
+
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - macos-11
@@ -16,10 +23,49 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       - name: Print Xcode version
         run: xcodebuild -version -sdk
 
+      - name: Resolve package dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+              -project "$CI_XCODE_PROJECT" \
+              -scheme "$CI_XCODE_SCHEME" \
+              -derivedDataPath "$CI_DERIVED_DATA_PATH" \
+            | xcpretty
+          exit ${PIPESTATUS[0]}
+
+      - name: Build
+        run: |
+          xcodebuild build-for-testing \
+              -scheme "$CI_XCODE_SCHEME" \
+              -project "$CI_XCODE_PROJECT" \
+              -derivedDataPath "$CI_DERIVED_DATA_PATH" \
+              -resultBundlePath "build-for-testing.xcresult" \
+              CODE_SIGN_IDENTITY=- \
+              AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            | xcpretty
+          exit ${PIPESTATUS[0]}
+
       - name: Test
-        run: xcodebuild -project Aware.xcodeproj -scheme Aware test ENABLE_HARDENED_RUNTIME=NO CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=
+        if: matrix.platform != 'macos-11'
+        run: |
+          xcodebuild test-without-building \
+              -scheme "$CI_XCODE_SCHEME" \
+              -project "$CI_XCODE_PROJECT" \
+              -derivedDataPath "$CI_DERIVED_DATA_PATH" \
+              -resultBundlePath "test-without-building.xcresult" \
+              -test-timeouts-enabled YES \
+              -maximum-test-execution-time-allowance 1800 \
+            | xcpretty
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload xcresult
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-test-xcresult
+          path: "*.xcresult"
+          if-no-files-found: error
+          retention-days: 7
