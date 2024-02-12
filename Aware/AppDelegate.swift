@@ -10,7 +10,7 @@ import Cocoa
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var timerStart: Date = Date()
+    var timerStart: Date = .init()
 
     // Redraw button every minute
     let buttonRefreshRate: TimeInterval = 60
@@ -30,14 +30,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    @IBOutlet weak var menu: NSMenu! {
+    @IBOutlet var menu: NSMenu! {
         didSet {
             statusItem.menu = menu
         }
     }
 
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        self.userIdleSeconds = self.readUserIdleSeconds()
+    func applicationDidFinishLaunching(_: Notification) {
+        userIdleSeconds = readUserIdleSeconds()
 
         updateButton()
         _ = Timer.scheduledTimer(buttonRefreshRate, userInfo: nil, repeats: true) { _ in self.updateButton() }
@@ -52,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         updateButton()
     }
 
-    func onMouseEvent(_ event: NSEvent) {
+    func onMouseEvent(_: NSEvent) {
         if let eventMonitor = mouseEventMonitor {
             NSEvent.removeMonitor(eventMonitor)
             mouseEventMonitor = nil
@@ -63,7 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateButton() {
         var idle: Bool
 
-        if self.sinceUserActivity() > userIdleSeconds {
+        if sinceUserActivity() > userIdleSeconds {
             timerStart = Date()
             idle = true
         } else if CGDisplayIsAsleep(CGMainDisplayID()) == 1 {
@@ -86,7 +86,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if mouseEventMonitor == nil {
                 mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [
                     NSEvent.EventTypeMask.mouseMoved,
-                    NSEvent.EventTypeMask.leftMouseDown
+                    NSEvent.EventTypeMask.leftMouseDown,
                 ], handler: onMouseEvent)
             }
         }
@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         .rightMouseDown,
         .mouseMoved,
         .keyDown,
-        .scrollWheel
+        .scrollWheel,
     ]
 
     func sinceUserActivity() -> CFTimeInterval {

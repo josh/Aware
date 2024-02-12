@@ -35,11 +35,11 @@ extension Timer {
         let _fire: (Timer) -> Void
 
         init(_ fire: @escaping (Timer) -> Void) {
-            self._fire = fire
+            _fire = fire
         }
 
         @objc func fire(_ timer: Timer) {
-            self._fire(timer)
+            _fire(timer)
         }
     }
 
