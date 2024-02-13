@@ -8,11 +8,14 @@
 
 import Foundation
 
+private let bounds = 0 ..< Double(Int.max)
+
 struct CustomTimeIntervalFormatStyle: FormatStyle {
     /// Formats a time interval as a human readable duration string.
     /// - Parameter value: The time interval to format.
     /// - Returns: A string representation of the time interval.
     func format(_ value: TimeInterval) -> String {
+        guard bounds.contains(value) else { return "0m" }
         let minutes = Int(value) / 60
         if minutes < 60 {
             return "\(minutes)m"

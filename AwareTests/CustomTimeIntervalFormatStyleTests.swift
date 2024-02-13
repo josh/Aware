@@ -31,5 +31,16 @@ class CustomTimeIntervalFormatStyleTests: XCTestCase {
         XCTAssertEqual(formatter.format(6300), "1h 45m")
 
         XCTAssertEqual(formatter.format(7200), "2h 0m")
+
+        XCTAssertEqual(formatter.format(-1), "0m")
+        XCTAssertEqual(formatter.format(-90), "0m")
+        XCTAssertEqual(formatter.format(-3600), "0m")
+
+        XCTAssertEqual(formatter.format(Double(UInt.max)), "0m")
+        XCTAssertEqual(formatter.format(Double.nan), "0m")
+        XCTAssertEqual(formatter.format(Double.infinity), "0m")
+        XCTAssertEqual(formatter.format(Double.greatestFiniteMagnitude), "0m")
+        XCTAssertEqual(formatter.format(Double.leastNormalMagnitude), "0m")
+        XCTAssertEqual(formatter.format(Double.leastNonzeroMagnitude), "0m")
     }
 }
