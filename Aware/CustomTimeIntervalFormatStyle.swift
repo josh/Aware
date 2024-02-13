@@ -22,7 +22,6 @@ struct CustomTimeIntervalFormatStyle: FormatStyle {
     }
 }
 
-@available(macOS 12.0, *)
 extension FormatStyle where Self == CustomTimeIntervalFormatStyle {
     static var custom: CustomTimeIntervalFormatStyle { .init() }
 }

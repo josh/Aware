@@ -80,7 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let statusButton = statusItem.button {
             let duration = Date().timeIntervalSince(timerStart)
-            let title = CustomTimeIntervalFormatStyle().format(duration)
+            let title = duration.formatted(.custom)
 
             statusButton.title = title
             statusButton.appearsDisabled = idle
