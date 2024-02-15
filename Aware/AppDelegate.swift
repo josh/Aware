@@ -6,9 +6,8 @@
 //  Copyright © 2015 Joshua Peek. All rights reserved.
 //
 
-import Cocoa
+import AppKit
 
-@NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     var timerStart: Date = .init()
 
@@ -29,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return defaultsValue ?? type(of: self).defaultUserIdleSeconds
     }
 
-    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_: Notification) {
         userIdleSeconds = readUserIdleSeconds()
