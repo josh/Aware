@@ -7,8 +7,9 @@
 //
 
 import AppKit
+import ServiceManagement
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var timerStart: Date = .init()
 
     // Redraw button every minute
@@ -28,19 +29,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return defaultsValue ?? type(of: self).defaultUserIdleSeconds
     }
 
+    let openAtLoginMenuItem = NSMenuItem(
+        title: "Open at Login",
+        action: #selector(openAtLogin),
+        keyEquivalent: ""
+    )
+
+    let quitMenuItem = NSMenuItem(
+        title: "Quit Aware",
+        action: #selector(NSApplication.terminate(_:)),
+        keyEquivalent: "q"
+    )
+
+    lazy var menu: NSMenu = {
+        let menu = NSMenu()
+        menu.addItem(openAtLoginMenuItem)
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(quitMenuItem)
+        menu.delegate = self
+        return menu
+    }()
+
     lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_: Notification) {
         userIdleSeconds = readUserIdleSeconds()
 
-        let menu = NSMenu()
-        menu.addItem(
-            NSMenuItem(
-                title: "Quit Aware",
-                action: #selector(NSApplication.terminate(_:)),
-                keyEquivalent: "q"
-            )
-        )
         statusItem.menu = menu
 
         updateButton()
@@ -49,6 +63,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let notificationCenter = NSWorkspace.shared.notificationCenter
         notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: nil) { _ in self.resetTimer() }
         notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: nil) { _ in self.resetTimer() }
+    }
+
+    @objc func openAtLogin() {
+        do {
+            try SMAppService.mainApp.register()
+            openAtLoginMenuItem.state = .on
+            openAtLoginMenuItem.action = #selector(removeOpenAtLogin)
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    @objc func removeOpenAtLogin() {
+        do {
+            try SMAppService.mainApp.unregister()
+            openAtLoginMenuItem.state = .off
+            openAtLoginMenuItem.action = #selector(openAtLogin)
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    func menuWillOpen(_: NSMenu) {
+        if SMAppService.mainApp.status == .enabled {
+            openAtLoginMenuItem.state = .on
+            openAtLoginMenuItem.action = #selector(removeOpenAtLogin)
+        } else {
+            openAtLoginMenuItem.state = .off
+            openAtLoginMenuItem.action = #selector(openAtLogin)
+        }
     }
 
     func resetTimer() {
