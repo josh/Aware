@@ -9,9 +9,7 @@ import SwiftUI
 
 @main
 struct AwareApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
     var body: some Scene {
-        _EmptyScene()
+        MenuBar()
     }
 }
