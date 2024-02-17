@@ -15,18 +15,9 @@ struct VisionScene: Scene {
 
     var body: some Scene {
         WindowGroup {
-            if let startDate {
-                TimelineView(.everyMinute) { context in
-                    let duration = context.date.timeIntervalSince(startDate)
-                    Text(duration.formatted(.custom))
-                        .lineLimit(1)
-                        .padding()
-                        .font(.system(size: 900))
-                        .minimumScaleFactor(0.01)
-                }
-            } else {
-                Text("0m")
-                    .foregroundStyle(.gray)
+            TimelineView(.everyMinute) { context in
+                let duration = context.date.timeIntervalSince(startDate ?? .now)
+                Text(duration.formatted(.custom))
                     .lineLimit(1)
                     .padding()
                     .font(.system(size: 900))
