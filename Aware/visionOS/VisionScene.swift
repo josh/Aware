@@ -24,6 +24,7 @@ struct VisionScene: Scene {
                     .minimumScaleFactor(0.01)
             }
         }
+        .defaultSize(CGSize(width: 200, height: 100))
         .windowResizability(.contentMinSize)
         .onChange(of: scenePhase, initial: true) { _, newValue in
             switch newValue {
