@@ -452,8 +452,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Aware";
 			};
 			name = Debug;
 		};
@@ -475,10 +478,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.awaremac.AwareTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/Contents/MacOS/Aware";
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Aware.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Aware";
 			};
 			name = Release;
 		};
