@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct AwareApp: App {
     var body: some Scene {
+        #if os(macOS)
         MenuBar()
+        #endif
     }
 }

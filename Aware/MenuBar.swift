@@ -5,6 +5,9 @@
 //  Created by Joshua Peek on 2/16/24.
 //
 
+#if os(macOS)
+
+import AppKit
 import SwiftUI
 
 struct MenuBar: Scene {
@@ -65,3 +68,5 @@ struct MenuBarContentView: View {
         }.keyboardShortcut("q")
     }
 }
+
+#endif

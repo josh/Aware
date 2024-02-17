@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 2/16/24.
 //
 
+#if canImport(ServiceManagement)
+
 import ServiceManagement
 
 class LoginItem: ObservableObject {
@@ -35,3 +37,5 @@ class LoginItem: ObservableObject {
 
     var changeError: Error?
 }
+
+#endif

@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 2/16/24.
 //
 
+#if os(macOS)
+
 import AppKit
 
 /// Automatically tracks macOS user input activity.
@@ -158,3 +160,5 @@ private func secondsSinceLastUserEvent() -> CFTimeInterval {
         CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: eventType)
     }.min() ?? 0.0
 }
+
+#endif
