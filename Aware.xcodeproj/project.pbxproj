@@ -80,15 +80,23 @@
 			isa = PBXGroup;
 			children = (
 				036DA9B42B7AF52E0066B4B2 /* App.swift */,
-				037195352B804E4C00B807ED /* ActivityTimer.swift */,
-				0381B4982B808A5A002213F6 /* MenuBar.swift */,
-				0381B4962B8081F2002213F6 /* LoginItem.swift */,
+				0381B49C2B8095FB002213F6 /* macOS */,
 				03F9E2301C24CCA8001DBE86 /* CustomTimeIntervalFormatStyle.swift */,
 				036EBD1A1C1408C200121D0B /* Assets.xcassets */,
 				038D0B381C4DDD5600040C44 /* Aware.entitlements */,
 				0381B49A2B808FF4002213F6 /* Info.plist */,
 			);
 			path = Aware;
+			sourceTree = "<group>";
+		};
+		0381B49C2B8095FB002213F6 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				037195352B804E4C00B807ED /* ActivityTimer.swift */,
+				0381B4962B8081F2002213F6 /* LoginItem.swift */,
+				0381B4982B808A5A002213F6 /* MenuBar.swift */,
+			);
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		03F9E2271C24CAD3001DBE86 /* AwareTests */ = {
