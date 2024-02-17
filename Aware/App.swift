@@ -13,5 +13,9 @@ struct AwareApp: App {
         #if os(macOS)
         MenuBar()
         #endif
+
+        #if os(visionOS)
+        VisionScene()
+        #endif
     }
 }
