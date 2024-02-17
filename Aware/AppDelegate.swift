@@ -8,6 +8,7 @@
 
 import AppKit
 import ServiceManagement
+import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var timerStart: Date = .init()
@@ -18,16 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // Reference to installed global mouse event monitor
     var mouseEventMonitor: Any?
 
-    // Default value to initialize userIdleSeconds to
-    static let defaultUserIdleSeconds: TimeInterval = 120
-
     // User configurable idle time in seconds (defaults to 2 minutes)
-    var userIdleSeconds: TimeInterval = defaultUserIdleSeconds
-
-    func readUserIdleSeconds() -> TimeInterval {
-        let defaultsValue = UserDefaults.standard.object(forKey: "userIdleSeconds") as? TimeInterval
-        return defaultsValue ?? type(of: self).defaultUserIdleSeconds
-    }
+    @AppStorage("userIdleSeconds") private var userIdleSeconds: TimeInterval = 120.0
 
     let openAtLoginMenuItem = NSMenuItem(
         title: "Open at Login",
@@ -53,8 +46,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     lazy var statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
     func applicationDidFinishLaunching(_: Notification) {
-        userIdleSeconds = readUserIdleSeconds()
-
         statusItem.menu = menu
 
         updateButton()
