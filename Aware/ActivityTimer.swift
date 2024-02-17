@@ -60,7 +60,7 @@ class ActivityTimer: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: pollInterval, repeats: true) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.poll()
         }
 
@@ -68,14 +68,14 @@ class ActivityTimer: ObservableObject {
         willSleepObserver = notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: .main) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.state = .idle
             self.poll()
         }
         didWakeObserver = notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.state = .restart
             self.poll()
         }
@@ -130,7 +130,7 @@ class ActivityTimer: ObservableObject {
         mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventMask) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             if let mouseEventMonitor = self.mouseEventMonitor {
                 NSEvent.removeMonitor(mouseEventMonitor)
                 self.mouseEventMonitor = nil
