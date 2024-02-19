@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 2/19/24.
 //
 
+#if os(visionOS)
+
 import SwiftUI
 
 struct SettingsView: View {
@@ -37,3 +39,5 @@ struct SettingsView: View {
         glassBackground: .constant(true)
     )
 }
+
+#endif
