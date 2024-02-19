@@ -14,6 +14,9 @@ struct VisionScene: Scene {
     @State private var protectedDataAvailablity = ProtectedDataAvailablity()
     @State private var startDate: Date?
 
+    // TODO: Persist in scene storage
+    @State private var glassBackground: Bool = false
+
     var body: some Scene {
         WindowGroup {
             TimelineView(.everyMinute) { context in
@@ -23,10 +26,15 @@ struct VisionScene: Scene {
                     .padding()
                     .font(.system(size: 900))
                     .minimumScaleFactor(0.01)
+                    .glassBackgroundEffect(displayMode: self.glassBackground ? .always : .never)
+                    .onLongPressGesture {
+                        self.glassBackground = !self.glassBackground
+                    }
             }
         }
         .defaultSize(CGSize(width: 200, height: 100))
         .windowResizability(.contentMinSize)
+        .windowStyle(.plain)
         .onChange(of: scenePhase, initial: true) { _, newValue in
             switch newValue {
             case .active, .inactive:
