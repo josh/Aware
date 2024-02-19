@@ -11,6 +11,7 @@ import SwiftUI
 
 struct VisionScene: Scene {
     @Environment(\.scenePhase) private var scenePhase
+    @State private var protectedDataAvailablity = ProtectedDataAvailablity()
     @State private var startDate: Date?
 
     var body: some Scene {
@@ -30,12 +31,24 @@ struct VisionScene: Scene {
             switch newValue {
             case .active, .inactive:
                 if self.startDate == nil {
+                    print("scenePhase change started timer")
                     self.startDate = .now
                 }
             case .background:
-                self.startDate = nil
+                ()
             default:
                 ()
+            }
+        }
+        .onChange(of: protectedDataAvailablity.isAvailable) { oldValue, newValue in
+            if oldValue == false && newValue == true {
+                if self.startDate == nil {
+                    print("protectedDataAvailablity change started timer")
+                    self.startDate = .now
+                }
+            } else if oldValue == true && newValue == false {
+                print("protectedDataAvailablity stopped timer")
+                self.startDate = nil
             }
         }
     }
