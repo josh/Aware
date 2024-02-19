@@ -13,6 +13,7 @@
 		0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4962B8081F2002213F6 /* LoginItem.swift */; };
 		0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4982B808A5A002213F6 /* MenuBar.swift */; };
 		0381B49F2B809688002213F6 /* VisionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B49E2B809688002213F6 /* VisionScene.swift */; };
+		03DA21642B84160800367F4C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DA21632B84160800367F4C /* SettingsView.swift */; };
 		03E5A53E2B82F495005210F9 /* ProtectedDataAvailablity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E5A53D2B82F495005210F9 /* ProtectedDataAvailablity.swift */; };
 		03F9E2311C24CCA8001DBE86 /* CustomTimeIntervalFormatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* CustomTimeIntervalFormatStyle.swift */; };
 		03F9E2331C24CD2E001DBE86 /* CustomTimeIntervalFormatStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* CustomTimeIntervalFormatStyleTests.swift */; };
@@ -38,6 +39,7 @@
 		0381B49A2B808FF4002213F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0381B49E2B809688002213F6 /* VisionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionScene.swift; sourceTree = "<group>"; };
 		038D0B381C4DDD5600040C44 /* Aware.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Aware.entitlements; sourceTree = "<group>"; };
+		03DA21632B84160800367F4C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		03E5A53D2B82F495005210F9 /* ProtectedDataAvailablity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectedDataAvailablity.swift; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F9E2301C24CCA8001DBE86 /* CustomTimeIntervalFormatStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTimeIntervalFormatStyle.swift; sourceTree = "<group>"; };
@@ -107,8 +109,9 @@
 		0381B49D2B809661002213F6 /* visionOS */ = {
 			isa = PBXGroup;
 			children = (
-				0381B49E2B809688002213F6 /* VisionScene.swift */,
 				03E5A53D2B82F495005210F9 /* ProtectedDataAvailablity.swift */,
+				03DA21632B84160800367F4C /* SettingsView.swift */,
+				0381B49E2B809688002213F6 /* VisionScene.swift */,
 			);
 			path = visionOS;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03E5A53E2B82F495005210F9 /* ProtectedDataAvailablity.swift in Sources */,
+				03DA21642B84160800367F4C /* SettingsView.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityTimer.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
 				0381B49F2B809688002213F6 /* VisionScene.swift in Sources */,

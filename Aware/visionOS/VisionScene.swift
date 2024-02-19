@@ -15,7 +15,9 @@ struct VisionScene: Scene {
     @State private var startDate: Date?
 
     // TODO: Persist in scene storage
-    @State private var glassBackground: Bool = false
+    @State private var glassBackground: Bool = true
+
+    @State private var isShowingSettings = false
 
     var body: some Scene {
         WindowGroup {
@@ -28,8 +30,12 @@ struct VisionScene: Scene {
                     .minimumScaleFactor(0.01)
                     .glassBackgroundEffect(displayMode: self.glassBackground ? .always : .never)
                     .onLongPressGesture {
-                        self.glassBackground = !self.glassBackground
+                        isShowingSettings.toggle()
                     }
+            }
+            .popover(isPresented: $isShowingSettings) {
+                SettingsView(glassBackground: $glassBackground)
+                    .frame(minWidth: 400, minHeight: 250)
             }
         }
         .defaultSize(CGSize(width: 200, height: 100))
