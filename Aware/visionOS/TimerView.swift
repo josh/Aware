@@ -24,6 +24,7 @@ struct TimerView: View {
                 .padding()
                 .font(.system(size: 900))
                 .minimumScaleFactor(0.01)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .glassBackgroundEffect(displayMode: self.glassBackground ? .always : .never)
                 .onTapGesture {
                     showSettings.toggle()
