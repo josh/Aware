@@ -10,13 +10,10 @@
 import SwiftUI
 
 struct TimerView: View {
+    @SceneStorage("glassBackground") private var glassBackground: Bool = true
     @Environment(\.scenePhase) private var scenePhase
     @State private var protectedDataAvailablity = ProtectedDataAvailablity()
     @State private var startDate: Date?
-
-    // TODO: Persist in scene storage
-    @State private var glassBackground: Bool = true
-
     @State private var showSettings = false
 
     var body: some View {
