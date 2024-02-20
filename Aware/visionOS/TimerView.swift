@@ -19,13 +19,7 @@ struct TimerView: View {
     var body: some View {
         TimelineView(.everyMinute) { context in
             let duration = context.date.timeIntervalSince(startDate ?? .now)
-            Text(duration, format: .custom)
-                .lineLimit(1)
-                .padding()
-                .font(.system(size: 900))
-                .minimumScaleFactor(0.01)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .glassBackgroundEffect(displayMode: self.glassBackground ? .always : .never)
+            TimerTextView(duration: duration, glassBackground: glassBackground)
                 .onTapGesture {
                     showSettings.toggle()
                 }
@@ -62,10 +56,6 @@ struct TimerView: View {
 }
 
 #Preview(traits: .fixedLayout(width: 200, height: 100)) {
-    TimerView()
-}
-
-#Preview(traits: .sizeThatFitsLayout) {
     TimerView()
 }
 
