@@ -14,24 +14,22 @@ struct SettingsView: View {
     @Binding var glassBackground: Bool
 
     var body: some View {
-        ZStack(alignment: .center) {
-            HStack {
-                Button("Dismiss", systemImage: "xmark") {
-                    dismiss()
+        NavigationStack {
+            Form {
+                Section {
+                    Toggle("Glass Background", isOn: $glassBackground)
                 }
-                .labelStyle(.iconOnly)
-                Spacer()
             }
-            .padding()
-
-            Text("Settings")
-                .font(.title)
-        }
-
-        Form {
-            Section {
-                Toggle("Glass background", isOn: $glassBackground)
+            .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Dismiss", systemImage: "xmark") {
+                        dismiss()
+                    }
+                    .labelStyle(.iconOnly)
+                }
             }
+            .toolbarRole(.navigationStack)
         }
     }
 }
