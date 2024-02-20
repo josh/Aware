@@ -14,23 +14,25 @@ struct SettingsView: View {
     @Binding var glassBackground: Bool
 
     var body: some View {
-        HStack {
-            Text("Settings")
-                .font(.largeTitle)
-            Spacer()
-            Button("Dismiss", systemImage: "xmark") {
-                dismiss()
+        ZStack(alignment: .center) {
+            HStack {
+                Button("Dismiss", systemImage: "xmark") {
+                    dismiss()
+                }
+                .labelStyle(.iconOnly)
+                Spacer()
             }
-            .labelStyle(.iconOnly)
+            .padding()
+
+            Text("Settings")
+                .font(.title)
         }
-        .padding(30.0)
 
         Form {
             Section {
                 Toggle("Glass background", isOn: $glassBackground)
             }
         }
-        .formStyle(.grouped)
     }
 }
 
