@@ -45,7 +45,11 @@ class ActivityTimer: ObservableObject {
         }
     }
 
-    private var state: State = .restart
+    private var state: State = .restart {
+        willSet {
+            objectWillChange.send()
+        }
+    }
 
     let userIdleSeconds: TimeInterval
     let pollInterval: TimeInterval
@@ -111,18 +115,16 @@ class ActivityTimer: ObservableObject {
     }
 
     private func poll() {
-        let hasRecentUserEvent = secondsSinceLastUserEvent() > userIdleSeconds
+        let hasRecentUserEvent = secondsSinceLastUserEvent() < userIdleSeconds
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
 
-        if hasRecentUserEvent || isMainDisplayAsleep {
+        if !hasRecentUserEvent || isMainDisplayAsleep {
             if case .active = state {
                 state = .idle
-                objectWillChange.send()
             }
             schedulePollOnNextMouseEvent()
         } else {
             state = state.extend
-            objectWillChange.send()
         }
     }
 
