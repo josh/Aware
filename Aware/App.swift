@@ -18,7 +18,7 @@ struct AwareApp: App {
         WindowGroup {
             TimerView()
         }
-        .defaultSize(CGSize(width: 240, height: 135))
+        .defaultSize(width: 240, height: 135)
         .windowResizability(.contentSize)
         .windowStyle(.plain)
         #endif
