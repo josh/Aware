@@ -20,9 +20,9 @@ struct TimerView: View {
         TimelineView(.everyMinute) { context in
             let duration = context.date.timeIntervalSince(startDate ?? .now)
             TimerTextView(duration: duration, glassBackground: glassBackground)
-                .onLongPressGesture {
-                    showSettings.toggle()
-                }
+//                 .onLongPressGesture {
+//                    showSettings.toggle()
+//                }
         }
         .popover(isPresented: $showSettings) {
             SettingsView(glassBackground: $glassBackground)
