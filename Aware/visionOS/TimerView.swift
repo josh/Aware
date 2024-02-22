@@ -32,7 +32,6 @@ struct TimerView: View {
             switch newValue {
             case .active, .inactive:
                 if self.startDate == nil {
-                    print("scenePhase change started timer")
                     self.startDate = .now
                 }
             case .background:
@@ -44,11 +43,9 @@ struct TimerView: View {
         .onChange(of: protectedDataAvailablity.isAvailable) { oldValue, newValue in
             if oldValue == false && newValue == true {
                 if self.startDate == nil {
-                    print("protectedDataAvailablity change started timer")
                     self.startDate = .now
                 }
             } else if oldValue == true && newValue == false {
-                print("protectedDataAvailablity stopped timer")
                 self.startDate = nil
             }
         }
