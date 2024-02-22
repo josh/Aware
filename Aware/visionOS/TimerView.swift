@@ -24,10 +24,10 @@ struct TimerView: View {
 //                    showSettings.toggle()
 //                }
         }
-        .popover(isPresented: $showSettings) {
-            SettingsView(glassBackground: $glassBackground)
-                .frame(width: 400, height: 250)
-        }
+//        .popover(isPresented: $showSettings) {
+//            SettingsView(glassBackground: $glassBackground)
+//                .frame(width: 400, height: 250)
+//        }
         .onChange(of: scenePhase, initial: true) { _, newValue in
             switch newValue {
             case .active, .inactive:
