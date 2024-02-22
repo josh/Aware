@@ -17,7 +17,7 @@ struct TimerTextView: View {
         Text(duration, format: .custom)
             .lineLimit(1)
             .padding()
-            .font(.system(size: 900, weight: .ultraLight))
+            .font(.system(size: 900, weight: .medium))
             .minimumScaleFactor(0.01)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .glassBackgroundEffect(displayMode: glassBackground ? .always : .never)
