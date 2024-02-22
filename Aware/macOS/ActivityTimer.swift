@@ -57,7 +57,7 @@ class ActivityTimer: ObservableObject {
     private var timer: Timer?
     private var willSleepObserver: NSObjectProtocol?
     private var didWakeObserver: NSObjectProtocol?
-    private var mouseEventMonitor: Any?
+    private var userActivityEventMonitor: Any?
 
     init(userIdleSeconds: TimeInterval, pollInterval: TimeInterval) {
         self.userIdleSeconds = userIdleSeconds
@@ -108,10 +108,10 @@ class ActivityTimer: ObservableObject {
         }
         self.didWakeObserver = nil
 
-        if let mouseEventMonitor {
-            NSEvent.removeMonitor(mouseEventMonitor)
+        if let userActivityEventMonitor {
+            NSEvent.removeMonitor(userActivityEventMonitor)
         }
-        self.mouseEventMonitor = nil
+        self.userActivityEventMonitor = nil
     }
 
     private func poll() {
@@ -122,31 +122,34 @@ class ActivityTimer: ObservableObject {
             if case .active = state {
                 state = .idle
             }
-            schedulePollOnNextMouseEvent()
+            schedulePollOnNextEvent()
         } else {
             state = state.extend
         }
     }
 
-    private func schedulePollOnNextMouseEvent() {
-        guard mouseEventMonitor == nil else { return }
+    private func schedulePollOnNextEvent() {
+        guard userActivityEventMonitor == nil else { return }
 
-        mouseEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventMask) { [weak self] _ in
+        userActivityEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: userActivityEventMask) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
             guard let self = self else { return }
-            if let mouseEventMonitor = self.mouseEventMonitor {
-                NSEvent.removeMonitor(mouseEventMonitor)
-                self.mouseEventMonitor = nil
+            if let userActivityEventMonitor = self.userActivityEventMonitor {
+                NSEvent.removeMonitor(userActivityEventMonitor)
+                self.userActivityEventMonitor = nil
             }
             self.poll()
         }
     }
 }
 
-private let mouseEventMask: NSEvent.EventTypeMask = [
-    .mouseMoved,
+private let userActivityEventMask: NSEvent.EventTypeMask = [
     .leftMouseDown,
+    .rightMouseDown,
+    .mouseMoved,
+    .keyDown,
+    .scrollWheel,
 ]
 
 private let userActivityEventTypes: [CGEventType] = [
