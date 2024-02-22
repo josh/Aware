@@ -18,13 +18,11 @@ import UIKit
     init() {
         let notificationCenter = NotificationCenter.default
 
-        assert(UIApplication.shared.isProtectedDataAvailable)
         isAvailable = true
 
         availableObserver = notificationCenter.addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil, queue: .main) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            assert(UIApplication.shared.isProtectedDataAvailable)
             guard let self = self else { return }
             if self.isAvailable != true {
                 self.isAvailable = true
@@ -34,7 +32,6 @@ import UIKit
         unavailableObserver = notificationCenter.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil, queue: .main) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
-            assert(UIApplication.shared.isProtectedDataAvailable)
             guard let self = self else { return }
             if self.isAvailable != false {
                 self.isAvailable = false
