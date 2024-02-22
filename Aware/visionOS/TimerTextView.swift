@@ -24,19 +24,19 @@ struct TimerTextView: View {
     }
 }
 
-#Preview("0m", traits: .fixedLayout(width: 200, height: 100)) {
+#Preview("0m", traits: .fixedLayout(width: 240, height: 135)) {
     TimerTextView()
 }
 
-#Preview("15m", traits: .fixedLayout(width: 200, height: 100)) {
+#Preview("15m", traits: .fixedLayout(width: 240, height: 135)) {
     TimerTextView(duration: 15 * 60)
 }
 
-#Preview("1h", traits: .fixedLayout(width: 200, height: 100)) {
+#Preview("1h", traits: .fixedLayout(width: 240, height: 135)) {
     TimerTextView(duration: 60 * 60)
 }
 
-#Preview("1h 15m", traits: .fixedLayout(width: 200, height: 100)) {
+#Preview("1h 15m", traits: .fixedLayout(width: 240, height: 135)) {
     TimerTextView(duration: 60 * 60 + 15 * 60)
 }
 
