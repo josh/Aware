@@ -12,7 +12,6 @@
 		037195362B804E4C00B807ED /* ActivityTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037195352B804E4C00B807ED /* ActivityTimer.swift */; };
 		0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4962B8081F2002213F6 /* LoginItem.swift */; };
 		0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4982B808A5A002213F6 /* MenuBar.swift */; };
-		0381B49F2B809688002213F6 /* VisionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B49E2B809688002213F6 /* VisionScene.swift */; };
 		0394D1752B845FB400FE7020 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1742B845FB400FE7020 /* TimerView.swift */; };
 		0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1762B84630E00FE7020 /* TimerTextView.swift */; };
 		03DA21642B84160800367F4C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DA21632B84160800367F4C /* SettingsView.swift */; };
@@ -39,7 +38,6 @@
 		0381B4962B8081F2002213F6 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		0381B4982B808A5A002213F6 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0381B49A2B808FF4002213F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		0381B49E2B809688002213F6 /* VisionScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionScene.swift; sourceTree = "<group>"; };
 		038D0B381C4DDD5600040C44 /* Aware.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Aware.entitlements; sourceTree = "<group>"; };
 		0394D1742B845FB400FE7020 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		0394D1762B84630E00FE7020 /* TimerTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTextView.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 				03DA21632B84160800367F4C /* SettingsView.swift */,
 				0394D1742B845FB400FE7020 /* TimerView.swift */,
 				0394D1762B84630E00FE7020 /* TimerTextView.swift */,
-				0381B49E2B809688002213F6 /* VisionScene.swift */,
 			);
 			path = visionOS;
 			sourceTree = "<group>";
@@ -245,7 +242,6 @@
 				03DA21642B84160800367F4C /* SettingsView.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityTimer.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
-				0381B49F2B809688002213F6 /* VisionScene.swift in Sources */,
 				0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */,
 				0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */,
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
