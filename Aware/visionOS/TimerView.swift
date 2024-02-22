@@ -20,7 +20,7 @@ struct TimerView: View {
         TimelineView(.everyMinute) { context in
             let duration = context.date.timeIntervalSince(startDate ?? .now)
             TimerTextView(duration: duration, glassBackground: glassBackground)
-                .onTapGesture {
+                .onLongPressGesture {
                     showSettings.toggle()
                 }
         }
