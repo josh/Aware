@@ -10,15 +10,36 @@
 import SwiftUI
 
 struct TimerView: View {
+    private enum TimerState {
+        case idle
+        case active(Date)
+
+        static var restart: Self { .active(.now) }
+
+        var running: Self {
+            switch self {
+            case .idle: return .active(.now)
+            default: return self
+            }
+        }
+
+        func timeIntervalFrom(_ endDate: Date) -> TimeInterval {
+            switch self {
+            case .idle: return 0.0
+            case let .active(startDate): return endDate.timeIntervalSince(startDate)
+            }
+        }
+    }
+
     @SceneStorage("glassBackground") private var glassBackground: Bool = true
     @Environment(\.scenePhase) private var scenePhase
     @State private var protectedDataAvailablity = ProtectedDataAvailablity()
-    @State private var startDate: Date?
+    @State private var state: TimerState = .idle
     @State private var showSettings = false
 
     var body: some View {
         TimelineView(.everyMinute) { context in
-            let duration = context.date.timeIntervalSince(startDate ?? .now)
+            let duration = state.timeIntervalFrom(context.date)
             TimerTextView(duration: duration, glassBackground: glassBackground)
 //                 .onLongPressGesture {
 //                    showSettings.toggle()
@@ -31,9 +52,7 @@ struct TimerView: View {
         .onChange(of: scenePhase, initial: true) { _, newValue in
             switch newValue {
             case .active, .inactive:
-                if self.startDate == nil {
-                    self.startDate = .now
-                }
+                state = state.running
             case .background:
                 ()
             default:
@@ -42,11 +61,9 @@ struct TimerView: View {
         }
         .onChange(of: protectedDataAvailablity.isAvailable) { oldValue, newValue in
             if oldValue == false && newValue == true {
-                if self.startDate == nil {
-                    self.startDate = .now
-                }
+                state = state.running
             } else if oldValue == true && newValue == false {
-                self.startDate = nil
+                state = .idle
             }
         }
     }
