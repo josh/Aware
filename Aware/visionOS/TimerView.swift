@@ -7,7 +7,11 @@
 
 #if os(visionOS)
 
+import BackgroundTasks
+import os.log
 import SwiftUI
+
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "TimerView")
 
 struct TimerView: View {
     private enum TimerState {
@@ -38,9 +42,17 @@ struct TimerView: View {
 
     @SceneStorage("glassBackground") private var glassBackground: Bool = true
     @Environment(\.scenePhase) private var scenePhase
-    @State private var protectedDataAvailablity = ProtectedDataAvailablity()
+    private var protectedDataAvailablity: ProtectedDataAvailablity
     @State private var state: TimerState = .idle
     @State private var showSettings = false
+
+    init(protectedDataAvailablity: ProtectedDataAvailablity) {
+        self.protectedDataAvailablity = protectedDataAvailablity
+    }
+
+    init() {
+        protectedDataAvailablity = .init()
+    }
 
     var body: some View {
         TimelineView(.everyMinute) { context in
@@ -57,22 +69,37 @@ struct TimerView: View {
         .onChange(of: scenePhase, initial: true) { _, newValue in
             switch newValue {
             case .active, .inactive:
+                if case .idle = state {
+                    logger.info("Foreground, starting timer")
+                }
                 state = state.running
 
                 if state.timeIntervalFrom(.now) > TimerState.maxTimeInterval {
+                    logger.error("Timer duration extended max value")
                     state = .restart
                 }
+
+                protectedDataAvailablity.cancelBackgroundTasks()
+
             case .background:
-                ()
+                logger.info("Background, scheduled background task")
+                if !protectedDataAvailablity.scheduleBackgroundCheck() {
+                    logger.warning("Couldn't schedule background task, idle")
+                    state = .idle
+                }
+
             default:
                 ()
             }
         }
         .onChange(of: protectedDataAvailablity.isAvailable) { oldValue, newValue in
             if oldValue == false && newValue == true {
+                logger.debug("Device unlocked, continue running timer")
                 state = state.running
             } else if oldValue == true && newValue == false {
+                logger.info("Device locked, idle timer")
                 state = .idle
+                protectedDataAvailablity.cancelBackgroundTasks()
             }
         }
     }

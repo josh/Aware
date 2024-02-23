@@ -7,9 +7,16 @@
 
 #if canImport(UIKit)
 
+import BackgroundTasks
+import os.log
 import UIKit
 
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ProtectedDataAvailablity")
+
 @Observable class ProtectedDataAvailablity {
+    static let appRefreshIdentifier = "checkProtectedDataAvailablity"
+    static let backgroundRefreshInterval: TimeInterval = 5 * 60 // 5 minutes
+
     var isAvailable: Bool = true
 
     private var availableObserver: NSObjectProtocol?
@@ -45,6 +52,59 @@ import UIKit
         }
         if let unavailableObserver {
             NotificationCenter.default.removeObserver(unavailableObserver)
+        }
+    }
+
+    nonisolated func cancelBackgroundTasks() {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.appRefreshIdentifier)
+    }
+
+    nonisolated func scheduleBackgroundCheck() -> Bool {
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.appRefreshIdentifier)
+
+        let request = BGAppRefreshTaskRequest(identifier: Self.appRefreshIdentifier)
+        let beginDate: Date = .now.addingTimeInterval(Self.backgroundRefreshInterval)
+        request.earliestBeginDate = beginDate
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            logger.debug("Background task scheduled for \(beginDate)")
+            return true
+        } catch let error as BGTaskScheduler.Error {
+            switch error.code {
+            case .notPermitted:
+                assertionFailure("App isn’t permitted to schedule the task")
+                logger.error("App isn’t permitted to schedule the task: \(error)")
+            case .tooManyPendingTaskRequests:
+                logger.warning("There are too many pending tasks of the type requested: \(error)")
+            case .unavailable:
+                logger.info("App can’t schedule background work: \(error)")
+            @unknown default:
+                assertionFailure("Unknown BGTaskScheduler.Error")
+                logger.warning("Unknown BGTaskScheduler.Error: \(error)")
+            }
+            return false
+        } catch {
+            assertionFailure("Unexpected BGTaskScheduler error")
+            logger.error("Unexpected BGTaskScheduler error: \(error)")
+            return false
+        }
+    }
+
+    @MainActor
+    func appRefreshCheck() {
+        let isProtectedDataAvailable = UIApplication.shared.isProtectedDataAvailable
+
+        if isProtectedDataAvailable != isAvailable {
+            isAvailable = isProtectedDataAvailable
+        }
+
+        if isProtectedDataAvailable {
+            logger.info("Device unlocked, continue polling")
+            if !scheduleBackgroundCheck() {
+                logger.warning("Couldn't schedule next checkProtectedDataAvailablity")
+            }
+        } else {
+            logger.info("Device locked, stop polling")
         }
     }
 }

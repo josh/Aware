@@ -15,12 +15,7 @@ struct AwareApp: App {
         #endif
 
         #if os(visionOS)
-        WindowGroup {
-            TimerView()
-        }
-        .defaultSize(width: 240, height: 135)
-        .windowResizability(.contentSize)
-        .windowStyle(.plain)
+        VisionWindow()
         #endif
     }
 }
