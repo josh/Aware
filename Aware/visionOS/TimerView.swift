@@ -7,7 +7,6 @@
 
 #if os(visionOS)
 
-import BackgroundTasks
 import os.log
 import SwiftUI
 
