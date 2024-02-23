@@ -23,6 +23,11 @@ struct TimerView: View {
             }
         }
 
+        /// Prevent the timer from running past 24 hours.
+        /// I doubt people can wear this thing for that many hours straight.
+        /// It's probably a bug that the timer is still going.
+        static let maxTimeInterval: TimeInterval = 24 * 60 * 60
+
         func timeIntervalFrom(_ endDate: Date) -> TimeInterval {
             switch self {
             case .idle: return 0.0
@@ -53,6 +58,10 @@ struct TimerView: View {
             switch newValue {
             case .active, .inactive:
                 state = state.running
+
+                if state.timeIntervalFrom(.now) > TimerState.maxTimeInterval {
+                    state = .restart
+                }
             case .background:
                 ()
             default:
