@@ -33,7 +33,7 @@ struct TimerMenuBarLabel: View {
     }
 
     var body: some View {
-        Text(activityTimer.duration, format: .custom)
+        Text(activityTimer.duration, format: .abbreviatedTimeInterval)
             .onAppear {
                 self.statusBarButton = findStatusBarItem()?.button
             }

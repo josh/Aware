@@ -14,7 +14,7 @@ struct TimerTextView: View {
     var glassBackground: Bool = true
 
     var body: some View {
-        Text(duration, format: .custom)
+        Text(duration, format: .abbreviatedTimeInterval)
             .lineLimit(1)
             .padding()
             .font(.system(size: 900, weight: .medium))

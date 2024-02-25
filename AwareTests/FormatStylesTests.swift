@@ -2,9 +2,15 @@ import XCTest
 
 @testable import Aware
 
-class CustomTimeIntervalFormatStyleTests: XCTestCase {
-    func testFormat() {
-        let formatter = CustomTimeIntervalFormatStyle()
+class FormatStyleTests: XCTestCase {
+    func testFormatted() {
+        XCTAssertEqual(TimeInterval(60).formatted(.timeDuration), "1:00")
+        XCTAssertEqual(TimeInterval(60).formatted(.components(style: .spellOut)), "one minute")
+        XCTAssertEqual(TimeInterval(900).formatted(.abbreviatedTimeInterval), "15m")
+    }
+
+    func testAbbreviatedTimeIntervalFormatStyle() {
+        let formatter = AbbreviatedTimeIntervalFormatStyle()
 
         XCTAssertEqual(formatter.format(0), "0m")
         XCTAssertEqual(formatter.format(1), "0m")
@@ -23,14 +29,14 @@ class CustomTimeIntervalFormatStyleTests: XCTestCase {
         XCTAssertEqual(formatter.format(3540), "59m")
         XCTAssertEqual(formatter.format(3599), "59m")
 
-        XCTAssertEqual(formatter.format(3600), "1h 0m")
-        XCTAssertEqual(formatter.format(3601), "1h 0m")
+        XCTAssertEqual(formatter.format(3600), "1h")
+        XCTAssertEqual(formatter.format(3601), "1h")
         XCTAssertEqual(formatter.format(3660), "1h 1m")
         XCTAssertEqual(formatter.format(4500), "1h 15m")
         XCTAssertEqual(formatter.format(5400), "1h 30m")
         XCTAssertEqual(formatter.format(6300), "1h 45m")
 
-        XCTAssertEqual(formatter.format(7200), "2h 0m")
+        XCTAssertEqual(formatter.format(7200), "2h")
 
         XCTAssertEqual(formatter.format(-1), "0m")
         XCTAssertEqual(formatter.format(-90), "0m")
