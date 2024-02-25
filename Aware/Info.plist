@@ -7,10 +7,12 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>processing</string>
 	</array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>checkProtectedDataAvailablity</string>
+		<string>fetchActivityTimer</string>
+		<string>processingActivityTimer</string>
 	</array>
 </dict>
 </plist>
