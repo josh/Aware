@@ -67,7 +67,7 @@ class ActivityTimer: ObservableObject {
             assert(self != nil)
             assert(Thread.isMainThread)
             guard let self = self else { return }
-            self.update()
+            self.poll()
         }
 
         let notificationCenter = NSWorkspace.shared.notificationCenter
@@ -76,18 +76,18 @@ class ActivityTimer: ObservableObject {
             assert(Thread.isMainThread)
             guard let self = self else { return }
             self.state = .idle
-            self.update()
+            self.poll()
         }
         didWakeObserver = notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
             assert(self != nil)
             assert(Thread.isMainThread)
             guard let self = self else { return }
             self.state = .restart
-            self.update()
+            self.poll()
         }
 
         DispatchQueue.main.async {
-            self.update()
+            self.poll()
         }
     }
 
@@ -139,7 +139,7 @@ class ActivityTimer: ObservableObject {
                 NSEvent.removeMonitor(userActivityEventMonitor)
                 self.userActivityEventMonitor = nil
             }
-            self.update()
+            self.poll()
         }
     }
 }
