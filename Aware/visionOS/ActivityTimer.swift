@@ -8,6 +8,7 @@
 #if os(visionOS)
 
 import BackgroundTasks
+import Combine
 import os.log
 import UIKit
 
@@ -114,55 +115,62 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         }
     }
 
+    private var didEnterBackgroundCancellable: Cancellable?
+    private var willEnterForegroundCancellable: Cancellable?
+    private var protectedDataDidBecomeAvailableCancellable: Cancellable?
+    private var protectedDataWillBecomeUnavailableCancellable: Cancellable?
+
     private init() {
-        let notificationCenter = NotificationCenter.default
+        didEnterBackgroundCancellable = NotificationCenter.default
+            .publisher(for: UIApplication.didEnterBackgroundNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("entered background")
+                update(scenePhase: .background)
+            }
 
-        notificationCenter.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            logger.debug("didEnterBackgroundNotification")
-            update(scenePhase: .background)
-        }
+        willEnterForegroundCancellable = NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("entered foreground")
+                update(scenePhase: .foreground)
+            }
 
-        notificationCenter.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            logger.debug("willEnterForegroundNotification")
-            update(scenePhase: .foreground)
-        }
+        protectedDataDidBecomeAvailableCancellable = NotificationCenter.default
+            .publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("protected data available")
+                update(scenePhase: .current)
+            }
 
-        notificationCenter.addObserver(forName: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            logger.debug("protectedDataDidBecomeAvailableNotification")
-            update(scenePhase: .current)
-        }
-
-        notificationCenter.addObserver(forName: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            logger.debug("protectedDataWillBecomeUnavailableNotification")
-            update(scenePhase: .locked)
-        }
+        protectedDataWillBecomeUnavailableCancellable = NotificationCenter.default
+            .publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("protected data unavailable")
+                update(scenePhase: .locked)
+            }
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundAppRefreshIdentifier, using: .main) { [weak self] task in
-            assert(self != nil)
-            assert(Thread.isMainThread)
             guard let self = self else { return }
-            logger.debug("\(backgroundAppRefreshIdentifier)")
+            logger.info("background app refresh")
             self.update(scenePhase: .current)
             task.setTaskCompleted(success: true)
         }
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundProcessingIdentifier, using: .main) { [weak self] task in
-            assert(self != nil)
-            assert(Thread.isMainThread)
             guard let self = self else { return }
-            logger.debug("\(backgroundProcessingIdentifier)")
+            logger.info("background processing")
             self.update(scenePhase: .current)
             task.setTaskCompleted(success: true)
         }

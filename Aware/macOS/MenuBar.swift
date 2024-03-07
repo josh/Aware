@@ -28,7 +28,7 @@ struct TimerMenuBarLabel: View {
     @State private var statusBarButton: NSStatusBarButton?
 
     init(userIdleSeconds: TimeInterval) {
-        let activityTimer = ActivityTimer(userIdleSeconds: userIdleSeconds, pollInterval: 60.0)
+        let activityTimer = ActivityTimer(userIdleSeconds: userIdleSeconds)
         _activityTimer = StateObject(wrappedValue: activityTimer)
     }
 

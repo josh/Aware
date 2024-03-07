@@ -8,6 +8,10 @@
 #if os(macOS)
 
 import AppKit
+import Combine
+import os.log
+
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityTimer")
 
 /// Automatically tracks macOS user input activity.
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
@@ -51,72 +55,65 @@ class ActivityTimer: ObservableObject {
         }
     }
 
-    let userIdleSeconds: TimeInterval
-    let pollInterval: TimeInterval
+    /// The number of seconds since the last user event to consider time idle.
+    var userIdleSeconds: TimeInterval
 
-    private var timer: Timer?
-    private var willSleepObserver: NSObjectProtocol?
-    private var didWakeObserver: NSObjectProtocol?
-    private var userActivityEventMonitor: Any?
+    /// The poll interval for checking user activity timestamps.
+    let pollInterval: TimeInterval = 60.0
 
-    init(userIdleSeconds: TimeInterval, pollInterval: TimeInterval) {
+    /// The allowed poll timer variance.
+    let pollTolerance: TimeInterval = 5.0
+
+    private var timerCancellable: Cancellable?
+    private var willSleepCancellable: Cancellable?
+    private var didWakeCancellable: Cancellable?
+    private var userActivityCancellable: Cancellable?
+
+    init(userIdleSeconds: TimeInterval) {
         self.userIdleSeconds = userIdleSeconds
-        self.pollInterval = pollInterval
 
-        timer = Timer.scheduledTimer(withTimeInterval: pollInterval, repeats: true) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            self.poll()
-        }
+        timerCancellable = Timer.publish(every: pollInterval, tolerance: pollTolerance, on: .main, in: .default)
+            .autoconnect()
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                self.poll()
+            }
 
-        let notificationCenter = NSWorkspace.shared.notificationCenter
-        willSleepObserver = notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            self.state = .idle
-            self.poll()
-        }
-        didWakeObserver = notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            self.state = .restart
-            self.poll()
-        }
+        willSleepCancellable = NSWorkspace.shared.notificationCenter
+            .publisher(for: NSWorkspace.willSleepNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("will sleep")
+                self.state = .idle
+                self.poll()
+            }
 
-        DispatchQueue.main.async {
-            self.poll()
-        }
-    }
+        didWakeCancellable = NSWorkspace.shared.notificationCenter
+            .publisher(for: NSWorkspace.didWakeNotification)
+            .map { _ in () }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("did wake")
+                self.state = .restart
+                self.poll()
+            }
 
-    deinit {
-        assert(Thread.isMainThread)
-
-        timer?.invalidate()
-        self.timer = nil
-
-        let notificationCenter = NSWorkspace.shared.notificationCenter
-        if let willSleepObserver {
-            notificationCenter.removeObserver(willSleepObserver)
-        }
-        self.willSleepObserver = nil
-
-        if let didWakeObserver {
-            notificationCenter.removeObserver(didWakeObserver)
-        }
-        self.didWakeObserver = nil
-
-        if let userActivityEventMonitor {
-            NSEvent.removeMonitor(userActivityEventMonitor)
-        }
-        self.userActivityEventMonitor = nil
+        poll()
     }
 
     private func poll() {
         let hasRecentUserEvent = secondsSinceLastUserEvent() < userIdleSeconds
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
+
+        logger.debug("recent user event: \(hasRecentUserEvent, privacy: .public)")
+        if isMainDisplayAsleep {
+            logger.info("display asleep")
+        }
 
         if !hasRecentUserEvent || isMainDisplayAsleep {
             if case .active = state {
@@ -129,18 +126,18 @@ class ActivityTimer: ObservableObject {
     }
 
     private func schedulePollOnNextEvent() {
-        guard userActivityEventMonitor == nil else { return }
+        guard userActivityCancellable == nil else { return }
 
-        userActivityEventMonitor = NSEvent.addGlobalMonitorForEvents(matching: userActivityEventMask) { [weak self] _ in
-            assert(self != nil)
-            assert(Thread.isMainThread)
-            guard let self = self else { return }
-            if let userActivityEventMonitor = self.userActivityEventMonitor {
-                NSEvent.removeMonitor(userActivityEventMonitor)
-                self.userActivityEventMonitor = nil
+        userActivityCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
+            .map { _ in () }
+            .first()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                logger.info("mouse event")
+                self.userActivityCancellable = nil
+                self.poll()
             }
-            self.poll()
-        }
     }
 }
 
