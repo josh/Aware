@@ -12,6 +12,7 @@ import ServiceManagement
 class LoginItem: ObservableObject {
     let appService: SMAppService
 
+    @MainActor
     static let mainApp = LoginItem(.mainApp)
 
     init(_ appService: SMAppService) {
