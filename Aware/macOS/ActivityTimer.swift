@@ -17,20 +17,11 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
 /// Sleeping or waking the computer will reset the timer back to zero.
 class ActivityTimer: ObservableObject {
-    private enum State {
+    enum State {
         case idle
-        case active(Date, TimeInterval)
+        case active(Date)
 
-        static var restart: Self { .active(.now, 0.0) }
-
-        var extend: Self {
-            switch self {
-            case let .active(start, _):
-                return .active(start, Date.now.timeIntervalSince(start))
-            case .idle:
-                return .restart
-            }
-        }
+        static var restart: Self { .active(.now) }
     }
 
     /// Returns a boolean value indicating whether the timer is idle.
@@ -41,19 +32,7 @@ class ActivityTimer: ObservableObject {
         }
     }
 
-    /// The number of seconds the timer has been active. Return zero if timer is idle.
-    var duration: TimeInterval {
-        switch state {
-        case .idle: return 0.0
-        case let .active(_, duration): return duration
-        }
-    }
-
-    private var state: State = .restart {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    @Published var state: State = .restart
 
     /// The number of seconds since the last user event to consider time idle.
     var userIdleSeconds: TimeInterval
@@ -122,7 +101,9 @@ class ActivityTimer: ObservableObject {
             }
             schedulePollOnNextEvent()
         } else {
-            state = state.extend
+            if case .idle = state {
+                state = .restart
+            }
         }
     }
 
