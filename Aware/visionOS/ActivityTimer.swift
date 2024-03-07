@@ -29,6 +29,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     /// The number of seconds the app can be in the background and be considered active if it's opened again.
     let backgroundGracePeriod: TimeInterval = 2 * 60 * 60
 
+    /// The number of seconds after locking the device it can be considered active if it's unlocked again.
+    let lockGracePeriod: TimeInterval = 2 * 60
+
     private enum State: CustomStringConvertible, Equatable {
         case idle
         case grace(Date, Date)
@@ -101,18 +104,6 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         case locked
         case background
         case foreground
-
-        static var current: Self {
-            let app = UIApplication.shared
-            if !app.isProtectedDataAvailable {
-                assert(app.applicationState == .background, "locked can't be in foreground")
-                return .locked
-            } else if app.applicationState == .background {
-                return .background
-            } else {
-                return .foreground
-            }
-        }
     }
 
     private var didEnterBackgroundCancellable: Cancellable?
@@ -128,7 +119,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("entered background")
-                update(scenePhase: .background)
+                state = state.extendGracePeriod(.now.addingTimeInterval(backgroundGracePeriod))
             }
 
         willEnterForegroundCancellable = NotificationCenter.default
@@ -138,7 +129,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("entered foreground")
-                update(scenePhase: .foreground)
+                state = state.activate
             }
 
         protectedDataDidBecomeAvailableCancellable = NotificationCenter.default
@@ -148,7 +139,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("protected data available")
-                update(scenePhase: .current)
+                updateState()
             }
 
         protectedDataWillBecomeUnavailableCancellable = NotificationCenter.default
@@ -158,20 +149,20 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("protected data unavailable")
-                update(scenePhase: .locked)
+                state = state.extendGracePeriod(.now.addingTimeInterval(lockGracePeriod))
             }
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundAppRefreshIdentifier, using: .main) { [weak self] task in
             guard let self = self else { return }
             logger.info("background app refresh")
-            self.update(scenePhase: .current)
+            updateState()
             task.setTaskCompleted(success: true)
         }
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundProcessingIdentifier, using: .main) { [weak self] task in
             guard let self = self else { return }
             logger.info("background processing")
-            self.update(scenePhase: .current)
+            updateState()
             task.setTaskCompleted(success: true)
         }
     }
@@ -188,13 +179,14 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         }
     }
 
-    private func update(scenePhase: ScenePhase) {
-        switch scenePhase {
-        case .locked:
+    private func updateState() {
+        let app = UIApplication.shared
+        if !app.isProtectedDataAvailable {
+            assert(app.applicationState == .background, "locked can't be in foreground")
             state = .idle
-        case .background:
+        } else if app.applicationState == .background {
             state = state.extendGracePeriod(.now.addingTimeInterval(backgroundGracePeriod))
-        case .foreground:
+        } else {
             state = state.activate
         }
     }
