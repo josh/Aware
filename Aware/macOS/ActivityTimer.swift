@@ -64,15 +64,13 @@ class ActivityTimer: ObservableObject {
     /// The allowed poll timer variance.
     let pollTolerance: TimeInterval = 5.0
 
-    private var timerCancellable: Cancellable?
-    private var willSleepCancellable: Cancellable?
-    private var didWakeCancellable: Cancellable?
-    private var userActivityCancellable: Cancellable?
+    private var cancellables = Set<AnyCancellable>()
+    private var userActivityCancellable: AnyCancellable?
 
     init(userIdleSeconds: TimeInterval) {
         self.userIdleSeconds = userIdleSeconds
 
-        timerCancellable = Timer.publish(every: pollInterval, tolerance: pollTolerance, on: .main, in: .default)
+        Timer.publish(every: pollInterval, tolerance: pollTolerance, on: .main, in: .default)
             .autoconnect()
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -80,8 +78,9 @@ class ActivityTimer: ObservableObject {
                 guard let self = self else { return }
                 self.poll()
             }
+            .store(in: &cancellables)
 
-        willSleepCancellable = NSWorkspace.shared.notificationCenter
+        NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.willSleepNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -91,8 +90,9 @@ class ActivityTimer: ObservableObject {
                 self.state = .idle
                 self.poll()
             }
+            .store(in: &cancellables)
 
-        didWakeCancellable = NSWorkspace.shared.notificationCenter
+        NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.didWakeNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -102,6 +102,7 @@ class ActivityTimer: ObservableObject {
                 self.state = .restart
                 self.poll()
             }
+            .store(in: &cancellables)
 
         poll()
     }

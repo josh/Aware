@@ -106,13 +106,10 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         case foreground
     }
 
-    private var didEnterBackgroundCancellable: Cancellable?
-    private var willEnterForegroundCancellable: Cancellable?
-    private var protectedDataDidBecomeAvailableCancellable: Cancellable?
-    private var protectedDataWillBecomeUnavailableCancellable: Cancellable?
+    private var cancellables = Set<AnyCancellable>()
 
     private init() {
-        didEnterBackgroundCancellable = NotificationCenter.default
+        NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -121,8 +118,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
                 logger.info("entered background")
                 state = state.extendGracePeriod(.now.addingTimeInterval(backgroundGracePeriod))
             }
+            .store(in: &cancellables)
 
-        willEnterForegroundCancellable = NotificationCenter.default
+        NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -131,8 +129,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
                 logger.info("entered foreground")
                 state = state.activate
             }
+            .store(in: &cancellables)
 
-        protectedDataDidBecomeAvailableCancellable = NotificationCenter.default
+        NotificationCenter.default
             .publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -141,8 +140,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
                 logger.info("protected data available")
                 updateState()
             }
+            .store(in: &cancellables)
 
-        protectedDataWillBecomeUnavailableCancellable = NotificationCenter.default
+        NotificationCenter.default
             .publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)
             .map { _ in () }
             .receive(on: DispatchQueue.main)
@@ -151,6 +151,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
                 logger.info("protected data unavailable")
                 state = state.extendGracePeriod(.now.addingTimeInterval(lockGracePeriod))
             }
+            .store(in: &cancellables)
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundAppRefreshIdentifier, using: .main) { [weak self] task in
             guard let self = self else { return }
