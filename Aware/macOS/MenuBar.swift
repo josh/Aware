@@ -58,6 +58,7 @@ struct TimerMenuBarLabel: View {
 
 // Hack to get underlying NSStatusItem for MenuBarExtra
 // https://github.com/orchetect/MenuBarExtraAccess/blob/main/Sources/MenuBarExtraAccess/MenuBarExtraUtils.swift
+@MainActor
 private func findStatusBarItem() -> NSStatusItem? {
     for window in NSApp.windows {
         if window.className == "NSStatusBarWindow" {
