@@ -7,6 +7,7 @@
 
 #if canImport(ServiceManagement)
 
+import Combine
 import ServiceManagement
 
 class LoginItem: ObservableObject {
