@@ -29,7 +29,7 @@
 
 **Description**
 
-A simple menubar app for OSX that tracks how long you've been actively using your computer.
+A simple menubar app for macOS that tracks how long you've been actively using your computer.
 
 Aware tells you how long you've been using your computer in hours and minutes. It knows this because it detects the movements of your mouse and the keystrokes on your keyboard. After a short time of inactivity (a break), Aware will pause the timer, then reset and start again when more activity is detected.
 
