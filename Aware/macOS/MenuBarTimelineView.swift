@@ -26,7 +26,7 @@ struct MenuBarTimelineView<Schedule, Content>: View where Schedule: TimelineSche
         content(context)
             .task {
                 for date in schedule.entries(from: .now, mode: .normal) {
-                    let duration: Duration = .seconds(date.timeIntervalSinceNow)
+                    let duration: Duration = .init(timeInterval: date.timeIntervalSinceNow)
                     if duration > .zero {
                         do {
                             try await Task.sleep(for: duration)
