@@ -32,7 +32,7 @@ struct UTCClock: Clock {
         }
     }
 
-    var minimumResolution: Duration = .zero
+    var minimumResolution: Duration = .nanoseconds(100)
     var now: Instance = .now
 
     func sleep(for duration: Duration, tolerance: Duration? = nil) async throws {
