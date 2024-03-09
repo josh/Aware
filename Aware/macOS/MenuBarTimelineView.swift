@@ -29,7 +29,7 @@ struct MenuBarTimelineView<Schedule, Content>: View where Schedule: TimelineSche
                     let duration: Duration = .seconds(date.timeIntervalSinceNow)
                     if duration > .zero {
                         do {
-                            try await Task.sleep(until: .now + duration)
+                            try await Task.sleep(for: duration)
                         } catch is CancellationError {
                             return
                         } catch {
