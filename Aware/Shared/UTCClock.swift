@@ -10,7 +10,7 @@ import Foundation
 // Backport proposed Foundation UTCClock
 // https://github.com/apple/swift-evolution/blob/main/proposals/0329-clock-instant-duration.md#clocks-outside-of-the-standard-library
 struct UTCClock: Clock {
-    struct Instance: InstantProtocol {
+    struct Instant: InstantProtocol {
         let date: Date
 
         init(_ date: Date) {
@@ -33,7 +33,7 @@ struct UTCClock: Clock {
     }
 
     let minimumResolution: Duration = .nanoseconds(100)
-    var now: Instance { .now }
+    var now: Instant { .now }
 
     func sleep(for duration: Duration, tolerance: Duration? = nil) async throws {
         try await ContinuousClock().sleep(for: duration, tolerance: tolerance)
