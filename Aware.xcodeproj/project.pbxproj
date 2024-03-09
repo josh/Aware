@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03302E332B99542400097402 /* NSEvent+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03302E322B99542400097402 /* NSEvent+Publisher.swift */; platformFilters = (macos, ); };
 		03409BC42B897F7C00EF8EE9 /* ActivityTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityTimer.swift */; platformFilters = (xros, ); };
+		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
 		036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */; platformFilters = (macos, ); };
 		036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DA9B42B7AF52E0066B4B2 /* App.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		03302E322B99542400097402 /* NSEvent+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSEvent+Publisher.swift"; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTimer.swift; sourceTree = "<group>"; };
+		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
 		036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimelineView.swift; sourceTree = "<group>"; };
 		036DA9B42B7AF52E0066B4B2 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 				0381B4962B8081F2002213F6 /* LoginItem.swift */,
 				0381B4982B808A5A002213F6 /* MenuBar.swift */,
 				036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */,
+				0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */,
 				03302E322B99542400097402 /* NSEvent+Publisher.swift */,
 			);
 			path = macOS;
@@ -253,6 +256,7 @@
 				0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
 				036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */,
+				0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */,
 				03302E332B99542400097402 /* NSEvent+Publisher.swift in Sources */,
 				03409BC42B897F7C00EF8EE9 /* ActivityTimer.swift in Sources */,
 				03DA21642B84160800367F4C /* SettingsView.swift in Sources */,
