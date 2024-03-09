@@ -32,8 +32,8 @@ struct UTCClock: Clock {
         }
     }
 
-    var minimumResolution: Duration = .nanoseconds(100)
-    var now: Instance = .now
+    let minimumResolution: Duration = .nanoseconds(100)
+    var now: Instance { .now }
 
     func sleep(for duration: Duration, tolerance: Duration? = nil) async throws {
         try await ContinuousClock().sleep(for: duration, tolerance: tolerance)
