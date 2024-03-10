@@ -30,6 +30,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     /// The number of seconds after locking the device it can be considered active if it's unlocked again.
     let lockGracePeriod: Duration = .seconds(2 * 60)
 
+    /// The max amount of time to allow the suspending clock to drift from the continuous clock.
+    let maxSuspendingClockDrift: Duration = .seconds(10)
+
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
@@ -43,6 +46,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         }
     }
 
+    var clocks: (continuous: ContinuousClock.Instant, suspending: SuspendingClock.Instant) = (.now, .now)
+
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -53,6 +58,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.notice("entered background")
+                checkClockDrift()
                 self.state.activate(for: backgroundGracePeriod)
             }
             .store(in: &cancellables)
@@ -64,6 +70,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.notice("entered foreground")
+                checkClockDrift()
                 self.state.activate()
             }
             .store(in: &cancellables)
@@ -97,6 +104,19 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 
     func duration(to endDate: Date) -> Duration {
         state.duration(to: .init(endDate))
+    }
+
+    private func checkClockDrift() {
+        let continuousDuration = .now - clocks.continuous
+        let suspendingDuration = .now - clocks.suspending
+        let suspendingDrift = continuousDuration - suspendingDuration
+        logger.debug("suspending clock drift: \(suspendingDrift, privacy: .public)")
+
+        if suspendingDrift > maxSuspendingClockDrift {
+            logger.warning("exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
+            clocks = (.now, .now)
+            state.deactivate()
+        }
     }
 
     func refresh() {
