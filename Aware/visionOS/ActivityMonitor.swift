@@ -1,5 +1,5 @@
 //
-//  ActivityTimer.swift
+//  ActivityMonitor.swift
 //  Aware
 //
 //  Created by Joshua Peek on 2/23/24.
@@ -12,16 +12,16 @@ import Combine
 import os.log
 import UIKit
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityTimer")
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
 
-@Observable class ActivityTimer {
-    static let shared = ActivityTimer()
+@Observable class ActivityMonitor {
+    static let shared = ActivityMonitor()
 
     /// The identifier for BGAppRefreshTaskRequest
-    let backgroundAppRefreshIdentifier = "fetchActivityTimer"
+    let backgroundAppRefreshIdentifier = "fetchActivityMonitor"
 
     /// The identifier for BGProcessingTaskRequest
-    let backgroundProcessingIdentifier = "processingActivityTimer"
+    let backgroundProcessingIdentifier = "processingActivityMonitor"
 
     /// The minimum number of seconds to schedule between background tasks.
     let backgroundTaskInterval: TimeInterval = 5 * 60
@@ -131,8 +131,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         cancelBackgroundTasks()
         scheduleBackgroundRefreshTask()
         scheduleBackgroundProcessingTask()
-        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityTimer"]
-        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityTimer"]
+        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
+        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
     }
 
     private func cancelBackgroundTasks() {

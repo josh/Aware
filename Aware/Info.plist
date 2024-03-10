@@ -11,8 +11,8 @@
 	</array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>fetchActivityTimer</string>
-		<string>processingActivityTimer</string>
+		<string>fetchActivityMonitor</string>
+		<string>processingActivityMonitor</string>
 	</array>
 </dict>
 </plist>

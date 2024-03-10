@@ -11,12 +11,12 @@ import SwiftUI
 
 struct TimerView: View {
     @SceneStorage("glassBackground") private var glassBackground: Bool = true
-    @State private var activityTimer = ActivityTimer.shared
+    @State private var activityMonitor = ActivityMonitor.shared
     @State private var showSettings = false
 
     var body: some View {
         TimelineView(.everyMinute) { context in
-            let duration = activityTimer.duration(to: context.date)
+            let duration = activityMonitor.duration(to: context.date)
             TimerTextView(duration: duration, glassBackground: glassBackground)
             #if DEBUG
                 .onLongPressGesture {

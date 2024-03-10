@@ -24,22 +24,22 @@ struct MenuBar: Scene {
 }
 
 struct TimerMenuBarLabel: View {
-    @StateObject private var activityTimer: ActivityTimer
+    @StateObject private var activityMonitor: ActivityMonitor
     @State private var statusBarButton: NSStatusBarButton?
 
     /// Set text refresh rate to 60 seconds, as only minutes are shown
     private let textRefreshRate: TimeInterval = 60.0
 
     init(userIdleSeconds: TimeInterval) {
-        let activityTimer = ActivityTimer(userIdleSeconds: userIdleSeconds)
-        _activityTimer = StateObject(wrappedValue: activityTimer)
+        let activityMonitor = ActivityMonitor(userIdleSeconds: userIdleSeconds)
+        _activityMonitor = StateObject(wrappedValue: activityMonitor)
     }
 
     var body: some View {
         Group {
-            if let startDate = self.activityTimer.startDate {
+            if let startDate = self.activityMonitor.startDate {
                 MenuBarTimelineView(.periodic(from: startDate, by: textRefreshRate)) { context in
-                    let duration = activityTimer.duration(to: context.date)
+                    let duration = activityMonitor.duration(to: context.date)
                     Text(duration, format: .abbreviatedDuration)
                 }
             } else {
@@ -49,7 +49,7 @@ struct TimerMenuBarLabel: View {
         .onAppear {
             self.statusBarButton = findStatusBarItem()?.button
         }
-        .onChange(of: activityTimer.isIdle) { isIdle in
+        .onChange(of: activityMonitor.isIdle) { isIdle in
             assert(self.statusBarButton != nil)
             self.statusBarButton?.appearsDisabled = isIdle
         }

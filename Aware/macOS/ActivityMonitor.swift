@@ -1,5 +1,5 @@
 //
-//  ActivityTimer.swift
+//  ActivityMonitor.swift
 //  Aware
 //
 //  Created by Joshua Peek on 2/16/24.
@@ -11,12 +11,12 @@ import AppKit
 import Combine
 import os.log
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityTimer")
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
 
 /// Automatically tracks macOS user input activity.
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
 /// Sleeping or waking the computer will reset the timer back to zero.
-class ActivityTimer: ObservableObject {
+class ActivityMonitor: ObservableObject {
     /// The number of seconds since the last user event to consider time idle.
     var userIdle: Duration
 
