@@ -27,83 +27,22 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     let backgroundTaskInterval: TimeInterval = 5 * 60
 
     /// The number of seconds the app can be in the background and be considered active if it's opened again.
-    let backgroundGracePeriod: TimeInterval = 2 * 60 * 60
+    let backgroundGracePeriod: Duration = .seconds(2 * 60 * 60)
 
     /// The number of seconds after locking the device it can be considered active if it's unlocked again.
-    let lockGracePeriod: TimeInterval = 2 * 60
+    let lockGracePeriod: Duration = .seconds(2 * 60)
 
-    private enum State: CustomStringConvertible, Equatable {
-        case idle
-        case grace(Date, Date)
-        case active(Date)
-
-        /// Enter active state preserving timer start date. Reset date to now if idle or grace has expired.
-        var activate: Self {
-            .active(startDate ?? .now)
-        }
-
-        func extendGracePeriod(_ expireAt: Date) -> Self {
-            .grace(startDate ?? .now, expireAt)
-        }
-
-        /// Get valid timer start date. Return `nil` if idle or grace has expired.
-        var startDate: Date? {
-            switch self {
-            case .idle:
-                return nil
-            case let .grace(startDate, expireDate):
-                if Date.now < expireDate {
-                    return startDate
-                } else {
-                    return nil
-                }
-            case let .active(startDate):
-                return startDate
-            }
-        }
-
-        var description: String {
-            switch self {
-            case .idle:
-                return "idle"
-            case let .grace(startDate, expireDate):
-                if Date.now < expireDate {
-                    let duration = Date.now.timeIntervalSince(startDate)
-                    let expires = expireDate.timeIntervalSince(.now)
-                    return "grace(\(duration.formatted(.timeDuration)), expires in \(expires.formatted(.timeDuration)))"
-                } else {
-                    return "grace(expired)"
-                }
-            case let .active(startDate):
-                let duration = Date.now.timeIntervalSince(startDate)
-                return "active(\(duration.formatted(.timeDuration)))"
-            }
-        }
-    }
-
-    private var state: State = .active(.now) {
+    var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
             logger.info("state changed from \(oldValue) to \(newValue)")
 
-            switch (oldValue, newValue) {
-            case (_, .grace):
+            if newValue.hasExpiration {
                 scheduleBackgroundTasks()
-            case (.grace, _):
+            } else if oldValue.hasExpiration {
                 cancelBackgroundTasks()
-            default: ()
-            }
-
-            if case let .grace(_, expireDate) = newValue {
-                assert(Date.now < expireDate, "grace set to expired value")
             }
         }
-    }
-
-    private enum ScenePhase: String {
-        case locked
-        case background
-        case foreground
     }
 
     private var cancellables = Set<AnyCancellable>()
@@ -116,7 +55,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("entered background")
-                state = state.extendGracePeriod(.now.addingTimeInterval(backgroundGracePeriod))
+                self.state.activate(for: backgroundGracePeriod)
             }
             .store(in: &cancellables)
 
@@ -127,7 +66,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("entered foreground")
-                state = state.activate
+                self.state.activate()
             }
             .store(in: &cancellables)
 
@@ -149,7 +88,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("protected data unavailable")
-                state = state.extendGracePeriod(.now.addingTimeInterval(lockGracePeriod))
+                self.state.activate(for: lockGracePeriod)
             }
             .store(in: &cancellables)
 
@@ -169,26 +108,22 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     }
 
     var startDate: Date? {
-        state.startDate
+        state.start?.date
     }
 
-    func timeIntervalFrom(_ endDate: Date) -> TimeInterval {
-        if let startDate {
-            return endDate.timeIntervalSince(startDate)
-        } else {
-            return 0.0
-        }
+    func duration(to endDate: Date) -> Duration {
+        state.duration(to: .init(endDate))
     }
 
     private func updateState() {
         let app = UIApplication.shared
         if !app.isProtectedDataAvailable {
             assert(app.applicationState == .background, "locked can't be in foreground")
-            state = .idle
+            state.deactivate()
         } else if app.applicationState == .background {
-            state = state.extendGracePeriod(.now.addingTimeInterval(backgroundGracePeriod))
+            state.activate(for: backgroundGracePeriod)
         } else {
-            state = state.activate
+            state.activate()
         }
     }
 

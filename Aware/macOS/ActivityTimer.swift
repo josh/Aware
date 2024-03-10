@@ -17,23 +17,6 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
 /// Sleeping or waking the computer will reset the timer back to zero.
 class ActivityTimer: ObservableObject {
-    enum State {
-        case idle
-        case active(Date)
-
-        static var restart: Self { .active(.now) }
-    }
-
-    /// Returns a boolean value indicating whether the timer is idle.
-    var idle: Bool {
-        switch state {
-        case .idle: return true
-        case .active: return false
-        }
-    }
-
-    @Published var state: State = .restart
-
     /// The number of seconds since the last user event to consider time idle.
     var userIdleSeconds: TimeInterval
 
@@ -42,6 +25,13 @@ class ActivityTimer: ObservableObject {
 
     /// The allowed poll timer variance.
     let pollTolerance: TimeInterval = 5.0
+
+    @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
+        didSet {
+            let newValue = state
+            logger.info("state changed from \(oldValue) to \(newValue)")
+        }
+    }
 
     private var cancellables = Set<AnyCancellable>()
     private var userActivityCancellable: AnyCancellable?
@@ -66,7 +56,7 @@ class ActivityTimer: ObservableObject {
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("will sleep")
-                self.state = .idle
+                self.state.deactivate()
                 self.poll()
             }
             .store(in: &cancellables)
@@ -78,7 +68,7 @@ class ActivityTimer: ObservableObject {
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("did wake")
-                self.state = .restart
+                self.state.activate()
                 self.poll()
             }
             .store(in: &cancellables)
@@ -86,24 +76,27 @@ class ActivityTimer: ObservableObject {
         poll()
     }
 
+    var startDate: Date? {
+        state.start?.date
+    }
+
+    var isIdle: Bool {
+        state.isIdle
+    }
+
+    func duration(to endDate: Date) -> Duration {
+        state.duration(to: .init(endDate))
+    }
+
     private func poll() {
         let hasRecentUserEvent = secondsSinceLastUserEvent() < userIdleSeconds
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
 
-        logger.debug("recent user event: \(hasRecentUserEvent, privacy: .public)")
-        if isMainDisplayAsleep {
-            logger.info("display asleep")
-        }
-
         if !hasRecentUserEvent || isMainDisplayAsleep {
-            if case .active = state {
-                state = .idle
-            }
+            state.deactivate()
             schedulePollOnNextEvent()
         } else {
-            if case .idle = state {
-                state = .restart
-            }
+            state.activate()
         }
     }
 

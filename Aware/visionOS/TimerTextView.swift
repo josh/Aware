@@ -10,11 +10,11 @@
 import SwiftUI
 
 struct TimerTextView: View {
-    var duration: TimeInterval = 0.0
+    var duration: Duration = .seconds(0)
     var glassBackground: Bool = true
 
     var body: some View {
-        Text(duration, format: .abbreviatedTimeInterval)
+        Text(duration, format: .abbreviatedDuration)
             .lineLimit(1)
             .padding()
             .font(.system(size: 900, weight: .medium))
@@ -29,15 +29,15 @@ struct TimerTextView: View {
 }
 
 #Preview("15m", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: 15 * 60)
+    TimerTextView(duration: .seconds(15 * 60))
 }
 
 #Preview("1h", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: 60 * 60)
+    TimerTextView(duration: .seconds(60 * 60))
 }
 
 #Preview("1h 15m", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: 60 * 60 + 15 * 60)
+    TimerTextView(duration: .seconds(60 * 60 + 15 * 60))
 }
 
 #endif

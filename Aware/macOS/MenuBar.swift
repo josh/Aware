@@ -37,21 +37,21 @@ struct TimerMenuBarLabel: View {
 
     var body: some View {
         Group {
-            switch self.activityTimer.state {
-            case .idle:
-                Text(0.0, format: .abbreviatedTimeInterval)
-            case let .active(startDate):
+            if let startDate = self.activityTimer.startDate {
                 MenuBarTimelineView(.periodic(from: startDate, by: textRefreshRate)) { context in
-                    Text(context.date.timeIntervalSince(startDate), format: .abbreviatedTimeInterval)
+                    let duration = activityTimer.duration(to: context.date)
+                    Text(duration, format: .abbreviatedDuration)
                 }
+            } else {
+                Text(.seconds(0), format: .abbreviatedDuration)
             }
         }
         .onAppear {
             self.statusBarButton = findStatusBarItem()?.button
         }
-        .onChange(of: activityTimer.idle) { idle in
+        .onChange(of: activityTimer.isIdle) { isIdle in
             assert(self.statusBarButton != nil)
-            self.statusBarButton?.appearsDisabled = idle
+            self.statusBarButton?.appearsDisabled = isIdle
         }
     }
 }

@@ -16,7 +16,7 @@ struct TimerView: View {
 
     var body: some View {
         TimelineView(.everyMinute) { context in
-            let duration = activityTimer.timeIntervalFrom(context.date)
+            let duration = activityTimer.duration(to: context.date)
             TimerTextView(duration: duration, glassBackground: glassBackground)
             #if DEBUG
                 .onLongPressGesture {
