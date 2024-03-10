@@ -18,13 +18,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Sleeping or waking the computer will reset the timer back to zero.
 class ActivityTimer: ObservableObject {
     /// The number of seconds since the last user event to consider time idle.
-    var userIdleSeconds: TimeInterval
-
-    /// The poll interval for checking user activity timestamps.
-    let pollInterval: TimeInterval = 60.0
-
-    /// The allowed poll timer variance.
-    let pollTolerance: TimeInterval = 5.0
+    var userIdle: Duration
 
     @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
@@ -34,20 +28,10 @@ class ActivityTimer: ObservableObject {
     }
 
     private var cancellables = Set<AnyCancellable>()
-    private var userActivityCancellable: AnyCancellable?
+    private var pollCancellable: AnyCancellable?
 
     init(userIdleSeconds: TimeInterval) {
-        self.userIdleSeconds = userIdleSeconds
-
-        Timer.publish(every: pollInterval, tolerance: pollTolerance, on: .main, in: .default)
-            .autoconnect()
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self else { return }
-                self.poll()
-            }
-            .store(in: &cancellables)
+        userIdle = Duration(timeInterval: userIdleSeconds)
 
         NSWorkspace.shared.notificationCenter
             .publisher(for: NSWorkspace.willSleepNotification)
@@ -89,30 +73,41 @@ class ActivityTimer: ObservableObject {
     }
 
     private func poll() {
-        let hasRecentUserEvent = secondsSinceLastUserEvent() < userIdleSeconds
+        let idleDeadline = userIdle - secondsSinceLastUserEvent()
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
 
-        if !hasRecentUserEvent || isMainDisplayAsleep {
-            state.deactivate()
-            schedulePollOnNextEvent()
-        } else {
-            state.activate()
-        }
-    }
+        pollCancellable?.cancel()
 
-    private func schedulePollOnNextEvent() {
-        guard userActivityCancellable == nil else { return }
-
-        userActivityCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
-            .map { _ in () }
-            .first()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self else { return }
-                logger.info("mouse event")
-                self.userActivityCancellable = nil
-                self.poll()
+        if idleDeadline <= .zero || isMainDisplayAsleep {
+            if state.isActive {
+                state.deactivate()
             }
+            assert(state.isIdle)
+
+            pollCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
+                .map { _ in () }
+                .first()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] in
+                    self?.poll()
+                }
+        } else {
+            if state.isIdle {
+                state.activate()
+            }
+            assert(state.isActive)
+
+            pollCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
+                .autoconnect()
+                .map { _ in () }
+                .first()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] in
+                    self?.poll()
+                }
+        }
+
+        assert(pollCancellable != nil, "expected poll to be scheduled")
     }
 }
 
@@ -132,10 +127,10 @@ private let userActivityEventTypes: [CGEventType] = [
     .scrollWheel,
 ]
 
-private func secondsSinceLastUserEvent() -> CFTimeInterval {
+private func secondsSinceLastUserEvent() -> Duration {
     return userActivityEventTypes.map { eventType in
         CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: eventType)
-    }.min() ?? 0.0
+    }.min().map { ti in Duration(timeInterval: ti) } ?? .zero
 }
 
 #endif
