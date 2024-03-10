@@ -175,6 +175,27 @@ final class TimerStateTests: XCTestCase {
         XCTAssertEqual(String(describing: timer), "active[0:00:00, expires in 0:01:00]")
     }
 
+    func testActivateFor() {
+        var timer: TimerState<PausedClock>
+
+        timer = TimerState(clock: clock)
+        timer.activate(for: .seconds(60))
+        XCTAssertEqual(String(describing: timer), "active[0:00:00, expires in 0:01:00]")
+
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), clock: clock)
+        timer.activate(for: .seconds(60))
+        XCTAssertEqual(String(describing: timer), "active[0:05:00, expires in 0:01:00]")
+
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        timer.activate(for: .seconds(60))
+        XCTAssertEqual(String(describing: timer), "active[0:05:00, expires in 0:01:00]")
+
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
+        timer.activate(for: .seconds(60))
+        XCTAssertEqual(String(describing: timer), "active[0:00:00, expires in 0:01:00]")
+    }
+
     func testEquatable() {
         XCTAssertEqual(TimerState(clock: clock), TimerState(clock: clock))
         XCTAssertEqual(TimerState(since: clock.now, clock: clock), TimerState(since: clock.now, clock: clock))
@@ -196,7 +217,6 @@ final class TimerStateTests: XCTestCase {
 
         timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(150)), clock: clock)
         XCTAssertEqual(String(describing: timer), "active[0:05:00, expires in 0:02:30]")
-
 
         timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
         clock.advance(by: .seconds(60))

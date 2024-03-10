@@ -143,6 +143,16 @@ struct TimerState<C: Clock>: Sendable {
             state = .grace(start: start, expires: expires)
         }
     }
+
+    /// Activates the timer state for the specified duration.
+    ///
+    /// - Parameters:
+    ///   - duration: The duration for which the timer state should be active.
+    ///
+    mutating func activate(for duration: C.Duration) {
+        assert(duration > .zero, "duration should be positive")
+        activate(until: clock.now.advanced(by: duration))
+    }
 }
 
 // Unsure if Clocks should be Equatable by convention.
