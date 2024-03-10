@@ -31,6 +31,7 @@ struct TimerState<C: Clock>: Sendable {
     ///   - clock: A clock instance
     init(since start: C.Instant, clock: C) {
         self.clock = clock
+        assert(start <= clock.now, "start should be now or in the past")
         state = .active(start: start)
     }
 
@@ -41,6 +42,8 @@ struct TimerState<C: Clock>: Sendable {
     ///   - clock: A clock instance
     init(since start: C.Instant, until expires: C.Instant, clock: C) {
         self.clock = clock
+        assert(start <= clock.now, "start should be now or in the past")
+        assert(expires > clock.now, "expires should be in the future")
         state = .grace(start: start, expires: expires)
     }
 
@@ -129,6 +132,7 @@ struct TimerState<C: Clock>: Sendable {
     ///   - expires: The instant at which the timer state should expire.
     ///
     mutating func activate(until expires: C.Instant) {
+        assert(expires > clock.now, "expires should be in the future")
         let now = clock.now
         switch state {
         case .idle:

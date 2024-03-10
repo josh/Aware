@@ -2,12 +2,19 @@ import XCTest
 
 @testable import Aware
 
-struct PausedClock: Clock, Equatable {
-    typealias Instant = ContinuousClock.Instant
-    init() { now = .now }
-    var minimumResolution: Duration { ContinuousClock().minimumResolution }
+final class PausedClock: @unchecked Sendable, Clock, Equatable {
     var now: Instant
+    init() { now = .now }
+
+    typealias Instant = ContinuousClock.Instant
+    var minimumResolution: Duration { ContinuousClock().minimumResolution }
     func sleep(until _: Instant, tolerance _: Duration?) async throws {}
+
+    static func == (_: PausedClock, _: PausedClock) -> Bool { true }
+
+    func advance(by duration: Duration) {
+        now = now.advanced(by: duration)
+    }
 }
 
 final class TimerStateTests: XCTestCase {
@@ -26,7 +33,8 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(150)), clock: clock)
         XCTAssertTrue(timer.isActive)
 
-        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertFalse(timer.isActive)
     }
 
@@ -43,7 +51,8 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(150)), clock: clock)
         XCTAssertFalse(timer.isIdle)
 
-        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertTrue(timer.isIdle)
     }
 
@@ -60,7 +69,8 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(150)), clock: clock)
         XCTAssertEqual(timer.start, start)
 
-        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertNil(timer.start)
     }
 
@@ -78,7 +88,8 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: start, until: expires, clock: clock)
         XCTAssertEqual(timer.expires, expires)
 
-        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertNil(timer.expires)
     }
 
@@ -96,7 +107,8 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: start, until: expires, clock: clock)
         XCTAssertEqual(timer.duration(to: clock.now), .seconds(30))
 
-        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertEqual(timer.duration(to: clock.now), .seconds(0))
     }
 
@@ -115,7 +127,8 @@ final class TimerStateTests: XCTestCase {
         timer.deactivate()
         XCTAssertEqual(String(describing: timer), "idle")
 
-        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         timer.deactivate()
         XCTAssertEqual(String(describing: timer), "idle")
     }
@@ -135,7 +148,8 @@ final class TimerStateTests: XCTestCase {
         timer.activate()
         XCTAssertEqual(String(describing: timer), "active[0:05:00]")
 
-        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         timer.activate()
         XCTAssertEqual(String(describing: timer), "active[0:00:00]")
     }
@@ -155,7 +169,8 @@ final class TimerStateTests: XCTestCase {
         timer.activate(until: clock.now.advanced(by: .seconds(60)))
         XCTAssertEqual(String(describing: timer), "active[0:05:00, expires in 0:01:00]")
 
-        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         timer.activate(until: clock.now.advanced(by: .seconds(60)))
         XCTAssertEqual(String(describing: timer), "active[0:00:00, expires in 0:01:00]")
     }
@@ -182,7 +197,9 @@ final class TimerStateTests: XCTestCase {
         timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(150)), clock: clock)
         XCTAssertEqual(String(describing: timer), "active[0:05:00, expires in 0:02:30]")
 
-        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+
+        timer = TimerState(since: clock.now.advanced(by: .seconds(-300)), until: clock.now.advanced(by: .seconds(30)), clock: clock)
+        clock.advance(by: .seconds(60))
         XCTAssertEqual(String(describing: timer), "idle[expired]")
     }
 }
