@@ -28,7 +28,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     let backgroundGracePeriod: Duration = .seconds(2 * 60 * 60)
 
     /// The number of seconds after locking the device it can be considered active if it's unlocked again.
-    let lockGracePeriod: Duration = .seconds(2 * 60)
+    let lockGracePeriod: Duration = .seconds(60)
 
     /// The max amount of time to allow the suspending clock to drift from the continuous clock.
     let maxSuspendingClockDrift: Duration = .seconds(10)
