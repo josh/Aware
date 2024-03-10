@@ -23,7 +23,7 @@ class ActivityMonitor: ObservableObject {
     @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.info("state changed from \(oldValue) to \(newValue)")
+            logger.info("state changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
         }
     }
 
@@ -39,7 +39,7 @@ class ActivityMonitor: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 guard let self = self else { return }
-                logger.info("will sleep")
+                logger.notice("will sleep")
                 self.state.deactivate()
                 self.poll()
             }
@@ -51,7 +51,7 @@ class ActivityMonitor: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 guard let self = self else { return }
-                logger.info("did wake")
+                logger.notice("did wake")
                 self.state.activate()
                 self.poll()
             }
@@ -73,8 +73,14 @@ class ActivityMonitor: ObservableObject {
     }
 
     private func poll() {
-        let idleDeadline = userIdle - secondsSinceLastUserEvent()
+        let lastUserEvent = secondsSinceLastUserEvent()
+        let idleDeadline = userIdle - lastUserEvent
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
+
+        logger.debug("last user event: \(lastUserEvent)")
+        if isMainDisplayAsleep {
+            logger.debug("main display asleep")
+        }
 
         pollCancellable?.cancel()
 
@@ -84,6 +90,7 @@ class ActivityMonitor: ObservableObject {
             }
             assert(state.isIdle)
 
+            logger.debug("schedule next poll on user event")
             pollCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
                 .map { _ in () }
                 .first()
@@ -97,6 +104,7 @@ class ActivityMonitor: ObservableObject {
             }
             assert(state.isActive)
 
+            logger.debug("schedule next poll in \(idleDealine)")
             pollCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
                 .autoconnect()
                 .map { _ in () }
