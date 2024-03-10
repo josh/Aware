@@ -15,8 +15,6 @@ import UIKit
 private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
 
 @Observable class ActivityMonitor {
-    static let shared = ActivityMonitor()
-
     /// The identifier for BGAppRefreshTaskRequest
     let backgroundAppRefreshIdentifier = "fetchActivityMonitor"
 
@@ -47,7 +45,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 
     private var cancellables = Set<AnyCancellable>()
 
-    private init() {
+    init() {
         NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .map { _ in () }
@@ -77,7 +75,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .sink { [weak self] in
                 guard let self = self else { return }
                 logger.info("protected data available")
-                updateState()
+                refresh()
             }
             .store(in: &cancellables)
 
@@ -91,20 +89,6 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
                 self.state.activate(for: lockGracePeriod)
             }
             .store(in: &cancellables)
-
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundAppRefreshIdentifier, using: .main) { [weak self] task in
-            guard let self = self else { return }
-            logger.info("background app refresh")
-            updateState()
-            task.setTaskCompleted(success: true)
-        }
-
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: backgroundProcessingIdentifier, using: .main) { [weak self] task in
-            guard let self = self else { return }
-            logger.info("background processing")
-            updateState()
-            task.setTaskCompleted(success: true)
-        }
     }
 
     var startDate: Date? {
@@ -115,7 +99,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         state.duration(to: .init(endDate))
     }
 
-    private func updateState() {
+    func refresh() {
         let app = UIApplication.shared
         if !app.isProtectedDataAvailable {
             assert(app.applicationState == .background, "locked can't be in foreground")

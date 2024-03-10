@@ -10,13 +10,21 @@
 import SwiftUI
 
 struct TimerWindow: Scene {
+    @State private var activityMonitor = ActivityMonitor()
+
     var body: some Scene {
         WindowGroup {
-            TimerView()
+            TimerView(activityMonitor: activityMonitor)
         }
         .defaultSize(width: 240, height: 135)
         .windowResizability(.contentSize)
         .windowStyle(.plain)
+        .backgroundTask(.appRefresh("fetchActivityMonitor")) {
+            activityMonitor.refresh()
+        }
+        .backgroundTask(.appRefresh("processingActivityMonitor")) {
+            activityMonitor.refresh()
+        }
     }
 }
 
