@@ -104,7 +104,7 @@ class ActivityMonitor: ObservableObject {
             }
             assert(state.isActive)
 
-            logger.debug("schedule next poll in \(idleDealine)")
+            logger.debug("schedule next poll in \(idleDeadline)")
             pollCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
                 .autoconnect()
                 .map { _ in () }
