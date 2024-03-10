@@ -82,6 +82,24 @@ final class TimerStateTests: XCTestCase {
         XCTAssertNil(timer.expires)
     }
 
+    func testDuration() {
+        var timer: TimerState<PausedClock>
+
+        timer = TimerState(clock: clock)
+        XCTAssertEqual(timer.duration(to: clock.now), .seconds(0))
+
+        let start = clock.now.advanced(by: .seconds(-30))
+        timer = TimerState(since: start, clock: clock)
+        XCTAssertEqual(timer.duration(to: clock.now), .seconds(30))
+
+        let expires = clock.now.advanced(by: .seconds(150))
+        timer = TimerState(since: start, until: expires, clock: clock)
+        XCTAssertEqual(timer.duration(to: clock.now), .seconds(30))
+
+        timer = TimerState(since: start, until: clock.now.advanced(by: .seconds(-30)), clock: clock)
+        XCTAssertEqual(timer.duration(to: clock.now), .seconds(0))
+    }
+
     func testDeactivate() {
         var timer: TimerState<PausedClock>
 

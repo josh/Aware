@@ -94,6 +94,17 @@ struct TimerState<C: Clock>: Sendable {
         }
     }
 
+    /// Get duration the timer has been running for.
+    /// - Parameter end: The current clock instant
+    /// - Returns: the duration or zero if timer is idle
+    func duration(to end: C.Instant) -> C.Duration {
+        if let start {
+            return start.duration(to: end)
+        } else {
+            return C.Duration.zero
+        }
+    }
+
     /// Regardless of state, deactivate the timer putting it in idle mode.
     mutating func deactivate() {
         state = .idle
