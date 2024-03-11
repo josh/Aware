@@ -46,8 +46,10 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         }
     }
 
-    var clocks: (continuous: ContinuousClock.Instant, suspending: SuspendingClock.Instant) = (.now, .now)
+    @ObservationIgnored
+    private var clocks: (continuous: ContinuousClock.Instant, suspending: SuspendingClock.Instant) = (.now, .now)
 
+    @ObservationIgnored
     private var cancellables = Set<AnyCancellable>()
 
     init() {
