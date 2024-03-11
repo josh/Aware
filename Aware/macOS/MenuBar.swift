@@ -70,7 +70,7 @@ private func findStatusBarItem() -> NSStatusItem? {
 }
 
 struct MenuBarContentView: View {
-    @StateObject var openOnLogin = LoginItem.mainApp
+    @StateObject private var openOnLogin = LoginItem.mainApp
 
     var body: some View {
         Toggle("Open at Login", isOn: $openOnLogin.isEnabled)
