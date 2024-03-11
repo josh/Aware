@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct TimerWindow: Scene {
-    @State private var activityMonitor = ActivityMonitor()
+    private let activityMonitor = ActivityMonitor()
 
     var body: some Scene {
         WindowGroup {
