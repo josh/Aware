@@ -16,6 +16,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Automatically tracks macOS user input activity.
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
 /// Sleeping or waking the computer will reset the timer back to zero.
+@MainActor
 class ActivityMonitor: ObservableObject {
     /// The number of seconds since the last user event to consider time idle.
     var userIdle: Duration
