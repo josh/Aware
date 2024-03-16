@@ -7,7 +7,10 @@
 
 #if os(visionOS)
 
+import OSLog
 import SwiftUI
+
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "TimerWindow")
 
 struct TimerWindow: Scene {
     private let activityMonitor = ActivityMonitor()
@@ -20,10 +23,14 @@ struct TimerWindow: Scene {
         .windowResizability(.contentSize)
         .windowStyle(.plain)
         .backgroundTask(.appRefresh("fetchActivityMonitor")) {
+            logger.log("Starting background task: fetchActivityMonitor")
             activityMonitor.update()
+            logger.log("Finished background task: fetchActivityMonitor")
         }
         .backgroundTask(.appRefresh("processingActivityMonitor")) {
+            logger.log("Starting background task: processingActivityMonitor")
             activityMonitor.update()
+            logger.log("Finished background task: processingActivityMonitor")
         }
     }
 }
