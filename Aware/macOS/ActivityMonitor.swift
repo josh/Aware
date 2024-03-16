@@ -24,7 +24,7 @@ class ActivityMonitor: ObservableObject {
     @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.notice("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
         }
     }
 
@@ -39,7 +39,7 @@ class ActivityMonitor: ObservableObject {
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received willSleepNotification")
+                logger.log("Received willSleepNotification")
                 guard let self = self else { return }
                 self.state.deactivate()
                 self.update()
@@ -51,7 +51,7 @@ class ActivityMonitor: ObservableObject {
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received didWakeNotification")
+                logger.log("Received didWakeNotification")
                 guard let self = self else { return }
                 self.state.activate()
                 self.update()
@@ -100,7 +100,7 @@ class ActivityMonitor: ObservableObject {
                 .first()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] in
-                    logger.notice("Received user activity event")
+                    logger.log("Received user activity event")
                     self?.update()
                 }
         } else {
@@ -115,7 +115,7 @@ class ActivityMonitor: ObservableObject {
                 .first()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] in
-                    logger.notice("Received timer event")
+                    logger.log("Received timer event")
                     self?.update()
                 }
             logger.info("Scheduled next update in \(idleDeadline, privacy: .public)")

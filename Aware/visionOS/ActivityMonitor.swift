@@ -36,7 +36,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.notice("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
 
             if newValue.hasExpiration {
                 scheduleBackgroundTasks()
@@ -58,7 +58,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received didEnterBackgroundNotification")
+                logger.log("Received didEnterBackgroundNotification")
                 guard let self = self else { return }
                 checkClockDrift()
                 self.state.activate(for: backgroundGracePeriod)
@@ -70,7 +70,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received willEnterForegroundNotification")
+                logger.log("Received willEnterForegroundNotification")
                 guard let self = self else { return }
                 checkClockDrift()
                 self.state.activate()
@@ -82,7 +82,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received protectedDataDidBecomeAvailableNotification")
+                logger.log("Received protectedDataDidBecomeAvailableNotification")
                 guard let self = self else { return }
                 update()
             }
@@ -93,7 +93,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                logger.notice("Received protectedDataWillBecomeUnavailableNotification")
+                logger.log("Received protectedDataWillBecomeUnavailableNotification")
                 guard let self = self else { return }
                 self.state.activate(for: lockGracePeriod)
             }
@@ -115,7 +115,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         logger.debug("Suspending clock drift: \(suspendingDrift, privacy: .public)")
 
         if suspendingDrift > maxSuspendingClockDrift {
-            logger.notice("Exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
+            logger.log("Exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
             clocks = (.now, .now)
             state.deactivate()
         }
