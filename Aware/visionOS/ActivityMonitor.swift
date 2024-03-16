@@ -24,13 +24,13 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     /// The minimum number of seconds to schedule between background tasks.
     let backgroundTaskInterval: TimeInterval = 5 * 60
 
-    /// The number of seconds the app can be in the background and be considered active if it's opened again.
-    let backgroundGracePeriod: Duration = .seconds(2 * 60 * 60)
+    /// The duration the app can be in the background and be considered active if it's opened again.
+    let backgroundGracePeriod: Duration = .hours(2)
 
-    /// The number of seconds after locking the device it can be considered active if it's unlocked again.
-    let lockGracePeriod: Duration = .seconds(60)
+    /// The duration after locking the device it can be considered active if it's unlocked again.
+    let lockGracePeriod: Duration = .minutes(1)
 
-    /// The max amount of time to allow the suspending clock to drift from the continuous clock.
+    /// The max duration to allow the suspending clock to drift from the continuous clock.
     let maxSuspendingClockDrift: Duration = .seconds(10)
 
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {

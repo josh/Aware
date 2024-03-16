@@ -55,10 +55,10 @@ class FormatStyleTests: XCTestCase {
     func testDurationFormatted() {
         XCTAssertEqual(Duration.seconds(15).formatted(.time(pattern: .hourMinuteSecond)), "0:00:15")
         XCTAssertEqual(Duration.seconds(15).formatted(.timeDuration), "15")
-        XCTAssertEqual(Duration.seconds(60).formatted(.timeDuration), "1:00")
+        XCTAssertEqual(Duration.minutes(1).formatted(.timeDuration), "1:00")
         XCTAssertEqual(Duration.seconds(15).formatted(.components(style: .spellOut)), "fifteen seconds")
-        XCTAssertEqual(Duration.seconds(60).formatted(.components(style: .spellOut)), "one minute")
-        XCTAssertEqual(Duration.seconds(900).formatted(.abbreviatedDuration), "15m")
+        XCTAssertEqual(Duration.minutes(1).formatted(.components(style: .spellOut)), "one minute")
+        XCTAssertEqual(Duration.minutes(15).formatted(.abbreviatedDuration), "15m")
     }
 
     func testDurationAbbreviatedTimeIntervalFormatStyle() {
@@ -69,30 +69,30 @@ class FormatStyleTests: XCTestCase {
         XCTAssertEqual(formatter.format(.seconds(30)), "0m")
         XCTAssertEqual(formatter.format(.seconds(59)), "0m")
 
-        XCTAssertEqual(formatter.format(.seconds(60)), "1m")
+        XCTAssertEqual(formatter.format(.minutes(1)), "1m")
         XCTAssertEqual(formatter.format(.seconds(61)), "1m")
         XCTAssertEqual(formatter.format(.seconds(119)), "1m")
 
-        XCTAssertEqual(formatter.format(.seconds(120)), "2m")
-        XCTAssertEqual(formatter.format(.seconds(300)), "5m")
-        XCTAssertEqual(formatter.format(.seconds(900)), "15m")
-        XCTAssertEqual(formatter.format(.seconds(1800)), "30m")
-        XCTAssertEqual(formatter.format(.seconds(2700)), "45m")
-        XCTAssertEqual(formatter.format(.seconds(3540)), "59m")
+        XCTAssertEqual(formatter.format(.minutes(2)), "2m")
+        XCTAssertEqual(formatter.format(.minutes(5)), "5m")
+        XCTAssertEqual(formatter.format(.minutes(15)), "15m")
+        XCTAssertEqual(formatter.format(.minutes(30)), "30m")
+        XCTAssertEqual(formatter.format(.minutes(45)), "45m")
+        XCTAssertEqual(formatter.format(.minutes(59)), "59m")
         XCTAssertEqual(formatter.format(.seconds(3599)), "59m")
 
-        XCTAssertEqual(formatter.format(.seconds(3600)), "1h")
+        XCTAssertEqual(formatter.format(.hours(1)), "1h")
         XCTAssertEqual(formatter.format(.seconds(3601)), "1h")
-        XCTAssertEqual(formatter.format(.seconds(3660)), "1h 1m")
-        XCTAssertEqual(formatter.format(.seconds(4500)), "1h 15m")
-        XCTAssertEqual(formatter.format(.seconds(5400)), "1h 30m")
-        XCTAssertEqual(formatter.format(.seconds(6300)), "1h 45m")
+        XCTAssertEqual(formatter.format(.minutes(61)), "1h 1m")
+        XCTAssertEqual(formatter.format(.minutes(75)), "1h 15m")
+        XCTAssertEqual(formatter.format(.minutes(90)), "1h 30m")
+        XCTAssertEqual(formatter.format(.minutes(105)), "1h 45m")
 
-        XCTAssertEqual(formatter.format(.seconds(7200)), "2h")
+        XCTAssertEqual(formatter.format(.hours(2)), "2h")
 
         XCTAssertEqual(formatter.format(.seconds(-1)), "0m")
         XCTAssertEqual(formatter.format(.seconds(-90)), "0m")
-        XCTAssertEqual(formatter.format(.seconds(-3600)), "0m")
+        XCTAssertEqual(formatter.format(.minutes(-60)), "0m")
 
         XCTAssertEqual(formatter.format(.seconds(Int.max)), "0m")
         XCTAssertEqual(formatter.format(.seconds(Int.min)), "0m")

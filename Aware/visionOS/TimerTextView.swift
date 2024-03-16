@@ -29,15 +29,15 @@ struct TimerTextView: View {
 }
 
 #Preview("15m", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: .seconds(15 * 60))
+    TimerTextView(duration: .minutes(15))
 }
 
 #Preview("1h", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: .seconds(60 * 60))
+    TimerTextView(duration: .hours(1))
 }
 
 #Preview("1h 15m", traits: .fixedLayout(width: 240, height: 135)) {
-    TimerTextView(duration: .seconds(60 * 60 + 15 * 60))
+    TimerTextView(duration: .minutes(75))
 }
 
 #endif
