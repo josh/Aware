@@ -9,7 +9,7 @@
 
 import AppKit
 import Combine
-import os.log
+import OSLog
 
 private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
 

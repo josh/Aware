@@ -9,7 +9,7 @@
 
 import BackgroundTasks
 import Combine
-import os.log
+import OSLog
 import UIKit
 
 private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
