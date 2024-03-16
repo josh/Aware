@@ -36,7 +36,7 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.info("state changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.notice("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
 
             if newValue.hasExpiration {
                 scheduleBackgroundTasks()
@@ -58,8 +58,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received didEnterBackgroundNotification")
                 guard let self = self else { return }
-                logger.notice("entered background")
                 checkClockDrift()
                 self.state.activate(for: backgroundGracePeriod)
             }
@@ -70,8 +70,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received willEnterForegroundNotification")
                 guard let self = self else { return }
-                logger.notice("entered foreground")
                 checkClockDrift()
                 self.state.activate()
             }
@@ -82,9 +82,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received protectedDataDidBecomeAvailableNotification")
                 guard let self = self else { return }
-                logger.notice("protected data available")
-                refresh()
+                update()
             }
             .store(in: &cancellables)
 
@@ -93,8 +93,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received protectedDataWillBecomeUnavailableNotification")
                 guard let self = self else { return }
-                logger.notice("protected data unavailable")
                 self.state.activate(for: lockGracePeriod)
             }
             .store(in: &cancellables)
@@ -112,17 +112,18 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         let continuousDuration = .now - clocks.continuous
         let suspendingDuration = .now - clocks.suspending
         let suspendingDrift = continuousDuration - suspendingDuration
-        logger.debug("suspending clock drift: \(suspendingDrift, privacy: .public)")
+        logger.debug("Suspending clock drift: \(suspendingDrift, privacy: .public)")
 
         if suspendingDrift > maxSuspendingClockDrift {
-            logger.warning("exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
+            logger.notice("Exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
             clocks = (.now, .now)
             state.deactivate()
         }
     }
 
-    func refresh() {
-        logger.debug("refresh")
+    func update() {
+        var logState = state
+        logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
         let app = UIApplication.shared
         if !app.isProtectedDataAvailable {
             assert(app.applicationState == .background, "locked can't be in foreground")
@@ -132,6 +133,8 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
         } else {
             state.activate()
         }
+        logState = state
+        logger.debug("Finished updating ActivityMonitor state: \(logState, privacy: .public)")
     }
 
     private func scheduleBackgroundTasks() {
@@ -166,9 +169,9 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
     private func scheduleBackgroundTask(request: BGTaskRequest) {
         do {
             try BGTaskScheduler.shared.submit(request)
-            logger.debug("Scheduled task with identifier \(request.identifier, privacy: .public) after \(request.earliestBeginDate?.description ?? "(nil)", privacy: .public)")
+            logger.info("Scheduled \(request.identifier, privacy: .public) task after \(request.earliestBeginDate?.description ?? "(nil)", privacy: .public)")
         } catch {
-            logger.error("Error scheduling task with identifier \(request.identifier, privacy: .public): \(error)")
+            logger.error("Error scheduling \(request.identifier, privacy: .public) task: \(error)")
         }
     }
 }

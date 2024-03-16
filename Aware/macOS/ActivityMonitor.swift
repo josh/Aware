@@ -24,12 +24,12 @@ class ActivityMonitor: ObservableObject {
     @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.info("state changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.notice("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
         }
     }
 
     private var cancellables = Set<AnyCancellable>()
-    private var pollCancellable: AnyCancellable?
+    private var updateCancellable: AnyCancellable?
 
     init(userIdleSeconds: TimeInterval) {
         userIdle = Duration(timeInterval: userIdleSeconds)
@@ -39,10 +39,10 @@ class ActivityMonitor: ObservableObject {
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received willSleepNotification")
                 guard let self = self else { return }
-                logger.notice("will sleep")
                 self.state.deactivate()
-                self.poll()
+                self.update()
             }
             .store(in: &cancellables)
 
@@ -51,14 +51,14 @@ class ActivityMonitor: ObservableObject {
             .map { _ in () }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
+                logger.notice("Received didWakeNotification")
                 guard let self = self else { return }
-                logger.notice("did wake")
                 self.state.activate()
-                self.poll()
+                self.update()
             }
             .store(in: &cancellables)
 
-        poll()
+        update()
     }
 
     var startDate: Date? {
@@ -73,17 +73,20 @@ class ActivityMonitor: ObservableObject {
         state.duration(to: .init(endDate))
     }
 
-    private func poll() {
+    private func update() {
+        var logState = state
+        logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
+
         let lastUserEvent = secondsSinceLastUserEvent()
         let idleDeadline = userIdle - lastUserEvent
         let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
 
-        logger.debug("last user event: \(lastUserEvent)")
+        logger.debug("Last user event \(lastUserEvent, privacy: .public) ago")
         if isMainDisplayAsleep {
-            logger.debug("main display asleep")
+            logger.info("Main display is asleep")
         }
 
-        pollCancellable?.cancel()
+        updateCancellable?.cancel()
 
         if idleDeadline <= .zero || isMainDisplayAsleep {
             if state.isActive {
@@ -91,13 +94,14 @@ class ActivityMonitor: ObservableObject {
             }
             assert(state.isIdle)
 
-            logger.debug("schedule next poll on user event")
-            pollCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
+            logger.info("Scheduled next update on user event")
+            updateCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
                 .map { _ in () }
                 .first()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] in
-                    self?.poll()
+                    logger.notice("Received user activity event")
+                    self?.update()
                 }
         } else {
             if state.isIdle {
@@ -105,18 +109,21 @@ class ActivityMonitor: ObservableObject {
             }
             assert(state.isActive)
 
-            logger.debug("schedule next poll in \(idleDeadline)")
-            pollCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
+            updateCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
                 .autoconnect()
                 .map { _ in () }
                 .first()
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] in
-                    self?.poll()
+                    logger.notice("Received timer event")
+                    self?.update()
                 }
+            logger.info("Scheduled next update in \(idleDeadline, privacy: .public)")
         }
 
-        assert(pollCancellable != nil, "expected poll to be scheduled")
+        assert(updateCancellable != nil, "expected update to be scheduled")
+        logState = state
+        logger.debug("Finished updating ActivityMonitor state: \(logState, privacy: .public)")
     }
 }
 

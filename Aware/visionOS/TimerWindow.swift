@@ -20,10 +20,10 @@ struct TimerWindow: Scene {
         .windowResizability(.contentSize)
         .windowStyle(.plain)
         .backgroundTask(.appRefresh("fetchActivityMonitor")) {
-            activityMonitor.refresh()
+            activityMonitor.update()
         }
         .backgroundTask(.appRefresh("processingActivityMonitor")) {
-            activityMonitor.refresh()
+            activityMonitor.update()
         }
     }
 }
