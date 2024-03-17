@@ -2,15 +2,13 @@ import XCTest
 
 @testable import Aware
 
-final class PausedClock: @unchecked Sendable, Clock, Equatable {
+final class PausedClock: @unchecked Sendable, Clock {
     var now: Instant
     init() { now = .now }
 
     typealias Instant = ContinuousClock.Instant
     var minimumResolution: Duration { ContinuousClock().minimumResolution }
     func sleep(until _: Instant, tolerance _: Duration?) async throws {}
-
-    static func == (_: PausedClock, _: PausedClock) -> Bool { true }
 
     func advance(by duration: Duration) {
         now = now.advanced(by: duration)

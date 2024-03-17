@@ -155,8 +155,12 @@ struct TimerState<C: Clock>: Sendable {
     }
 }
 
-// Unsure if Clocks should be Equatable by convention.
-extension TimerState: Equatable where C: Equatable {}
+extension TimerState: Equatable {
+    /// Returns a Boolean value indicating whether two values are equal.
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.state == rhs.state
+    }
+}
 
 extension TimerState: CustomStringConvertible where C.Duration == Swift.Duration {
     /// A textual representation of this timer state.
