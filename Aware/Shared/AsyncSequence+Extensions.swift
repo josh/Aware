@@ -60,3 +60,16 @@ struct AsyncVoidIterator<Base>: AsyncIteratorProtocol where Base: AsyncIteratorP
 
 extension AsyncVoidSequence: Sendable where Base: Sendable {}
 extension AsyncVoidIterator: Sendable where Base: Sendable {}
+
+// MARK: AsyncSequence+Any
+
+extension AsyncSequence {
+    /// Check if sequence has a next element. Useful when you don't care about the element itself,
+    /// or the element is not `Sendable`.
+    func any() async throws -> Bool {
+        try Task.checkCancellation()
+        let element = try await first(where: { _ in true })
+        try Task.checkCancellation()
+        return element != nil
+    }
+}
