@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0303E68C2BA6722A007B7220 /* AsyncSequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0303E68B2BA6722A007B7220 /* AsyncSequence+Extensions.swift */; };
 		03302E332B99542400097402 /* NSEvent+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03302E322B99542400097402 /* NSEvent+Publisher.swift */; platformFilters = (macos, ); };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
 		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0303E68B2BA6722A007B7220 /* AsyncSequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncSequence+Extensions.swift"; sourceTree = "<group>"; };
 		03302E322B99542400097402 /* NSEvent+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSEvent+Publisher.swift"; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
 		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		0341CB6F2B9C35EE00CC0C96 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0303E68B2BA6722A007B7220 /* AsyncSequence+Extensions.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
 				03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
+				0303E68C2BA6722A007B7220 /* AsyncSequence+Extensions.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
 				03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
