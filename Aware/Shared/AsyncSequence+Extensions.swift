@@ -50,26 +50,33 @@ struct AsyncVoidIterator<Base>: AsyncIteratorProtocol where Base: AsyncIteratorP
     }
 
     mutating func next() async rethrows -> Void? {
-        if let _ = try await base.next() {
-            return ()
-        } else {
+        guard let _ = try await base.next() else {
             return nil
         }
+        return ()
     }
 }
 
 extension AsyncVoidSequence: Sendable where Base: Sendable {}
 extension AsyncVoidIterator: Sendable where Base: Sendable {}
 
-// MARK: AsyncSequence+Any
+// MARK: AsyncSequence+First
 
 extension AsyncSequence {
-    /// Check if sequence has a next element. Useful when you don't care about the element itself,
-    /// or the element is not `Sendable`.
-    func any() async throws -> Bool {
-        try Task.checkCancellation()
-        let element = try await first(where: { _ in true })
-        try Task.checkCancellation()
-        return element != nil
+    /// Returns the first element of the sequence.
+    ///
+    /// See https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md#additional-asyncsequence-functions-1
+    var first: Element? {
+        get async throws {
+            var iterator = makeAsyncIterator()
+            return try await iterator.next()
+        }
+    }
+
+    /// A Boolean value indicating whether the sequence is empty.
+    var isEmpty: Bool {
+        get async throws {
+            try await first == nil
+        }
     }
 }
