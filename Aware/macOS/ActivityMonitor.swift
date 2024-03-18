@@ -39,90 +39,109 @@ class ActivityMonitor: ObservableObject {
         $state.removeDuplicates().eraseToAnyPublisher().values
     }
 
-    private var cancellables = Set<AnyCancellable>()
-    private var updateCancellable: AnyCancellable?
+    private var updateTask: Task<Void, Never>?
 
     init(userIdleSeconds: TimeInterval) {
         userIdle = Duration(timeInterval: userIdleSeconds)
 
-        NSWorkspace.shared.notificationCenter
-            .publisher(for: NSWorkspace.willSleepNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received willSleepNotification")
-                guard let self = self else { return }
-                self.state.deactivate()
-                self.update()
+        updateTask = Task {
+            do {
+                logger.debug("Starting ActivityMonitor update task")
+                try await update()
+                logger.debug("Finished ActivityMonitor update task")
+            } catch is CancellationError {
+                logger.debug("ActivityMonitor update task canceled")
+            } catch {
+                logger.error("ActivityMonitor update task canceled unexpectedly: \(error)")
             }
-            .store(in: &cancellables)
-
-        NSWorkspace.shared.notificationCenter
-            .publisher(for: NSWorkspace.didWakeNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received didWakeNotification")
-                guard let self = self else { return }
-                self.state.activate()
-                self.update()
-            }
-            .store(in: &cancellables)
-
-        update()
+        }
     }
 
-    private func update() {
-        var logState = state
-        logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
+    deinit {
+        updateTask?.cancel()
+    }
 
-        let lastUserEvent = secondsSinceLastUserEvent()
-        let idleDeadline = userIdle - lastUserEvent
-        let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
+    private func update() async throws {
+        async let updateTask: () = { @MainActor [weak self] in
+            while true {
+                guard let self = self else { break }
+                try Task.checkCancellation()
 
-        logger.debug("Last user event \(lastUserEvent, privacy: .public) ago")
-        if isMainDisplayAsleep {
-            logger.info("Main display is asleep")
-        }
+                var logState = self.state
+                logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
 
-        updateCancellable?.cancel()
+                let lastUserEvent = secondsSinceLastUserEvent()
+                let idleRemaining = self.userIdle - lastUserEvent
+                let isMainDisplayAsleep = CGDisplayIsAsleep(CGMainDisplayID()) == 1
 
-        if idleDeadline <= .zero || isMainDisplayAsleep {
-            if state.isActive {
-                state.deactivate()
-            }
-            assert(state.isIdle)
-
-            logger.info("Scheduled next update on user event")
-            updateCancellable = NSEventGlobalPublisher(mask: userActivityEventMask)
-                .map { _ in () }
-                .first()
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] in
-                    logger.log("Received user activity event")
-                    self?.update()
+                logger.debug("Last user event \(lastUserEvent, privacy: .public) ago")
+                if isMainDisplayAsleep {
+                    logger.info("Main display is asleep")
                 }
-        } else {
-            if state.isIdle {
-                state.activate()
-            }
-            assert(state.isActive)
 
-            updateCancellable = Timer.publish(every: idleDeadline.timeInterval, on: .main, in: .common)
-                .autoconnect()
-                .map { _ in () }
-                .first()
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] in
-                    logger.log("Received timer event")
-                    self?.update()
+                if idleRemaining <= .zero || isMainDisplayAsleep {
+                    if self.state.isActive {
+                        self.state.deactivate()
+                    }
+                    assert(self.state.isIdle)
+
+                    logger.debug("Waiting for user activity event")
+                    _ = try await NSEvent.globalEvents(matching: userActivityEventMask).isEmpty
+                    logger.debug("Received user activity event")
+                } else {
+                    if self.state.isIdle {
+                        self.state.activate()
+                    }
+                    assert(self.state.isActive)
+
+                    logger.debug("Sleeping for \(idleRemaining, privacy: .public)")
+                    let now: ContinuousClock.Instant = .now
+                    try await Task.sleep(for: idleRemaining, tolerance: self.userIdleTolerance)
+                    logger.debug("Slept for \(.now - now, privacy: .public)")
                 }
-            logger.info("Scheduled next update in \(idleDeadline, privacy: .public)")
-        }
 
-        assert(updateCancellable != nil, "expected update to be scheduled")
-        logState = state
-        logger.debug("Finished updating ActivityMonitor state: \(logState, privacy: .public)")
+                logState = self.state
+                logger.debug("Finished updating ActivityMonitor state: \(logState, privacy: .public)")
+            }
+        }()
+
+        async let willSleepTask: () = { @MainActor [weak self] in
+            for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.willSleepNotification).maskElements {
+                logger.log("Received willSleepNotification")
+                guard let self = self else { break }
+                self.state.deactivate()
+            }
+        }()
+
+        async let didWakeTask: () = { @MainActor [weak self] in
+            for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.didWakeNotification).maskElements {
+                logger.log("Received didWakeNotification")
+                guard let self = self else { break }
+                self.state.activate()
+            }
+        }()
+
+        async let screensDidSleepTask: () = { @MainActor [weak self] in
+            for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidSleepNotification).maskElements {
+                logger.log("Received screensDidSleepNotification")
+                guard let self = self else { break }
+                self.state.deactivate()
+            }
+        }()
+
+        async let screensDidWakeTask: () = { @MainActor [weak self] in
+            for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidWakeNotification).maskElements {
+                logger.log("Received screensDidWakeNotification")
+                guard let self = self else { break }
+                self.state.activate()
+            }
+        }()
+
+        try await updateTask
+        await willSleepTask
+        await didWakeTask
+        await screensDidSleepTask
+        await screensDidWakeTask
     }
 }
 
