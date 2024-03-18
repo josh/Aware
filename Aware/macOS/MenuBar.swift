@@ -8,7 +8,10 @@
 #if os(macOS)
 
 import AppKit
+import OSLog
 import SwiftUI
+
+private let logger = Logger(subsystem: "com.awaremac.Aware", category: "MenuBar")
 
 struct MenuBar: Scene {
     // User configurable idle time in seconds (defaults to 2 minutes)
@@ -18,40 +21,47 @@ struct MenuBar: Scene {
         MenuBarExtra {
             MenuBarContentView()
         } label: {
-            TimerMenuBarLabel(userIdleSeconds: self.userIdleSeconds)
+            TimerMenuBarLabel(userIdleSeconds: userIdleSeconds)
         }
     }
 }
 
 struct TimerMenuBarLabel: View {
-    @StateObject private var activityMonitor: ActivityMonitor
-    @State private var statusBarButton: NSStatusBarButton?
-
     /// Set text refresh rate to 60 seconds, as only minutes are shown
     private let textRefreshRate: TimeInterval = 60.0
 
-    init(userIdleSeconds: TimeInterval) {
-        let activityMonitor = ActivityMonitor(userIdleSeconds: userIdleSeconds)
-        _activityMonitor = StateObject(wrappedValue: activityMonitor)
-    }
+    let userIdleSeconds: TimeInterval
+
+    @State private var activityMonitorState = TimerState(clock: UTCClock())
+    @State private var statusBarButton: NSStatusBarButton?
 
     var body: some View {
         Group {
-            if let startDate = self.activityMonitor.startDate {
+            if let startDate = activityMonitorState.start?.date {
                 MenuBarTimelineView(.periodic(from: startDate, by: textRefreshRate)) { context in
-                    let duration = activityMonitor.duration(to: context.date)
+                    let duration = activityMonitorState.duration(to: UTCClock.Instant(context.date))
                     Text(duration, format: .abbreviatedDuration)
                 }
             } else {
                 Text(.seconds(0), format: .abbreviatedDuration)
             }
         }
-        .onAppear {
-            self.statusBarButton = findStatusBarItem()?.button
+        .task {
+            logger.debug("Starting observe ActivityMonitor state changes")
+            let activityMonitor = ActivityMonitor(userIdleSeconds: userIdleSeconds)
+            for await state in activityMonitor.stateUpdates {
+                let oldState = activityMonitorState
+                logger.log("Observed ActivityMonitor state change from \(oldState, privacy: .public) to \(state, privacy: .public)")
+                activityMonitorState = state
+            }
+            logger.debug("Finished observing ActivityMonitor state changes")
         }
-        .onChange(of: activityMonitor.isIdle) { isIdle in
-            assert(self.statusBarButton != nil)
-            self.statusBarButton?.appearsDisabled = isIdle
+        .onAppear {
+            statusBarButton = findStatusBarItem()?.button
+        }
+        .onChange(of: activityMonitorState.isIdle) { isIdle in
+            assert(statusBarButton != nil)
+            statusBarButton?.appearsDisabled = isIdle
         }
     }
 }

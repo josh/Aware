@@ -28,6 +28,14 @@ class ActivityMonitor: ObservableObject {
         }
     }
 
+    typealias Updates = AsyncPublisher<AnyPublisher<TimerState<UTCClock>, Never>>
+
+    var stateUpdates: Updates {
+        // TODO: This uses ObservableObject's publisher to create an AsyncSequence.
+        // Would be nice to implement a custom `Updates` type and remove the Combine dependency.
+        $state.removeDuplicates().eraseToAnyPublisher().values
+    }
+
     private var cancellables = Set<AnyCancellable>()
     private var updateCancellable: AnyCancellable?
 
