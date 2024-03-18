@@ -18,8 +18,11 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Sleeping or waking the computer will reset the timer back to zero.
 @MainActor
 class ActivityMonitor: ObservableObject {
-    /// The number of seconds since the last user event to consider time idle.
-    var userIdle: Duration
+    /// The duration since the last user event to consider time idle.
+    let userIdle: Duration
+
+    /// The duration of idle timer tolerance
+    let userIdleTolerance: Duration = .seconds(5)
 
     @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
