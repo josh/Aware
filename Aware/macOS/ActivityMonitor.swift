@@ -72,18 +72,6 @@ class ActivityMonitor: ObservableObject {
         update()
     }
 
-    var startDate: Date? {
-        state.start?.date
-    }
-
-    var isIdle: Bool {
-        state.isIdle
-    }
-
-    func duration(to endDate: Date) -> Duration {
-        state.duration(to: .init(endDate))
-    }
-
     private func update() {
         var logState = state
         logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
