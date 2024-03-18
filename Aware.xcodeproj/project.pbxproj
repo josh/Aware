@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03302E332B99542400097402 /* NSEvent+Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03302E322B99542400097402 /* NSEvent+Publisher.swift */; platformFilters = (macos, ); };
 		033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033A81F82BA8078B001216AA /* WatchChannel.swift */; };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
 		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
@@ -43,7 +42,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03302E322B99542400097402 /* NSEvent+Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSEvent+Publisher.swift"; sourceTree = "<group>"; };
 		033A81F82BA8078B001216AA /* WatchChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannel.swift; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
 		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 				0381B4982B808A5A002213F6 /* MenuBar.swift */,
 				036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */,
 				0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */,
-				03302E322B99542400097402 /* NSEvent+Publisher.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -294,7 +291,6 @@
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
 				036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */,
 				0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */,
-				03302E332B99542400097402 /* NSEvent+Publisher.swift in Sources */,
 				03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */,
 				03DA21642B84160800367F4C /* SettingsView.swift in Sources */,
 				0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */,
