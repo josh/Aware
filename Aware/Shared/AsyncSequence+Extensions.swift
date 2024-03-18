@@ -59,24 +59,3 @@ struct AsyncVoidIterator<Base>: AsyncIteratorProtocol where Base: AsyncIteratorP
 
 extension AsyncVoidSequence: Sendable where Base: Sendable {}
 extension AsyncVoidIterator: Sendable where Base: Sendable {}
-
-// MARK: AsyncSequence+First
-
-extension AsyncSequence {
-    /// Returns the first element of the sequence.
-    ///
-    /// See https://github.com/apple/swift-evolution/blob/main/proposals/0298-asyncsequence.md#additional-asyncsequence-functions-1
-    var first: Element? {
-        get async throws {
-            var iterator = makeAsyncIterator()
-            return try await iterator.next()
-        }
-    }
-
-    /// A Boolean value indicating whether the sequence is empty.
-    var isEmpty: Bool {
-        get async throws {
-            try await first == nil
-        }
-    }
-}
