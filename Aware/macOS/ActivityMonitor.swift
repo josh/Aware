@@ -8,7 +8,6 @@
 #if os(macOS)
 
 import AppKit
-import Combine
 import OSLog
 
 private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
@@ -17,26 +16,26 @@ private let logger = Logger(subsystem: "com.awaremac.Aware", category: "Activity
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
 /// Sleeping or waking the computer will reset the timer back to zero.
 @MainActor
-class ActivityMonitor: ObservableObject {
+class ActivityMonitor {
     /// The duration since the last user event to consider time idle.
     let userIdle: Duration
 
     /// The duration of idle timer tolerance
     let userIdleTolerance: Duration = .seconds(5)
 
-    @Published var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
+    var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
             logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            self.updatesChannel.send(newValue)
         }
     }
 
-    typealias Updates = AsyncPublisher<AnyPublisher<TimerState<UTCClock>, Never>>
+    typealias Updates = WatchChannel<TimerState<UTCClock>>.Subscription
+    private var updatesChannel = WatchChannel<TimerState<UTCClock>>()
 
     var stateUpdates: Updates {
-        // TODO: This uses ObservableObject's publisher to create an AsyncSequence.
-        // Would be nice to implement a custom `Updates` type and remove the Combine dependency.
-        $state.removeDuplicates().eraseToAnyPublisher().values
+        updatesChannel.subscribe()
     }
 
     private var updateTask: Task<Void, Never>?
