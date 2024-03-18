@@ -72,7 +72,7 @@ class ActivityMonitor: ObservableObject {
                             assert(self.state.isIdle)
 
                             logger.debug("Waiting for user activity event")
-                            _ = try await NSEvent.globalEvents(matching: userActivityEventMask).isEmpty
+                            _ = try await waitUntilNextUserActivityEvent()
                             logger.debug("Received user activity event")
                         } else {
                             if self.state.isIdle {
@@ -159,6 +159,12 @@ private let userActivityEventTypes: [CGEventType] = [
     .keyDown,
     .scrollWheel,
 ]
+
+func waitUntilNextUserActivityEvent() async throws {
+    for await _ in NSEvent.globalEvents(matching: userActivityEventMask) {
+        return
+    }
+}
 
 private func secondsSinceLastUserEvent() -> Duration {
     return userActivityEventTypes.map { eventType in

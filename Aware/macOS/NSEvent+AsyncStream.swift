@@ -27,28 +27,8 @@ extension NSEvent {
         }
     }
 
-    final class Events: AsyncSequence, @unchecked Sendable {
-        typealias AsyncIterator = Iterator
-        typealias Element = NSEvent
-
-        struct Iterator: AsyncIteratorProtocol {
-            private var iterator: AsyncStream<NSEvent>.Iterator
-
-            fileprivate init(iterator: AsyncStream<NSEvent>.Iterator) {
-                self.iterator = iterator
-            }
-
-            mutating func next() async -> NSEvent? {
-                await iterator.next()
-            }
-        }
-
-        private let stream: AsyncStream<NSEvent>
-
-        fileprivate init(matching mask: NSEvent.EventTypeMask, bufferingPolicy: AsyncStream<NSEvent>.Continuation.BufferingPolicy = .unbounded) {
-            let (stream, continuation) = AsyncStream.makeStream(of: NSEvent.self, bufferingPolicy: bufferingPolicy)
-            self.stream = stream
-
+    static func globalEvents(matching mask: NSEvent.EventTypeMask) -> AsyncStream<NSEvent> {
+        AsyncStream { continuation in
             let monitor = NSEvent.addGlobalMonitorForEvents(matching: mask) { event in
                 continuation.yield(event)
             }
@@ -58,14 +38,6 @@ extension NSEvent {
                 eventMonitor.cancel()
             }
         }
-
-        func makeAsyncIterator() -> Iterator {
-            Iterator(iterator: stream.makeAsyncIterator())
-        }
-    }
-
-    static func globalEvents(matching mask: NSEvent.EventTypeMask) -> NSEvent.Events {
-        NSEvent.Events(matching: mask)
     }
 }
 
