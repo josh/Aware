@@ -72,7 +72,7 @@ class ActivityMonitor: ObservableObject {
                             assert(self.state.isIdle)
 
                             logger.debug("Waiting for user activity event")
-                            _ = try await waitUntilNextUserActivityEvent()
+                            try await waitUntilNextUserActivityEvent()
                             logger.debug("Received user activity event")
                         } else {
                             if self.state.isIdle {
