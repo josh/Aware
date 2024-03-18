@@ -92,7 +92,7 @@ class ActivityMonitor: ObservableObject {
                 }()
 
                 async let willSleepTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.willSleepNotification).maskElements {
+                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.willSleepNotification).map({ _ in () }) {
                         logger.log("Received willSleepNotification")
                         guard let self = self else { break }
                         self.state.deactivate()
@@ -100,7 +100,7 @@ class ActivityMonitor: ObservableObject {
                 }()
 
                 async let didWakeTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.didWakeNotification).maskElements {
+                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.didWakeNotification).map({ _ in () }) {
                         logger.log("Received didWakeNotification")
                         guard let self = self else { break }
                         self.state.activate()
@@ -108,7 +108,7 @@ class ActivityMonitor: ObservableObject {
                 }()
 
                 async let screensDidSleepTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidSleepNotification).maskElements {
+                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidSleepNotification).map({ _ in () }) {
                         logger.log("Received screensDidSleepNotification")
                         guard let self = self else { break }
                         self.state.deactivate()
@@ -116,7 +116,7 @@ class ActivityMonitor: ObservableObject {
                 }()
 
                 async let screensDidWakeTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidWakeNotification).maskElements {
+                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidWakeNotification).map({ _ in () }) {
                         logger.log("Received screensDidWakeNotification")
                         guard let self = self else { break }
                         self.state.activate()
