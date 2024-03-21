@@ -47,14 +47,10 @@ struct TimerMenuBarLabel: View {
             }
         }
         .task {
-            logger.debug("Starting observe ActivityMonitor state changes")
             let activityMonitor = ActivityMonitor(userIdleSeconds: userIdleSeconds)
             for await state in activityMonitor.stateUpdates {
-                let oldState = activityMonitorState
-                logger.log("Observed ActivityMonitor state change from \(oldState, privacy: .public) to \(state, privacy: .public)")
                 activityMonitorState = state
             }
-            logger.debug("Finished observing ActivityMonitor state changes")
         }
         .onAppear {
             statusBarButton = findStatusBarItem()?.button
