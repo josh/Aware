@@ -54,6 +54,7 @@ struct WatchChannel<Element> where Element: Sendable {
 
         func cancel() {
             _ = protectedSubscriptions.withLock { subscriptions in subscriptions.removeValue(forKey: id) }
+            continuation.finish()
         }
 
         func makeAsyncIterator() -> Iterator {

@@ -27,7 +27,7 @@ class ActivityMonitor {
         didSet {
             let newValue = state
             logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
-            self.updatesChannel.send(newValue)
+            updatesChannel.send(newValue)
         }
     }
 

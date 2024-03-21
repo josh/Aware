@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */; };
 		033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033A81F82BA8078B001216AA /* WatchChannel.swift */; };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
 		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannelTests.swift; sourceTree = "<group>"; };
 		033A81F82BA8078B001216AA /* WatchChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannel.swift; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
 		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */,
 				0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */,
 				0341CB722B9C456400CC0C96 /* UTCClockTests.swift */,
+				0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */,
 			);
 			path = AwareTests;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */,
 				0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */,
 				0341CB732B9C456400CC0C96 /* UTCClockTests.swift in Sources */,
+				0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
