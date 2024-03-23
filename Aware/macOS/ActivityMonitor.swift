@@ -96,7 +96,7 @@ class ActivityMonitor {
                         guard let self = self else { break }
 
                         switch name {
-                        case NSWorkspace.willSleepNotification, NSWorkspace.screensDidSleepNotification:
+                        case NSWorkspace.willSleepNotification, NSWorkspace.screensDidSleepNotification, NSWorkspace.willPowerOffNotification:
                             self.state.deactivate()
                         case NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification:
                             self.state.activate()
@@ -129,6 +129,7 @@ private let sleepWakeNotifications = [
     NSWorkspace.didWakeNotification,
     NSWorkspace.screensDidSleepNotification,
     NSWorkspace.screensDidWakeNotification,
+    NSWorkspace.willPowerOffNotification,
 ]
 
 private let userActivityEventMask: NSEvent.EventTypeMask = [
