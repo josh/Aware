@@ -90,43 +90,24 @@ class ActivityMonitor {
                     }
                 }()
 
-                async let willSleepTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.willSleepNotification).map({ _ in () }) {
-                        logger.log("Received willSleepNotification")
+                async let notificationsTask: () = { @MainActor in
+                    for await name in NSWorkspace.shared.notificationCenter.mergeNotifications(named: sleepWakeNotifications).map({ notification in notification.name }) {
+                        logger.log("Received \(name.rawValue, privacy: .public)")
                         guard let self = self else { break }
-                        self.state.deactivate()
-                    }
-                }()
 
-                async let didWakeTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.didWakeNotification).map({ _ in () }) {
-                        logger.log("Received didWakeNotification")
-                        guard let self = self else { break }
-                        self.state.activate()
-                    }
-                }()
-
-                async let screensDidSleepTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidSleepNotification).map({ _ in () }) {
-                        logger.log("Received screensDidSleepNotification")
-                        guard let self = self else { break }
-                        self.state.deactivate()
-                    }
-                }()
-
-                async let screensDidWakeTask: () = { @MainActor in
-                    for await _ in NSWorkspace.shared.notificationCenter.notifications(named: NSWorkspace.screensDidWakeNotification).map({ _ in () }) {
-                        logger.log("Received screensDidWakeNotification")
-                        guard let self = self else { break }
-                        self.state.activate()
+                        switch name {
+                        case NSWorkspace.willSleepNotification, NSWorkspace.screensDidSleepNotification:
+                            self.state.deactivate()
+                        case NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification:
+                            self.state.activate()
+                        default:
+                            assertionFailure("unexpected notification name: \(name)")
+                        }
                     }
                 }()
 
                 try await updateTask
-                await willSleepTask
-                await didWakeTask
-                await screensDidSleepTask
-                await screensDidWakeTask
+                await notificationsTask
                 try Task.checkCancellation()
 
                 logger.debug("Finished ActivityMonitor update task")
@@ -142,6 +123,13 @@ class ActivityMonitor {
         updateTask?.cancel()
     }
 }
+
+private let sleepWakeNotifications = [
+    NSWorkspace.willSleepNotification,
+    NSWorkspace.didWakeNotification,
+    NSWorkspace.screensDidSleepNotification,
+    NSWorkspace.screensDidWakeNotification,
+]
 
 private let userActivityEventMask: NSEvent.EventTypeMask = [
     .leftMouseDown,
