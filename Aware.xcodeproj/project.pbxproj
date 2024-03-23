@@ -16,6 +16,8 @@
 		0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB742B9CDEAC00CC0C96 /* TimerState.swift */; };
 		0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */; };
 		0341CB792B9D4CEB00CC0C96 /* TimerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB782B9D4CEB00CC0C96 /* TimerWindow.swift */; platformFilters = (xros, ); };
+		0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */; };
+		0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */; };
 		036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */; platformFilters = (macos, ); };
 		036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DA9B42B7AF52E0066B4B2 /* App.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -52,6 +54,8 @@
 		0341CB742B9CDEAC00CC0C96 /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
 		0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStateTests.swift; sourceTree = "<group>"; };
 		0341CB782B9D4CEB00CC0C96 /* TimerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerWindow.swift; sourceTree = "<group>"; };
+		0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+AsyncSequence.swift"; sourceTree = "<group>"; };
+		0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterTests.swift; sourceTree = "<group>"; };
 		036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimelineView.swift; sourceTree = "<group>"; };
 		036DA9B42B7AF52E0066B4B2 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +99,7 @@
 			children = (
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
 				03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */,
+				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
 				0341CB742B9CDEAC00CC0C96 /* TimerState.swift */,
 				0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */,
@@ -164,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */,
+				0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */,
 				0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */,
 				0341CB722B9C456400CC0C96 /* UTCClockTests.swift */,
 				0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */,
@@ -285,6 +291,7 @@
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
 				03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */,
+				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
 				0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */,
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,
@@ -307,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */,
+				0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */,
 				0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */,
 				0341CB732B9C456400CC0C96 /* UTCClockTests.swift in Sources */,
 				0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */,
