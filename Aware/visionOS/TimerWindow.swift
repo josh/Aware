@@ -10,7 +10,9 @@
 import OSLog
 import SwiftUI
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "TimerWindow")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "TimerWindow"
+)
 
 struct TimerWindow: Scene {
     private let activityMonitor = ActivityMonitor()

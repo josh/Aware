@@ -11,7 +11,9 @@ import AppKit
 import OSLog
 import SwiftUI
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "MenuBar")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "MenuBar"
+)
 
 struct MenuBar: Scene {
     // User configurable idle time in seconds (defaults to 2 minutes)

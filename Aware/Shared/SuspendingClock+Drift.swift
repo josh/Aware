@@ -8,7 +8,9 @@
 import Foundation
 import OSLog
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "SuspendingClock+Drift")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "SuspendingClock+Drift"
+)
 
 #if canImport(AppKit)
 import AppKit

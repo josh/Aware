@@ -12,7 +12,9 @@ import Combine
 import OSLog
 import UIKit
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "ActivityMonitor"
+)
 
 @Observable class ActivityMonitor {
     /// The identifier for BGAppRefreshTaskRequest

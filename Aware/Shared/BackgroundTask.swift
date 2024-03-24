@@ -9,7 +9,9 @@ import BackgroundTasks
 import OSLog
 import SwiftUI
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "BackgroundTask")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "BackgroundTask"
+)
 
 @available(macOS, unavailable)
 struct BackgroundTask {

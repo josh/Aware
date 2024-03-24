@@ -10,7 +10,9 @@
 import AppKit
 import OSLog
 
-private let logger = Logger(subsystem: "com.awaremac.Aware", category: "ActivityMonitor")
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "ActivityMonitor"
+)
 
 /// Automatically tracks macOS user input activity.
 /// Timer continues running as long as user has made an input within the `userIdleSeconds` interval.
