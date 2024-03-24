@@ -31,6 +31,7 @@
 		0394D1752B845FB400FE7020 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1742B845FB400FE7020 /* TimerView.swift */; platformFilters = (xros, ); };
 		0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1762B84630E00FE7020 /* TimerTextView.swift */; platformFilters = (xros, ); };
 		03DA21642B84160800367F4C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DA21632B84160800367F4C /* SettingsView.swift */; platformFilters = (xros, ); };
+		03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */; };
 		03F1C34E2B92AE6E0084572C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */; };
 		03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */; };
 		03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */; };
@@ -74,6 +75,7 @@
 		0394D1742B845FB400FE7020 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		0394D1762B84630E00FE7020 /* TimerTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTextView.swift; sourceTree = "<group>"; };
 		03DA21632B84160800367F4C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Nonisolated.swift"; sourceTree = "<group>"; };
 		03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatStyles.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
+				03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */,
 				0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */,
 				0341CB742B9CDEAC00CC0C96 /* TimerState.swift */,
 				0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */,
@@ -300,6 +303,7 @@
 				03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
+				03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */,
 				0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */,
 				0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */,
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,

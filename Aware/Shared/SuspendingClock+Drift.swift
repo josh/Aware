@@ -31,8 +31,8 @@ import UIKit
 private let notificationCenter: NotificationCenter = .default
 
 private let notifications: [Notification.Name] = [
-    UIApplication.didEnterBackgroundNotification,
-    UIApplication.willEnterForegroundNotification,
+    UIApplication.nonisolatedDidEnterBackgroundNotification,
+    UIApplication.nonisolatedWillEnterForegroundNotification,
 ]
 
 #endif
