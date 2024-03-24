@@ -8,7 +8,8 @@
 import Foundation
 import os.lock
 
-/// A single-producer, multi-consumer channel. Many values can be sent, but no history is kept. Receivers only see the most recent value.
+/// A single-producer, multi-consumer channel. Many values can be sent, but no history is kept.
+/// Receivers only see the most recent value.
 struct WatchChannel<Element> where Element: Sendable {
     private let protectedSubscriptions: OSAllocatedUnfairLock<[UUID: Subscription]> =
         OSAllocatedUnfairLock(initialState: [:])

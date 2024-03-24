@@ -68,10 +68,8 @@ struct TimerMenuBarLabel: View {
 // https://github.com/orchetect/MenuBarExtraAccess/blob/main/Sources/MenuBarExtraAccess/MenuBarExtraUtils.swift
 @MainActor
 private func findStatusBarItem() -> NSStatusItem? {
-    for window in NSApp.windows {
-        if window.className == "NSStatusBarWindow" {
-            return window.value(forKey: "statusItem") as? NSStatusItem
-        }
+    for window in NSApp.windows where window.className == "NSStatusBarWindow" {
+        return window.value(forKey: "statusItem") as? NSStatusItem
     }
     assertionFailure("couldn't find NSStatusBarWindow")
     return nil
