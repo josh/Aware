@@ -62,11 +62,13 @@ extension SuspendingClock {
             drift = continuousDuration - suspendingDuration
             assert(drift >= .milliseconds(-1), "suspending clock running ahead of continuous clock")
 
-            logger.debug("""
-            continuous \(continuousDuration, privacy: .public) - \
-            suspending \(suspendingDuration, privacy: .public) = \
-            drift \(drift, privacy: .public)
-            """)
+            logger.debug(
+                """
+                continuous \(continuousDuration, privacy: .public) - \
+                suspending \(suspendingDuration, privacy: .public) = \
+                drift \(drift, privacy: .public)
+                """
+            )
 
             if drift > threshold {
                 logger.log("suspending drift exceeded threshold: \(drift, privacy: .public)")

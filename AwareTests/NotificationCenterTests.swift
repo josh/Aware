@@ -9,7 +9,7 @@ final class NotificationCenterTests: XCTestCase {
     let userInfo = ["message": "Hello, world!"]
 
     func testSendableObserver() {
-        let expectation = self.expectation(description: "fooNotification")
+        let expectation = expectation(description: "fooNotification")
 
         let observer = center.observe(for: fooNotification) { [userInfo] notification in
             XCTAssertEqual(notification.name.rawValue, "fooNotification")

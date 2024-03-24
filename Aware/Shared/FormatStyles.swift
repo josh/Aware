@@ -40,7 +40,10 @@ struct DurationFormatStyle<S>: FormatStyle where S: FormatStyle, S.FormatInput =
 }
 
 extension FormatStyle where Self == TimeIntervalFormatStyle<Date.ComponentsFormatStyle> {
-    static func components(style: Date.ComponentsFormatStyle.Style, fields: Set<Date.ComponentsFormatStyle.Field>? = nil) -> Self {
+    static func components(
+        style: Date.ComponentsFormatStyle.Style,
+        fields: Set<Date.ComponentsFormatStyle.Field>? = nil
+    ) -> Self {
         .init(Date.ComponentsFormatStyle.components(style: style, fields: fields))
     }
 
@@ -50,7 +53,10 @@ extension FormatStyle where Self == TimeIntervalFormatStyle<Date.ComponentsForma
 }
 
 extension FormatStyle where Self == DurationFormatStyle<Date.ComponentsFormatStyle> {
-    static func components(style: Date.ComponentsFormatStyle.Style, fields: Set<Date.ComponentsFormatStyle.Field>? = nil) -> Self {
+    static func components(
+        style: Date.ComponentsFormatStyle.Style,
+        fields: Set<Date.ComponentsFormatStyle.Field>? = nil
+    ) -> Self {
         .init(Date.ComponentsFormatStyle.components(style: style, fields: fields))
     }
 
@@ -60,7 +66,10 @@ extension FormatStyle where Self == DurationFormatStyle<Date.ComponentsFormatSty
 }
 
 struct AbbreviatedTimeIntervalFormatStyle: FormatStyle {
-    private var style: TimeIntervalFormatStyle<Date.ComponentsFormatStyle> = .components(style: .condensedAbbreviated, fields: [.hour, .minute])
+    private var style: TimeIntervalFormatStyle<Date.ComponentsFormatStyle> = .components(
+        style: .condensedAbbreviated,
+        fields: [.hour, .minute]
+    )
     private var bounds = 0 ..< Double(Int.max)
 
     /// Formats a time interval as a human readable duration string.
@@ -73,7 +82,10 @@ struct AbbreviatedTimeIntervalFormatStyle: FormatStyle {
 }
 
 struct AbbreviatedDurationFormatStyle: FormatStyle {
-    private var style: DurationFormatStyle<Date.ComponentsFormatStyle> = .components(style: .condensedAbbreviated, fields: [.hour, .minute])
+    private var style: DurationFormatStyle<Date.ComponentsFormatStyle> = .components(
+        style: .condensedAbbreviated,
+        fields: [.hour, .minute]
+    )
 
     /// Formats a duration as a human readable string.
     /// - Parameter value: The duration to format.

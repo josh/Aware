@@ -14,8 +14,10 @@ extension NotificationCenter {
     ///   - names: An array of notification names.
     ///   - object: A source object of notifications.
     /// - Returns: A merged asynchronous sequence of notifications from the center.
-    func mergeNotifications(named names: [Notification.Name], object: AnyObject? = nil) -> AsyncStream<Notification> {
-        return AsyncStream { continuation in
+    func mergeNotifications(named names: [Notification.Name], object: AnyObject? = nil)
+        -> AsyncStream<Notification>
+    {
+        AsyncStream { continuation in
             let observers = names.map { name in
                 observe(for: name, object: object) { notification in
                     continuation.yield(notification)

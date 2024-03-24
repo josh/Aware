@@ -18,7 +18,7 @@ struct BackgroundTask {
     private let taskRequestType: TaskRequestType
 
     static func appRefresh(_ identifier: String) -> Self {
-        return BackgroundTask(identifier: identifier, taskRequestType: .appRefresh)
+        BackgroundTask(identifier: identifier, taskRequestType: .appRefresh)
     }
 
     static func processing(
@@ -26,7 +26,7 @@ struct BackgroundTask {
         requiresExternalPower: Bool = false,
         requiresNetworkConnectivity: Bool = false
     ) -> Self {
-        return BackgroundTask(
+        BackgroundTask(
             identifier: identifier,
             taskRequestType: .processing(
                 requiresExternalPower: requiresExternalPower,
@@ -78,12 +78,13 @@ struct BackgroundTask {
     }
 
     func schedule(for beginDate: Date) {
-        let request = self.request
+        let request = request
         request.earliestBeginDate = beginDate
 
         do {
             try BGTaskScheduler.shared.submit(request)
-            logger.info("Scheduled \(identifier, privacy: .public) task after \(beginDate, privacy: .public)")
+            logger.info(
+                "Scheduled \(identifier, privacy: .public) task after \(beginDate, privacy: .public)")
         } catch let error as BGTaskScheduler.Error {
             switch error.code {
             case .unavailable:
@@ -106,7 +107,7 @@ struct BackgroundTask {
 @available(macOS, unavailable)
 extension Scene {
     func backgroundTask(_ task: BackgroundTask) -> some Scene {
-        return backgroundTask(.appRefresh(task.identifier)) {
+        backgroundTask(.appRefresh(task.identifier)) {
             logger.log("Starting background task: \(task.identifier, privacy: .public)")
             let notification = Notification(name: task.notificationName, object: BGTaskScheduler.shared)
             NotificationCenter.default.post(notification)

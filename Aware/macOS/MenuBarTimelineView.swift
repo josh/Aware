@@ -11,13 +11,18 @@ import SwiftUI
 
 // Using TimelineView within MenuBarExtra content seems to beachball on macOS Sonoma 14.4.
 // Reported Feedback FB13678902 on Mar 7, 2024.
-struct MenuBarTimelineView<Schedule, Content>: View where Schedule: TimelineSchedule, Content: View {
+struct MenuBarTimelineView<Schedule, Content>: View
+    where Schedule: TimelineSchedule, Content: View
+{
     let schedule: Schedule
     let content: (MenuBarTimelineViewDefaultContext) -> Content
 
     @State private var context: MenuBarTimelineViewDefaultContext = .init(date: .now)
 
-    init(_ schedule: Schedule, @ViewBuilder content: @escaping (MenuBarTimelineViewDefaultContext) -> Content) {
+    init(
+        _ schedule: Schedule,
+        @ViewBuilder content: @escaping (MenuBarTimelineViewDefaultContext) -> Content
+    ) {
         self.schedule = schedule
         self.content = content
     }
@@ -38,7 +43,7 @@ struct MenuBarTimelineView<Schedule, Content>: View where Schedule: TimelineSche
                         }
                     }
                     assert(date <= Date.now, "didn't sleep long enough")
-                    self.context = .init(date: date)
+                    context = .init(date: date)
                 }
             }
     }

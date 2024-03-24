@@ -26,7 +26,8 @@ class ActivityMonitor {
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.log(
+                "State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
             updatesChannel.send(newValue)
         }
     }
@@ -49,7 +50,7 @@ class ActivityMonitor {
 
                 async let updateTask: () = { @MainActor in
                     while true {
-                        guard let self = self else { break }
+                        guard let self else { break }
                         try Task.checkCancellation()
 
                         var logState = self.state
@@ -91,12 +92,15 @@ class ActivityMonitor {
                 }()
 
                 async let notificationsTask: () = { @MainActor in
-                    for await name in NSWorkspace.shared.notificationCenter.mergeNotifications(named: sleepWakeNotifications).map({ notification in notification.name }) {
+                    for await name in NSWorkspace.shared.notificationCenter.mergeNotifications(
+                        named: sleepWakeNotifications
+                    ).map({ notification in notification.name }) {
                         logger.log("Received \(name.rawValue, privacy: .public)")
-                        guard let self = self else { break }
+                        guard let self else { break }
 
                         switch name {
-                        case NSWorkspace.willSleepNotification, NSWorkspace.screensDidSleepNotification, NSWorkspace.willPowerOffNotification:
+                        case NSWorkspace.willSleepNotification, NSWorkspace.screensDidSleepNotification,
+                             NSWorkspace.willPowerOffNotification:
                             self.state.deactivate()
                         case NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification:
                             self.state.activate()
@@ -155,7 +159,7 @@ func waitUntilNextUserActivityEvent() async throws {
 }
 
 private func secondsSinceLastUserEvent() -> Duration {
-    return userActivityEventTypes.map { eventType in
+    userActivityEventTypes.map { eventType in
         CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: eventType)
     }.min().map { ti in Duration(timeInterval: ti) } ?? .zero
 }

@@ -10,13 +10,13 @@ import Foundation
 extension Duration {
     /// Construct a Duration given a number of minutes represented as a BinaryInteger.
     /// - Returns: A Duration representing a given number of minutes.
-    static func minutes<T: BinaryInteger>(_ minutes: T) -> Duration {
-        return seconds(minutes * 60)
+    static func minutes(_ minutes: some BinaryInteger) -> Duration {
+        seconds(minutes * 60)
     }
 
     /// Construct a Duration given a number of hours represented as a BinaryInteger.
     /// - Returns: A Duration representing a given number of hours.
-    static func hours<T: BinaryInteger>(_ hours: T) -> Duration {
-        return minutes(hours * 60)
+    static func hours(_ hours: some BinaryInteger) -> Duration {
+        minutes(hours * 60)
     }
 }

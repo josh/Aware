@@ -10,7 +10,8 @@ import os.lock
 
 /// A single-producer, multi-consumer channel. Many values can be sent, but no history is kept. Receivers only see the most recent value.
 struct WatchChannel<Element> where Element: Sendable {
-    private let protectedSubscriptions: OSAllocatedUnfairLock<[UUID: Subscription]> = OSAllocatedUnfairLock(initialState: [:])
+    private let protectedSubscriptions: OSAllocatedUnfairLock<[UUID: Subscription]> =
+        OSAllocatedUnfairLock(initialState: [:])
 
     private var subscriptions: [UUID: Subscription] {
         protectedSubscriptions.withLock { $0 }
@@ -30,7 +31,9 @@ struct WatchChannel<Element> where Element: Sendable {
 
     func subscribe() -> Subscription {
         let subscription = Subscription(protectedSubscriptions: protectedSubscriptions)
-        protectedSubscriptions.withLock { subscriptions in subscriptions[subscription.id] = subscription }
+        protectedSubscriptions.withLock { subscriptions in
+            subscriptions[subscription.id] = subscription
+        }
         return subscription
     }
 
@@ -43,7 +46,8 @@ struct WatchChannel<Element> where Element: Sendable {
         fileprivate init(protectedSubscriptions: OSAllocatedUnfairLock<[UUID: Subscription]>) {
             self.protectedSubscriptions = protectedSubscriptions
 
-            let (stream, continuation) = AsyncStream<Element>.makeStream(bufferingPolicy: .bufferingNewest(1))
+            let (stream, continuation) = AsyncStream<Element>.makeStream(
+                bufferingPolicy: .bufferingNewest(1))
             self.stream = stream
             self.continuation = continuation
         }

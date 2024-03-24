@@ -51,25 +51,25 @@ struct TimerState<C: Clock>: Sendable {
     var isActive: Bool {
         switch state {
         case .idle:
-            return false
+            false
         case let .grace(_, expires):
-            return clock.now < expires
+            clock.now < expires
         case .active:
-            return true
+            true
         }
     }
 
     /// Check if the timer is idle.
     var isIdle: Bool {
-        return !isActive
+        !isActive
     }
 
     /// Check timer has associated expiration, regardless of it being valid.
     var hasExpiration: Bool {
         if case .grace = state {
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 
@@ -77,11 +77,11 @@ struct TimerState<C: Clock>: Sendable {
     var start: C.Instant? {
         switch state {
         case .idle:
-            return nil
+            nil
         case let .grace(start, expires):
-            return clock.now < expires ? start : nil
+            clock.now < expires ? start : nil
         case let .active(start):
-            return start
+            start
         }
     }
 
@@ -89,11 +89,11 @@ struct TimerState<C: Clock>: Sendable {
     var expires: C.Instant? {
         switch state {
         case .idle:
-            return nil
+            nil
         case let .grace(_, expires):
-            return clock.now < expires ? expires : nil
+            clock.now < expires ? expires : nil
         case .active:
-            return nil
+            nil
         }
     }
 
@@ -102,9 +102,9 @@ struct TimerState<C: Clock>: Sendable {
     /// - Returns: the duration or zero if timer is idle
     func duration(to end: C.Instant) -> C.Duration {
         if let start {
-            return start.duration(to: end)
+            start.duration(to: end)
         } else {
-            return C.Duration.zero
+            C.Duration.zero
         }
     }
 
@@ -173,7 +173,8 @@ extension TimerState: CustomStringConvertible where C.Duration == Swift.Duration
             let now = clock.now
             if now < expires {
                 let startFormatted = start.duration(to: now).formatted(.time(pattern: .hourMinuteSecond))
-                let expiresFormatted = now.duration(to: expires).formatted(.time(pattern: .hourMinuteSecond))
+                let expiresFormatted = now.duration(to: expires).formatted(
+                    .time(pattern: .hourMinuteSecond))
                 return "active[\(startFormatted), expires in \(expiresFormatted)]"
             } else {
                 return "idle[expired]"
