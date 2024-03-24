@@ -19,6 +19,7 @@
 		0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */; };
 		0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */; };
 		0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */; };
+		0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59E2BAFB97300C5741E /* BackgroundTask.swift */; };
 		036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */; platformFilters = (macos, ); };
 		036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DA9B42B7AF52E0066B4B2 /* App.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+AsyncSequence.swift"; sourceTree = "<group>"; };
 		0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterTests.swift; sourceTree = "<group>"; };
 		0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuspendingClock+Drift.swift"; sourceTree = "<group>"; };
+		0347D59E2BAFB97300C5741E /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
 		036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimelineView.swift; sourceTree = "<group>"; };
 		036DA9B42B7AF52E0066B4B2 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +101,7 @@
 		0341CB6F2B9C35EE00CC0C96 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
 				03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
@@ -292,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
+				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
 				03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
