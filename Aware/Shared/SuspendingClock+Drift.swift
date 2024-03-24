@@ -45,6 +45,9 @@ extension SuspendingClock {
     /// - Returns: The drift duration above the `threshold`
     @discardableResult
     func monitorDrift(threshold: Duration) async throws -> Duration {
+        logger.debug("Starting SuspendingClock drift monitor")
+        defer { logger.debug("Finished SuspendingClock drift monitor") }
+
         let continuousClock = ContinuousClock()
         let suspendingClock = self
 
