@@ -16,7 +16,7 @@ private nonisolated(unsafe) let logger = Logger(
 @available(macOS, unavailable)
 struct BackgroundTask {
     let identifier: String
-    let notificationName: Notification.Name
+    let notification: Notification.Name
     private let taskRequestType: TaskRequestType
 
     static func appRefresh(_ identifier: String) -> Self {
@@ -45,7 +45,7 @@ struct BackgroundTask {
     init(identifier: String, taskRequestType: TaskRequestType) {
         self.identifier = identifier
         self.taskRequestType = taskRequestType
-        notificationName = Notification.Name(identifier)
+        notification = Notification.Name(identifier)
     }
 
     func cancel() {
@@ -111,7 +111,7 @@ extension Scene {
     func backgroundTask(_ task: BackgroundTask) -> some Scene {
         backgroundTask(.appRefresh(task.identifier)) {
             logger.log("Starting background task: \(task.identifier, privacy: .public)")
-            let notification = Notification(name: task.notificationName, object: BGTaskScheduler.shared)
+            let notification = Notification(name: task.notification, object: BGTaskScheduler.shared)
             NotificationCenter.default.post(notification)
             logger.log("Finished background task: \(task.identifier, privacy: .public)")
         }
