@@ -10,18 +10,14 @@ env:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - macos-13
-          - macos-14
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: macos-14
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set Xcode version
+        run: sudo xcode-select --switch /Applications/Xcode_15.3.app
 
       - name: Print Xcode version
         run: xcodebuild -version -sdk
