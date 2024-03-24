@@ -34,7 +34,8 @@ class ActivityMonitor {
     var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
         didSet {
             let newValue = state
-            logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            logger.log(
+                "State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
             updatesChannel.send(newValue)
 
             if newValue.hasExpiration {
@@ -59,7 +60,7 @@ class ActivityMonitor {
     private var updateTask: Task<Void, Never>?
 
     init() {
-        updateTask = Task { [weak self, maxSuspendingClockDrift] in
+        updateTask = Task { @MainActor [weak self, maxSuspendingClockDrift] in
             do {
                 logger.debug("Starting ActivityMonitor update task")
 
