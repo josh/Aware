@@ -15,25 +15,15 @@ private nonisolated(unsafe) let logger = Logger(
 )
 
 struct TimerWindow: Scene {
-    private let activityMonitor = ActivityMonitor()
-
     var body: some Scene {
         WindowGroup {
-            TimerView(activityMonitor: activityMonitor)
+            TimerView()
         }
         .defaultSize(width: 240, height: 135)
         .windowResizability(.contentSize)
         .windowStyle(.plain)
-        .backgroundTask(.appRefresh("fetchActivityMonitor")) {
-            logger.log("Starting background task: fetchActivityMonitor")
-            activityMonitor.update()
-            logger.log("Finished background task: fetchActivityMonitor")
-        }
-        .backgroundTask(.appRefresh("processingActivityMonitor")) {
-            logger.log("Starting background task: processingActivityMonitor")
-            activityMonitor.update()
-            logger.log("Finished background task: processingActivityMonitor")
-        }
+        .backgroundTask(fetchActivityMonitorTask)
+        .backgroundTask(processingActivityMonitorTask)
     }
 }
 

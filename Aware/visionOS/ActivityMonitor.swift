@@ -7,8 +7,6 @@
 
 #if os(visionOS)
 
-import BackgroundTasks
-import Combine
 import OSLog
 import UIKit
 
@@ -16,15 +14,13 @@ private nonisolated(unsafe) let logger = Logger(
     subsystem: "com.awaremac.Aware", category: "ActivityMonitor"
 )
 
-@Observable class ActivityMonitor {
-    /// The identifier for BGAppRefreshTaskRequest
-    let backgroundAppRefreshIdentifier = "fetchActivityMonitor"
+let fetchActivityMonitorTask: BackgroundTask = .appRefresh("fetchActivityMonitor")
+let processingActivityMonitorTask: BackgroundTask = .processing("processingActivityMonitor")
 
-    /// The identifier for BGProcessingTaskRequest
-    let backgroundProcessingIdentifier = "processingActivityMonitor"
-
+@MainActor
+class ActivityMonitor {
     /// The minimum number of seconds to schedule between background tasks.
-    let backgroundTaskInterval: TimeInterval = 5 * 60
+    let backgroundTaskInterval: Duration = .minutes(5)
 
     /// The duration the app can be in the background and be considered active if it's opened again.
     let backgroundGracePeriod: Duration = .hours(2)
@@ -39,143 +35,138 @@ private nonisolated(unsafe) let logger = Logger(
         didSet {
             let newValue = state
             logger.log("State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+            updatesChannel.send(newValue)
 
             if newValue.hasExpiration {
-                scheduleBackgroundTasks()
+                fetchActivityMonitorTask.reschedule(after: backgroundTaskInterval)
+                processingActivityMonitorTask.reschedule(after: backgroundTaskInterval)
+                // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
+                // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
             } else if oldValue.hasExpiration {
-                cancelBackgroundTasks()
+                fetchActivityMonitorTask.cancel()
+                processingActivityMonitorTask.cancel()
             }
         }
     }
 
-    @ObservationIgnored
-    private var clocks: (continuous: ContinuousClock.Instant, suspending: SuspendingClock.Instant) = (.now, .now)
+    typealias Updates = WatchChannel<TimerState<UTCClock>>.Subscription
+    private var updatesChannel = WatchChannel<TimerState<UTCClock>>()
 
-    @ObservationIgnored
-    private var cancellables = Set<AnyCancellable>()
+    var stateUpdates: Updates {
+        updatesChannel.subscribe()
+    }
+
+    private var updateTask: Task<Void, Never>?
 
     init() {
-        NotificationCenter.default
-            .publisher(for: UIApplication.didEnterBackgroundNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received didEnterBackgroundNotification")
-                guard let self = self else { return }
-                checkClockDrift()
-                self.state.activate(for: backgroundGracePeriod)
+        updateTask = Task { [weak self, maxSuspendingClockDrift] in
+            do {
+                logger.debug("Starting ActivityMonitor update task")
+
+                let center = NotificationCenter.default
+
+                async let driftTask: () = {
+                    while true {
+                        try await SuspendingClock().monitorDrift(threshold: maxSuspendingClockDrift)
+                        center.post(name: .suspendingClockDriftNotification, object: nil)
+                    }
+                }()
+
+                let app = UIApplication.shared
+
+                // Set initial state
+                if let self {
+                    assert(app.applicationState != .background)
+                    assert(app.isProtectedDataAvailable)
+                    assert(self.state.isIdle)
+                    state.activate()
+                } else {
+                    assertionFailure("task cancelled before initialization")
+                }
+
+                let notificationNames = [
+                    UIApplication.didEnterBackgroundNotification,
+                    UIApplication.willEnterForegroundNotification,
+                    UIApplication.protectedDataDidBecomeAvailableNotification,
+                    UIApplication.protectedDataWillBecomeUnavailableNotification,
+                    fetchActivityMonitorTask.notification,
+                    processingActivityMonitorTask.notification,
+                    .suspendingClockDriftNotification,
+                ]
+
+                for await notificationName in center.mergeNotifications(named: notificationNames).map({
+                    notification in notification.name
+                }) {
+                    logger.log("Received \(notificationName.rawValue, privacy: .public)")
+                    guard let self else { break }
+
+                    switch notificationName {
+                    case UIApplication.didEnterBackgroundNotification:
+                        assert(app.applicationState == .background)
+                        assert(app.isProtectedDataAvailable)
+                        state.activate(for: backgroundGracePeriod)
+
+                    case UIApplication.willEnterForegroundNotification:
+                        assert(app.applicationState != .background)
+                        assert(app.isProtectedDataAvailable)
+                        state.activate()
+
+                    case UIApplication.protectedDataDidBecomeAvailableNotification:
+                        // TODO: But if I'm in the background, then maybe activate with grace?
+                        assert(app.applicationState == .background)
+                        assert(app.isProtectedDataAvailable)
+                        state.activate()
+
+                    case UIApplication.protectedDataWillBecomeUnavailableNotification:
+                        assert(app.applicationState == .background)
+                        assert(app.isProtectedDataAvailable)
+                        state.activate(for: lockGracePeriod)
+
+                    case fetchActivityMonitorTask.notification,
+                         processingActivityMonitorTask.notification:
+
+                        if app.applicationState == .background {
+                            if app.isProtectedDataAvailable {
+                                state.activate(for: backgroundGracePeriod)
+                            } else {
+                                state.deactivate()
+                            }
+                        } else {
+                            // TODO: This branch maybe useless
+                            assert(app.isProtectedDataAvailable, "expected protected data to be available")
+                            assert(state.isActive, "expected to already be active")
+                            assert(!state.hasExpiration, "expected to not have expiration")
+                            state.activate()
+                        }
+
+                    case .suspendingClockDriftNotification:
+                        state.deactivate()
+
+                    default:
+                        assertionFailure("unexpected notification name: \(notificationName)")
+                    }
+                }
+
+                try await driftTask
+
+                try Task.checkCancellation()
+                logger.debug("Finished ActivityMonitor update task")
+            } catch is CancellationError {
+                logger.debug("ActivityMonitor update task canceled")
+            } catch {
+                logger.error("ActivityMonitor update task canceled unexpectedly: \(error)")
             }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received willEnterForegroundNotification")
-                guard let self = self else { return }
-                checkClockDrift()
-                self.state.activate()
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.protectedDataDidBecomeAvailableNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received protectedDataDidBecomeAvailableNotification")
-                guard let self = self else { return }
-                update()
-            }
-            .store(in: &cancellables)
-
-        NotificationCenter.default
-            .publisher(for: UIApplication.protectedDataWillBecomeUnavailableNotification)
-            .map { _ in () }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                logger.log("Received protectedDataWillBecomeUnavailableNotification")
-                guard let self = self else { return }
-                self.state.activate(for: lockGracePeriod)
-            }
-            .store(in: &cancellables)
-    }
-
-    var startDate: Date? {
-        state.start?.date
-    }
-
-    func duration(to endDate: Date) -> Duration {
-        state.duration(to: .init(endDate))
-    }
-
-    private func checkClockDrift() {
-        let continuousDuration = .now - clocks.continuous
-        let suspendingDuration = .now - clocks.suspending
-        let suspendingDrift = continuousDuration - suspendingDuration
-        logger.debug("Suspending clock drift: \(suspendingDrift, privacy: .public)")
-
-        if suspendingDrift > maxSuspendingClockDrift {
-            logger.log("Exceeded max suspending clock drift: \(suspendingDrift, privacy: .public)")
-            clocks = (.now, .now)
-            state.deactivate()
         }
     }
 
-    func update() {
-        var logState = state
-        logger.debug("Updating ActivityMonitor state: \(logState, privacy: .public)")
-        let app = UIApplication.shared
-        if !app.isProtectedDataAvailable {
-            assert(app.applicationState == .background, "locked can't be in foreground")
-            state.deactivate()
-        } else if app.applicationState == .background {
-            state.activate(for: backgroundGracePeriod)
-        } else {
-            state.activate()
-        }
-        logState = state
-        logger.debug("Finished updating ActivityMonitor state: \(logState, privacy: .public)")
+    deinit {
+        updateTask?.cancel()
     }
+}
 
-    private func scheduleBackgroundTasks() {
-        cancelBackgroundTasks()
-        scheduleBackgroundRefreshTask()
-        scheduleBackgroundProcessingTask()
-        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
-        // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
-    }
-
-    private func cancelBackgroundTasks() {
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: backgroundAppRefreshIdentifier)
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: backgroundProcessingIdentifier)
-    }
-
-    private func scheduleBackgroundRefreshTask() {
-        let request = BGAppRefreshTaskRequest(identifier: backgroundAppRefreshIdentifier)
-        let beginDate: Date = .now.addingTimeInterval(backgroundTaskInterval)
-        request.earliestBeginDate = beginDate
-        scheduleBackgroundTask(request: request)
-    }
-
-    private func scheduleBackgroundProcessingTask() {
-        let request = BGProcessingTaskRequest(identifier: backgroundProcessingIdentifier)
-        let beginDate: Date = .now.addingTimeInterval(backgroundTaskInterval)
-        request.earliestBeginDate = beginDate
-        request.requiresExternalPower = false
-        request.requiresNetworkConnectivity = false
-        scheduleBackgroundTask(request: request)
-    }
-
-    private func scheduleBackgroundTask(request: BGTaskRequest) {
-        do {
-            try BGTaskScheduler.shared.submit(request)
-            logger.info("Scheduled \(request.identifier, privacy: .public) task after \(request.earliestBeginDate?.description ?? "(nil)", privacy: .public)")
-        } catch {
-            logger.error("Error scheduling \(request.identifier, privacy: .public) task: \(error)")
-        }
-    }
+fileprivate extension Notification.Name {
+    static let suspendingClockDriftNotification = Notification.Name(
+        "suspendingClockDriftNotification")
 }
 
 #endif
