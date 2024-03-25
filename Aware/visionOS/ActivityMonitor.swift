@@ -113,10 +113,9 @@ class ActivityMonitor {
                         state.activate()
 
                     case UIApplication.protectedDataDidBecomeAvailableNotification:
-                        // TODO: But if I'm in the background, then maybe activate with grace?
                         assert(app.applicationState == .background)
                         assert(app.isProtectedDataAvailable)
-                        state.activate()
+                        state.activate(for: backgroundGracePeriod)
 
                     case UIApplication.protectedDataWillBecomeUnavailableNotification:
                         assert(app.applicationState == .background)
