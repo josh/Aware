@@ -33,7 +33,7 @@
 		03DA21642B84160800367F4C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DA21632B84160800367F4C /* SettingsView.swift */; platformFilters = (xros, ); };
 		03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */; };
 		03F1C34E2B92AE6E0084572C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */; };
-		03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */; };
+		03F9E2311C24CCA8001DBE86 /* FormatStyle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */; };
 		03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -78,7 +78,7 @@
 		03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Nonisolated.swift"; sourceTree = "<group>"; };
 		03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatStyles.swift; sourceTree = "<group>"; };
+		03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Extensions.swift"; sourceTree = "<group>"; };
 		03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatStylesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,7 +105,7 @@
 			children = (
 				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
-				03F9E2301C24CCA8001DBE86 /* FormatStyles.swift */,
+				03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
 				03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */,
@@ -300,7 +300,7 @@
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
 				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
-				03F9E2311C24CCA8001DBE86 /* FormatStyles.swift in Sources */,
+				03F9E2311C24CCA8001DBE86 /* FormatStyle+Extensions.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
 				03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */,
