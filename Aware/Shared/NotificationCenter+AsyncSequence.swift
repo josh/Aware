@@ -18,8 +18,8 @@ extension NotificationCenter {
     func mergeNotifications(
         named names: [Notification.Name],
         object: AnyObject? = nil
-    ) -> AsyncStream<Notification> {
-        AsyncStream { continuation in
+    ) -> MergedNotifications {
+        let stream = AsyncStream(bufferingPolicy: .bufferingNewest(7)) { continuation in
             let observers = names.map { name in
                 observe(for: name, object: object) { notification in
                     continuation.yield(notification)
@@ -32,6 +32,8 @@ extension NotificationCenter {
                 }
             }
         }
+
+        return MergedNotifications(stream: stream)
     }
 
     // func mergeNotifications(
@@ -60,4 +62,30 @@ extension NotificationCenter {
     //         }
     //     }
     // }
+}
+
+struct MergedNotifications: AsyncSequence, @unchecked Sendable {
+    typealias Element = Notification
+
+    private let stream: AsyncStream<Notification>
+
+    fileprivate init(stream: AsyncStream<Notification>) {
+        self.stream = stream
+    }
+
+    func makeAsyncIterator() -> Iterator {
+        Iterator(iterator: stream.makeAsyncIterator())
+    }
+
+    class Iterator: AsyncIteratorProtocol {
+        private var iterator: AsyncStream<Notification>.Iterator
+
+        fileprivate init(iterator: AsyncStream<Notification>.Iterator) {
+            self.iterator = iterator
+        }
+
+        func next() async -> Notification? {
+            await iterator.next()
+        }
+    }
 }
