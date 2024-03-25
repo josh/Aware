@@ -28,7 +28,7 @@ extension NSEvent {
     }
 
     static func globalEvents(matching mask: NSEvent.EventTypeMask) -> AsyncStream<NSEvent> {
-        AsyncStream { continuation in
+        AsyncStream(bufferingPolicy: .bufferingNewest(7)) { continuation in
             let monitor = NSEvent.addGlobalMonitorForEvents(matching: mask) { event in
                 continuation.yield(event)
             }
