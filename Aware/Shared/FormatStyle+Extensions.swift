@@ -1,5 +1,5 @@
 //
-//  FormatStyles.swift
+//  FormatStyle+Extensions.swift
 //  Aware
 //
 //  Created by Joshua Peek on 02/12/24.
