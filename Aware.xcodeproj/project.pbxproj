@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */; };
+		03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE22BB130880004BFDE /* AsyncStreamTests.swift */; };
 		0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */; };
 		033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033A81F82BA8078B001216AA /* WatchChannel.swift */; };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncStream+Extensions.swift"; sourceTree = "<group>"; };
+		03162DE22BB130880004BFDE /* AsyncStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncStreamTests.swift; sourceTree = "<group>"; };
 		0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannelTests.swift; sourceTree = "<group>"; };
 		033A81F82BA8078B001216AA /* WatchChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannel.swift; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
@@ -103,6 +107,7 @@
 		0341CB6F2B9C35EE00CC0C96 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */,
 				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
 				03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */,
@@ -177,6 +182,7 @@
 		03F9E2271C24CAD3001DBE86 /* AwareTests */ = {
 			isa = PBXGroup;
 			children = (
+				03162DE22BB130880004BFDE /* AsyncStreamTests.swift */,
 				03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */,
 				0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */,
 				0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */,
@@ -298,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
+				03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */,
 				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
 				03F9E2311C24CCA8001DBE86 /* FormatStyle+Extensions.swift in Sources */,
@@ -325,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */,
 				03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */,
 				0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */,
 				0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */,
