@@ -187,3 +187,9 @@ extension TimerState: CustomStringConvertible where C.Duration == Swift.Duration
         }
     }
 }
+
+extension TimerState where C == UTCClock {
+    init() {
+        self.init(clock: UTCClock())
+    }
+}
