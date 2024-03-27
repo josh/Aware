@@ -103,9 +103,12 @@ actor BackgroundTask {
             let submittedAgo: Duration = UTCClock.Instant(scheduledTask.submittedAt).duration(to: .now)
             let earliestBeginAgo: Duration = UTCClock.Instant(scheduledTask.earliestBeginAt).duration(
                 to: .now)
-            logger.log("Background submitted at \(scheduledTask.submittedAt), \(submittedAgo) ago")
             logger.log(
-                "Requested to run after \(scheduledTask.earliestBeginAt), \(earliestBeginAgo) after")
+                "Background submitted at \(scheduledTask.submittedAt, privacy: .public), \(submittedAgo, privacy: .public) ago"
+            )
+            logger.log(
+                "Requested to run after \(scheduledTask.earliestBeginAt, privacy: .public), \(earliestBeginAgo, privacy: .public) after"
+            )
         } else {
             logger.error(
                 "Running background task, but no scheduled \(identifier, privacy: .public) task noted")
@@ -113,7 +116,7 @@ actor BackgroundTask {
         lastRanTask = RanTask(task: scheduledTask, ranAt: .now)
 
         let notification = Notification(name: self.notification, object: self)
-        logger.log("Posting \(notification.name.rawValue) notification")
+        logger.log("Posting \(notification.name.rawValue, privacy: .public) notification")
         NotificationCenter.default.post(notification)
 
         logger.log("Finished background task: \(identifier, privacy: .public)")
@@ -137,7 +140,7 @@ actor BackgroundTask {
         let earliestBeginAt: Date = await earliestPendingTaskRequestBeginDate() ?? .distantPast
         guard beginDate > earliestBeginAt.addingTimeInterval(60) else {
             let identifier = identifier
-            logger.debug("\(identifier, privacy: .public) task already scheduled for \(beginDate)")
+            logger.debug("\(identifier, privacy: .public) task already scheduled for \(beginDate, privacy: .public)")
             return
         }
 
@@ -154,8 +157,7 @@ actor BackgroundTask {
         do {
             try BGTaskScheduler.shared.submit(request)
             scheduledTask = ScheduledTask(submittedAt: .now, earliestBeginAt: beginDate)
-            logger.info(
-                "Scheduled \(identifier, privacy: .public) task after \(beginDate, privacy: .public)")
+            logger.info("Scheduled \(identifier, privacy: .public) task after \(beginDate, privacy: .public)")
         } catch let error as BGTaskScheduler.Error {
             switch error.code {
             case .unavailable:
@@ -167,10 +169,11 @@ actor BackgroundTask {
             case .notPermitted:
                 logger.error("App isn’t permitted to launch \(identifier, privacy: .public) task")
             @unknown default:
-                logger.error("Unknown error scheduling \(identifier, privacy: .public) task: \(error)")
+                logger.error(
+                    "Unknown error scheduling \(identifier, privacy: .public) task: \(error, privacy: .public)")
             }
         } catch {
-            logger.error("Unknown error scheduling \(identifier, privacy: .public) task: \(error)")
+            logger.error("Unknown error scheduling \(identifier, privacy: .public) task: \(error, privacy: .public)")
         }
     }
 
