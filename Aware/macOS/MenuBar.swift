@@ -17,31 +17,35 @@ private nonisolated(unsafe) let logger = Logger(
 
 struct MenuBar: Scene {
     // User configurable idle time in seconds (defaults to 2 minutes)
-    @AppStorage("userIdleSeconds") private var userIdleSeconds: TimeInterval = 120.0
+    @AppStorage("userIdleSeconds") private var userIdleSeconds: Int = 120
+
+    var userIdle: Duration {
+        .seconds(max(1, userIdleSeconds))
+    }
 
     var body: some Scene {
         MenuBarExtra {
             MenuBarContentView()
         } label: {
-            TimerMenuBarLabel(userIdleSeconds: userIdleSeconds)
+            TimerMenuBarLabel(userIdle: userIdle)
         }
     }
 }
 
 struct TimerMenuBarLabel: View {
+    let userIdle: Duration
+
     /// Set text refresh rate to 60 seconds, as only minutes are shown
     private let textRefreshRate: TimeInterval = 60.0
 
-    let userIdleSeconds: TimeInterval
-
-    @State private var activityMonitorState = TimerState(clock: UTCClock())
+    @State private var timerState = TimerState()
     @State private var statusBarButton: NSStatusBarButton?
 
     var body: some View {
         Group {
-            if let startDate = activityMonitorState.start?.date {
-                MenuBarTimelineView(.periodic(from: startDate, by: textRefreshRate)) { context in
-                    let duration = activityMonitorState.duration(to: UTCClock.Instant(context.date))
+            if let start = timerState.start {
+                MenuBarTimelineView(.periodic(from: start.date, by: textRefreshRate)) { context in
+                    let duration = timerState.duration(to: UTCClock.Instant(context.date))
                     Text(duration, format: .abbreviatedDuration)
                 }
             } else {
@@ -49,15 +53,14 @@ struct TimerMenuBarLabel: View {
             }
         }
         .task {
-            let activityMonitor = ActivityMonitor(userIdleSeconds: userIdleSeconds)
-            for await state in activityMonitor.stateUpdates {
-                activityMonitorState = state
+            for await state in ActivityMonitor(initialState: timerState, userIdle: userIdle).updates() {
+                timerState = state
             }
         }
         .onAppear {
             statusBarButton = findStatusBarItem()?.button
         }
-        .onChange(of: activityMonitorState.isIdle) { isIdle in
+        .onChange(of: timerState.isIdle) { isIdle in
             assert(statusBarButton != nil)
             statusBarButton?.appearsDisabled = isIdle
         }

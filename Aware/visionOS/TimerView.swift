@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct TimerView: View {
-    @State private var activityMonitorState = TimerState(clock: UTCClock())
+    @State private var timerState = TimerState()
 
     @SceneStorage("glassBackground") private var glassBackground: Bool = true
     @State private var showSettings = false
@@ -20,9 +20,9 @@ struct TimerView: View {
 
     var body: some View {
         Group {
-            if let startDate = activityMonitorState.start?.date {
-                TimelineView(.periodic(from: startDate, by: textRefreshRate)) { context in
-                    let duration = activityMonitorState.duration(to: UTCClock.Instant(context.date))
+            if let start = timerState.start {
+                TimelineView(.periodic(from: start.date, by: textRefreshRate)) { context in
+                    let duration = timerState.duration(to: UTCClock.Instant(context.date))
                     TimerTextView(duration: duration, glassBackground: glassBackground)
                 }
             } else {
@@ -30,9 +30,8 @@ struct TimerView: View {
             }
         }
         .task {
-            let activityMonitor = ActivityMonitor()
-            for await state in activityMonitor.stateUpdates {
-                activityMonitorState = state
+            for await state in ActivityMonitor(initialState: timerState).updates() {
+                timerState = state
             }
         }
         #if DEBUG

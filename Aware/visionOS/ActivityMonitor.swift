@@ -17,8 +17,10 @@ private nonisolated(unsafe) let logger = Logger(
 let fetchActivityMonitorTask: BackgroundTask = .appRefresh("fetchActivityMonitor")
 let processingActivityMonitorTask: BackgroundTask = .processing("processingActivityMonitor")
 
-@MainActor
-class ActivityMonitor {
+struct ActivityMonitor {
+    /// Initial timer state
+    let initialState: TimerState<UTCClock>
+
     /// The minimum number of seconds to schedule between background tasks.
     let backgroundTaskInterval: Duration = .minutes(5)
 
@@ -31,59 +33,51 @@ class ActivityMonitor {
     /// The max duration to allow the suspending clock to drift from the continuous clock.
     let maxSuspendingClockDrift: Duration = .seconds(10)
 
-    var state: TimerState<UTCClock> = TimerState(clock: UTCClock()) {
-        didSet {
-            let newValue = state
-            logger.log(
-                "State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
-            updatesChannel.send(newValue)
-
-            if newValue.hasExpiration {
-                fetchActivityMonitorTask.reschedule(after: backgroundTaskInterval)
-                processingActivityMonitorTask.reschedule(after: backgroundTaskInterval)
-                // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
-                // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
-            } else if oldValue.hasExpiration {
-                fetchActivityMonitorTask.cancel()
-                processingActivityMonitorTask.cancel()
-            }
-        }
-    }
-
-    typealias Updates = WatchChannel<TimerState<UTCClock>>.Subscription
-    private var updatesChannel = WatchChannel<TimerState<UTCClock>>()
-
-    var stateUpdates: Updates {
-        updatesChannel.subscribe()
-    }
-
-    private var updateTask: Task<Void, Never>?
-
-    init() {
-        updateTask = Task { @MainActor [weak self, maxSuspendingClockDrift] in
+    /// Subscribe to an async stream of the latest `TimerState` events.
+    /// - Returns: An async sequence of `TimerState` values.
+    func updates() -> AsyncStream<TimerState<UTCClock>> {
+        AsyncStream(bufferingPolicy: .bufferingNewest(1)) { @MainActor yield in
             do {
-                logger.debug("Starting ActivityMonitor update task")
+                logger.info("Starting ActivityMonitor update task: \(initialState)")
 
-                let center = NotificationCenter.default
+                var state = initialState {
+                    didSet {
+                        let newValue = state
+                        if oldValue != newValue {
+                            logger.log(
+                                "State changed from \(oldValue, privacy: .public) to \(newValue, privacy: .public)")
+                            yield(newValue)
+                        } else {
+                            logger.debug("No state change \(newValue, privacy: .public)")
+                        }
 
-                async let driftTask: () = {
-                    while true {
-                        try await SuspendingClock().monitorDrift(threshold: maxSuspendingClockDrift)
-                        center.post(name: .suspendingClockDriftNotification, object: nil)
+                        if newValue.hasExpiration {
+                            fetchActivityMonitorTask.reschedule(after: backgroundTaskInterval)
+                            processingActivityMonitorTask.reschedule(after: backgroundTaskInterval)
+                            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
+                            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
+                        } else if oldValue.hasExpiration {
+                            fetchActivityMonitorTask.cancel()
+                            processingActivityMonitorTask.cancel()
+                        }
                     }
-                }()
+                }
 
                 let app = UIApplication.shared
 
                 // Set initial state
-                if let self {
-                    assert(app.applicationState != .background)
-                    assert(app.isProtectedDataAvailable)
-                    assert(self.state.isIdle)
-                    state.activate()
-                } else {
-                    assertionFailure("task cancelled before initialization")
-                }
+                assert(app.applicationState != .background)
+                assert(app.isProtectedDataAvailable)
+                state.activate()
+
+                let center = NotificationCenter.default
+
+                async let driftTask: () = { @MainActor in
+                    while !Task.isCancelled {
+                        try await SuspendingClock().monitorDrift(threshold: maxSuspendingClockDrift)
+                        state.deactivate()
+                    }
+                }()
 
                 let notificationNames = [
                     UIApplication.didEnterBackgroundNotification,
@@ -92,14 +86,10 @@ class ActivityMonitor {
                     UIApplication.protectedDataWillBecomeUnavailableNotification,
                     fetchActivityMonitorTask.notification,
                     processingActivityMonitorTask.notification,
-                    .suspendingClockDriftNotification,
                 ]
 
-                for await notificationName in center.mergeNotifications(named: notificationNames).map({
-                    notification in notification.name
-                }) {
+                for await notificationName in center.mergeNotifications(named: notificationNames).map(\.name) {
                     logger.log("Received \(notificationName.rawValue, privacy: .public)")
-                    guard let self else { break }
 
                     switch notificationName {
                     case UIApplication.didEnterBackgroundNotification:
@@ -127,46 +117,38 @@ class ActivityMonitor {
 
                         if app.applicationState == .background {
                             if app.isProtectedDataAvailable {
+                                // Running in background while device is unlocked
                                 state.activate(for: backgroundGracePeriod)
                             } else {
+                                // Running in background while device is locked
                                 state.deactivate()
                             }
                         } else {
-                            // TODO: This branch maybe useless
+                            // Active in foreground
                             assert(app.isProtectedDataAvailable, "expected protected data to be available")
                             assert(state.isActive, "expected to already be active")
                             assert(!state.hasExpiration, "expected to not have expiration")
                             state.activate()
                         }
 
-                    case .suspendingClockDriftNotification:
-                        state.deactivate()
-
                     default:
-                        assertionFailure("unexpected notification name: \(notificationName)")
+                        assertionFailure("unexpected notification: \(notificationName.rawValue)")
                     }
                 }
 
                 try await driftTask
 
+                assert(Task.isCancelled)
                 try Task.checkCancellation()
-                logger.debug("Finished ActivityMonitor update task")
+
+                logger.info("Finished ActivityMonitor update task")
             } catch is CancellationError {
-                logger.debug("ActivityMonitor update task canceled")
+                logger.info("ActivityMonitor update task canceled")
             } catch {
-                logger.error("ActivityMonitor update task canceled unexpectedly: \(error)")
+                logger.error("ActivityMonitor update task canceled unexpectedly: \(error, privacy: .public)")
             }
         }
     }
-
-    deinit {
-        updateTask?.cancel()
-    }
-}
-
-fileprivate extension Notification.Name {
-    static let suspendingClockDriftNotification = Notification.Name(
-        "suspendingClockDriftNotification")
 }
 
 #endif
