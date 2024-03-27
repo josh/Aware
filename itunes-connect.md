@@ -2,25 +2,31 @@
 
 ## Localizable Information
 
-**Name** Aware  
-**Privacy Policy URL**  
+**Name** Aware
+**Privacy Policy URL** https://awaremac.com/privacy
 
 ## General Information
 
-**Bundle ID** `com.awaremac.Aware`  
-**SKU** Aware1  
-**Primary Language** English  
-**Primary Category** Productivity  
-**License Agreement** Apple's Standard License Agreement  
-**Rating** Ages 4+  
+**Bundle ID** `com.awaremac.Aware`
+**SKU** Aware1
+**Primary Language** English
+**Primary Category** Productivity
+**License Agreement** Apple's Standard License Agreement
+**Rating** Ages 4+
 
 ## Pricing and Availability
 
-**Price** USD 0 (Free)  
-**Availability** Available in all territories  
-**Volume Purchase Program** Available with a volume discount for educational institutions  
-**Bitcode Auto-Recompilation** Use bitcode auto-recompilation  
-## Version Information
+**Price** USD 0 (Free)
+**Availability** Available in all territories
+**Volume Purchase Program** Available with a volume discount for educational institutions
+**Bitcode Auto-Recompilation** Use bitcode auto-recompilation
+
+## General App Information
+
+**Rating** Ages 4+
+**Copyright** 2016 Joshua Peek, Patrick Marsceill.
+
+## macOS App
 
 **Screenshots**
 
@@ -35,11 +41,18 @@ Aware tells you how long you've been using your computer in hours and minutes. I
 
 There are no assumptions made as to what you do with this information. No popups or alarms to tell you to take a break, just a record of time tracked in your menubar for easy access.
 
-**Keywords**  aware,time,timer,activity,usage,break  
-**Support URL** http://awaremac.com  
-**Marketing URL** http://awaremac.com  
+**Keywords** aware,time,timer,activity,usage,break
+**Support URL** http://awaremac.com
+**Marketing URL** http://awaremac.com
 
-## General App Information
+## visionOS App
 
-**Rating** Ages 4+  
-**Copyright** 2016 Joshua Peek, Patrick Marsceill.  
+**Description**
+
+A simple usage timer for visionOS that shows you how long you've been continuously wearing Vision Pro.
+
+Open Aware and place the timer window anywhere you'd like. The timer keeps running until you take off the device and restarts from zero when you put it back on to start a new session. No need to close the app, the timer resets itself.
+
+**Keywords** aware,time,timer,activity,usage,break
+**Support URL** http://awaremac.com
+**Marketing URL** http://awaremac.com
