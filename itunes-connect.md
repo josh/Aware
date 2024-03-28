@@ -53,6 +53,8 @@ A simple usage timer for visionOS that shows you how long you've been continuous
 
 Open Aware and place the timer window anywhere you'd like. The timer keeps running until you take off the device and restarts from zero when you put it back on to start a new session. No need to close the app, the timer resets itself.
 
+There are no assumptions made as to what you do with this information. No popups or alarms to tell you to take a break, just a record of time tracked in your timer window for easy access.
+
 **Keywords** aware,time,timer,activity,usage,break
 **Support URL** http://awaremac.com
 **Marketing URL** http://awaremac.com
