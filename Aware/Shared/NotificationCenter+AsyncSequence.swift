@@ -77,14 +77,14 @@ struct MergedNotifications: AsyncSequence, @unchecked Sendable {
         Iterator(iterator: stream.makeAsyncIterator())
     }
 
-    class Iterator: AsyncIteratorProtocol {
+    struct Iterator: AsyncIteratorProtocol {
         private var iterator: AsyncStream<Notification>.Iterator
 
         fileprivate init(iterator: AsyncStream<Notification>.Iterator) {
             self.iterator = iterator
         }
 
-        func next() async -> Notification? {
+        mutating func next() async -> Notification? {
             await iterator.next()
         }
     }

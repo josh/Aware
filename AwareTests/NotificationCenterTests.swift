@@ -113,7 +113,7 @@ final class NotificationCenterTests: XCTestCase {
         let expectation = expectation(description: "fooNotification")
 
         let consumerTask = Task {
-            let iterator = notifications.makeAsyncIterator()
+            var iterator = notifications.makeAsyncIterator()
 
             var total = 0
             for i in 4 ... 10 {
