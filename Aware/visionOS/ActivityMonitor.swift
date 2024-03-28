@@ -50,16 +50,6 @@ struct ActivityMonitor {
                         } else {
                             logger.debug("No state change \(newValue, privacy: .public)")
                         }
-
-                        if newValue.hasExpiration {
-                            fetchActivityMonitorTask.reschedule(after: backgroundTaskInterval)
-                            processingActivityMonitorTask.reschedule(after: backgroundTaskInterval)
-                            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
-                            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
-                        } else if oldValue.hasExpiration {
-                            fetchActivityMonitorTask.cancel()
-                            processingActivityMonitorTask.cancel()
-                        }
                     }
                 }
 
@@ -90,6 +80,8 @@ struct ActivityMonitor {
 
                 for await notificationName in center.mergeNotifications(named: notificationNames).map(\.name) {
                     logger.log("Received \(notificationName.rawValue, privacy: .public)")
+
+                    let oldState = state
 
                     switch notificationName {
                     case UIApplication.didEnterBackgroundNotification:
@@ -134,6 +126,9 @@ struct ActivityMonitor {
                     default:
                         assertionFailure("unexpected notification: \(notificationName.rawValue)")
                     }
+
+                    // It would be nice to do this in the state didSet hook, but we need async
+                    await rescheduleBackgroundTasks(oldState: oldState, newState: state)
                 }
 
                 try await driftTask
@@ -147,6 +142,19 @@ struct ActivityMonitor {
             } catch {
                 logger.error("ActivityMonitor update task canceled unexpectedly: \(error, privacy: .public)")
             }
+        }
+    }
+
+    private func rescheduleBackgroundTasks(oldState: TimerState<UTCClock>, newState: TimerState<UTCClock>) async {
+        if newState.hasExpiration {
+            let taskBeginDate = UTCClock.Instant.now.advanced(by: backgroundTaskInterval).date
+            await fetchActivityMonitorTask.reschedule(for: taskBeginDate)
+            await processingActivityMonitorTask.reschedule(for: taskBeginDate)
+            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
+            // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"processingActivityMonitor"]
+        } else if oldState.hasExpiration {
+            await fetchActivityMonitorTask.cancel()
+            await processingActivityMonitorTask.cancel()
         }
     }
 }

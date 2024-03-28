@@ -61,15 +61,6 @@ actor BackgroundTask {
         notification = Notification.Name(identifier)
     }
 
-    nonisolated func reschedule(after duration: Duration) {
-        let instant = UTCClock.Instant.now.advanced(by: duration)
-        Task { await self._reschedule(for: instant.date) }
-    }
-
-    nonisolated func cancel() {
-        Task { await self._cancel() }
-    }
-
     private var request: BGTaskRequest {
         switch taskRequestType {
         case .appRefresh:
@@ -109,7 +100,7 @@ actor BackgroundTask {
         logger.log("Finished background task: \(identifier, privacy: .public)")
     }
 
-    private func _cancel() async {
+    func cancel() async {
         let pendingCount = await countPendingTaskRequests()
         guard pendingCount > 0 else {
             logger.debug("No scheduled tasks to cancel")
@@ -123,7 +114,7 @@ actor BackgroundTask {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: identifier)
     }
 
-    private func _reschedule(for beginDate: Date) async {
+    func reschedule(for beginDate: Date) async {
         let earliestBeginAt: Date = await earliestPendingTaskRequestBeginDate() ?? .distantPast
         guard beginDate > earliestBeginAt.addingTimeInterval(60) else {
             let identifier = identifier
@@ -131,11 +122,11 @@ actor BackgroundTask {
             return
         }
 
-        await _cancel()
-        _schedule(for: beginDate)
+        await cancel()
+        schedule(for: beginDate)
     }
 
-    private func _schedule(for beginDate: Date) {
+    func schedule(for beginDate: Date) {
         let identifier = identifier
         let request = request
 
