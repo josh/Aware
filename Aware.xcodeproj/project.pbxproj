@@ -26,7 +26,6 @@
 		036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DA9B42B7AF52E0066B4B2 /* App.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
 		037195362B804E4C00B807ED /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037195352B804E4C00B807ED /* ActivityMonitor.swift */; platformFilters = (macos, ); };
-		0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4962B8081F2002213F6 /* LoginItem.swift */; platformFilters = (macos, ); };
 		0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0381B4982B808A5A002213F6 /* MenuBar.swift */; platformFilters = (macos, ); };
 		03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */; };
 		038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0388587F2BA54DBA003E287D /* Duration+Extensions.swift */; };
@@ -70,7 +69,6 @@
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		036EBD1A1C1408C200121D0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		037195352B804E4C00B807ED /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
-		0381B4962B8081F2002213F6 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		0381B4982B808A5A002213F6 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0381B49A2B808FF4002213F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Observer.swift"; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				037195352B804E4C00B807ED /* ActivityMonitor.swift */,
-				0381B4962B8081F2002213F6 /* LoginItem.swift */,
 				0381B4982B808A5A002213F6 /* MenuBar.swift */,
 				036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */,
 				0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */,
@@ -316,7 +313,6 @@
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,
 				033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityMonitor.swift in Sources */,
-				0381B4972B8081F2002213F6 /* LoginItem.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
 				036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */,
 				0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */,

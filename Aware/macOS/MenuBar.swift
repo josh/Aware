@@ -9,6 +9,7 @@
 
 import AppKit
 import OSLog
+import ServiceManagement
 import SwiftUI
 
 private nonisolated(unsafe) let logger = Logger(
@@ -79,15 +80,33 @@ private func findStatusBarItem() -> NSStatusItem? {
 }
 
 struct MenuBarContentView: View {
-    @ObservedObject private var openOnLogin = LoginItem.mainApp
+    @State private var lastLoginItemRegistration: Result<Bool, Error>?
 
     var body: some View {
-        Toggle("Open at Login", isOn: $openOnLogin.isEnabled)
+        Toggle("Open at Login", isOn: openAtLogin)
             .toggleStyle(.checkbox)
         Divider()
         Button("Quit") {
             NSApplication.shared.terminate(nil)
         }.keyboardShortcut("q")
+    }
+
+    var openAtLogin: Binding<Bool> {
+        .init {
+            switch lastLoginItemRegistration {
+            case let .success(enabled): return enabled
+            default: return SMAppService.mainApp.status == .enabled
+            }
+        } set: { enabled in
+            lastLoginItemRegistration = Result {
+                if enabled {
+                    try SMAppService.mainApp.register()
+                } else {
+                    try SMAppService.mainApp.unregister()
+                }
+                return SMAppService.mainApp.status == .enabled
+            }
+        }
     }
 }
 
