@@ -35,33 +35,6 @@ extension NotificationCenter {
 
         return MergedNotifications(stream: stream)
     }
-
-    // func mergeNotifications(
-    //     named names: [Notification.Name],
-    //     object: AnyObject? = nil
-    // ) -> AsyncStream<Notification> {
-    //     return AsyncStream { continuation in
-    //         let groups = names.map { name in notifications(named: name, object: object) }
-    //
-    //         let task = Task {
-    //             await withTaskGroup(of: Void.self) { group in
-    //                 for notifications in groups {
-    //                     group.addTask {
-    //                         for await notification in notifications {
-    //                             continuation.yield(notification)
-    //                         }
-    //                     }
-    //                 }
-    //                 await group.waitForAll()
-    //                 continuation.finish()
-    //             }
-    //         }
-    //
-    //         continuation.onTermination = { _ in
-    //             task.cancel()
-    //         }
-    //     }
-    // }
 }
 
 struct MergedNotifications: AsyncSequence, @unchecked Sendable {
