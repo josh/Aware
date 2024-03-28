@@ -61,22 +61,9 @@ actor BackgroundTask {
         notification = Notification.Name(identifier)
     }
 
-    nonisolated func schedule(for beginDate: Date) {
-        Task { await self._schedule(for: beginDate) }
-    }
-
-    nonisolated func reschedule(for beginDate: Date) {
-        Task { await self._reschedule(for: beginDate) }
-    }
-
-    nonisolated func schedule(after duration: Duration) {
-        let instant = UTCClock.Instant.now.advanced(by: duration)
-        schedule(for: instant.date)
-    }
-
     nonisolated func reschedule(after duration: Duration) {
         let instant = UTCClock.Instant.now.advanced(by: duration)
-        reschedule(for: instant.date)
+        Task { await self._reschedule(for: instant.date) }
     }
 
     nonisolated func cancel() {
