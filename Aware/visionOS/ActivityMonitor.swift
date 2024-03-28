@@ -66,6 +66,13 @@ struct ActivityMonitor {
                     while !Task.isCancelled {
                         try await SuspendingClock().monitorDrift(threshold: maxSuspendingClockDrift)
                         state.deactivate()
+
+                        if app.applicationState != .background {
+                            assert(app.isProtectedDataAvailable, "expected protected data to be available")
+                            state.activate()
+                        } else if app.isProtectedDataAvailable {
+                            state.activate(for: backgroundGracePeriod)
+                        }
                     }
                 }()
 
