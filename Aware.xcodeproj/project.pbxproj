@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */; };
 		03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE22BB130880004BFDE /* AsyncStreamTests.swift */; };
-		0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */; };
-		033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033A81F82BA8078B001216AA /* WatchChannel.swift */; };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
 		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
 		0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */; };
@@ -51,8 +49,6 @@
 /* Begin PBXFileReference section */
 		03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncStream+Extensions.swift"; sourceTree = "<group>"; };
 		03162DE22BB130880004BFDE /* AsyncStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncStreamTests.swift; sourceTree = "<group>"; };
-		0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannelTests.swift; sourceTree = "<group>"; };
-		033A81F82BA8078B001216AA /* WatchChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchChannel.swift; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
 		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
 		0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTCClock.swift; sourceTree = "<group>"; };
@@ -115,7 +111,6 @@
 				0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */,
 				0341CB742B9CDEAC00CC0C96 /* TimerState.swift */,
 				0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */,
-				033A81F82BA8078B001216AA /* WatchChannel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -184,7 +179,6 @@
 				0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */,
 				0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */,
 				0341CB722B9C456400CC0C96 /* UTCClockTests.swift */,
-				0338DB382BABAE5D00C4E560 /* WatchChannelTests.swift */,
 			);
 			path = AwareTests;
 			sourceTree = "<group>";
@@ -311,7 +305,6 @@
 				0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */,
 				0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */,
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,
-				033A81F92BA8078B001216AA /* WatchChannel.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityMonitor.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
 				036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */,
@@ -333,7 +326,6 @@
 				0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */,
 				0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */,
 				0341CB732B9C456400CC0C96 /* UTCClockTests.swift in Sources */,
-				0338DB392BABAE5D00C4E560 /* WatchChannelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
