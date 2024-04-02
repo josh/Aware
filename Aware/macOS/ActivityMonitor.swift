@@ -67,7 +67,7 @@ struct ActivityMonitor {
                     let idleRemaining = userIdle - lastUserEvent
                     logger.debug("Last user event \(lastUserEvent, privacy: .public) ago")
 
-                    if idleRemaining <= .zero {
+                    if idleRemaining <= .zero || isMainDisplayAsleep() {
                         state.deactivate()
 
                         logger.debug("Waiting for user activity event")
@@ -133,6 +133,10 @@ private func secondsSinceLastUserEvent() -> Duration {
     userActivityEventTypes.map { eventType in
         CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: eventType)
     }.min().map { ti in Duration(timeInterval: ti) } ?? .zero
+}
+
+private func isMainDisplayAsleep() -> Bool {
+    CGDisplayIsAsleep(CGMainDisplayID()) == 1
 }
 
 #endif
