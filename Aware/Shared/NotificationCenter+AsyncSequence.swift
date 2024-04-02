@@ -6,6 +6,11 @@
 //
 
 import Foundation
+import OSLog
+
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "NotificationCenter+AsyncSequence"
+)
 
 extension NotificationCenter {
     /// Returns an asynchronous sequence of notifications produced by this center for multiple notification names
@@ -21,12 +26,15 @@ extension NotificationCenter {
     ) -> MergedNotifications {
         let stream = AsyncStream(bufferingPolicy: .bufferingNewest(7)) { continuation in
             let observers = names.map { name in
-                observe(for: name, object: object) { notification in
+                logger.debug("Listening for \(name.rawValue, privacy: .public) notifications")
+                return observe(for: name, object: object) { notification in
+                    logger.debug("Received \(name.rawValue, privacy: .public)")
                     continuation.yield(notification)
                 }
             }
 
             continuation.onTermination = { _ in
+                logger.debug("Canceling notification observers")
                 for observer in observers {
                     observer.cancel()
                 }
