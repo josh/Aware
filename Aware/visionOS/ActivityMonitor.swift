@@ -17,21 +17,21 @@ private nonisolated(unsafe) let logger = Logger(
 let fetchActivityMonitorTask: BackgroundTask = .appRefresh("fetchActivityMonitor")
 let processingActivityMonitorTask: BackgroundTask = .processing("processingActivityMonitor")
 
-struct ActivityMonitor {
+struct ActivityMonitor: Equatable {
     /// Initial timer state
     let initialState: TimerState<UTCClock>
 
     /// The minimum number of seconds to schedule between background tasks.
-    let backgroundTaskInterval: Duration = .minutes(5)
+    let backgroundTaskInterval: Duration
 
     /// The duration the app can be in the background and be considered active if it's opened again.
-    let backgroundGracePeriod: Duration = .hours(2)
+    let backgroundGracePeriod: Duration
 
     /// The duration after locking the device it can be considered active if it's unlocked again.
-    let lockGracePeriod: Duration = .minutes(1)
+    let lockGracePeriod: Duration
 
     /// The max duration to allow the suspending clock to drift from the continuous clock.
-    let maxSuspendingClockDrift: Duration = .seconds(10)
+    let maxSuspendingClockDrift: Duration
 
     /// Subscribe to an async stream of the latest `TimerState` events.
     /// - Returns: An async sequence of `TimerState` values.

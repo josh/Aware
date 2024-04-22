@@ -14,8 +14,23 @@ struct TimerView: View {
 
     @AppStorage("glassBackground") private var glassBackground: Bool = true
 
+    @AppStorage("backgroundTaskInterval") private var backgroundTaskInterval: Int = 300
+    @AppStorage("backgroundGracePeriod") private var backgroundGracePeriod: Int = 7200
+    @AppStorage("lockGracePeriod") private var lockGracePeriod: Int = 60
+    @AppStorage("maxSuspendingClockDrift") private var maxSuspendingClockDrift: Int = 10
+
     /// Set text refresh rate to 60 seconds, as only minutes are shown
     private let textRefreshRate: TimeInterval = 60.0
+
+    private var activityMonitor: ActivityMonitor {
+        ActivityMonitor(
+            initialState: timerState,
+            backgroundTaskInterval: .seconds(backgroundTaskInterval),
+            backgroundGracePeriod: .seconds(backgroundGracePeriod),
+            lockGracePeriod: .seconds(lockGracePeriod),
+            maxSuspendingClockDrift: .seconds(maxSuspendingClockDrift)
+        )
+    }
 
     var body: some View {
         Group {
@@ -28,8 +43,8 @@ struct TimerView: View {
                 TimerTextView(duration: .zero, glassBackground: glassBackground)
             }
         }
-        .task {
-            for await state in ActivityMonitor(initialState: timerState).updates() {
+        .task(id: activityMonitor) {
+            for await state in activityMonitor.updates() {
                 timerState = state
             }
         }

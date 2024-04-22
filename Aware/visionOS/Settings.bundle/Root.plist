@@ -14,6 +14,60 @@
 			<key>DefaultValue</key>
 			<true/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Timer Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Background Task Interval</string>
+			<key>Key</key>
+			<string>backgroundTaskInterval</string>
+			<key>DefaultValue</key>
+			<string>300</string>
+			<key>KeyboardType</key>
+			<string>NumberPad</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Background Grace Period</string>
+			<key>Key</key>
+			<string>backgroundGracePeriod</string>
+			<key>DefaultValue</key>
+			<string>7200</string>
+			<key>KeyboardType</key>
+			<string>NumberPad</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Lock Grace Period</string>
+			<key>Key</key>
+			<string>lockGracePeriod</string>
+			<key>DefaultValue</key>
+			<string>60</string>
+			<key>KeyboardType</key>
+			<string>NumberPad</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Max Suspending Clock Drift</string>
+			<key>Key</key>
+			<string>maxSuspendingClockDrift</string>
+			<key>DefaultValue</key>
+			<string>10</string>
+			<key>KeyboardType</key>
+			<string>NumberPad</string>
+		</dict>
 	</array>
 </dict>
 </plist>
