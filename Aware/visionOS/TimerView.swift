@@ -12,8 +12,7 @@ import SwiftUI
 struct TimerView: View {
     @State private var timerState = TimerState()
 
-    @SceneStorage("glassBackground") private var glassBackground: Bool = true
-    @State private var showSettings = false
+    @AppStorage("glassBackground") private var glassBackground: Bool = true
 
     /// Set text refresh rate to 60 seconds, as only minutes are shown
     private let textRefreshRate: TimeInterval = 60.0
@@ -34,15 +33,6 @@ struct TimerView: View {
                 timerState = state
             }
         }
-        #if DEBUG
-        .onLongPressGesture {
-                showSettings.toggle()
-            }
-            .popover(isPresented: $showSettings) {
-                SettingsView(glassBackground: $glassBackground)
-                    .frame(width: 400, height: 250)
-            }
-        #endif
     }
 }
 
