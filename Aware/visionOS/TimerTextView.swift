@@ -11,7 +11,7 @@ import SwiftUI
 
 struct TimerTextView: View {
     var duration: Duration = .seconds(0)
-    var format = TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: false)
+    var format = TimerFormatStyle(style: .condensedAbbreviated, showSeconds: false)
     var glassBackground: Bool = true
 
     var body: some View {

@@ -35,25 +35,20 @@ struct TimerMenuBarLabel: View {
     @AppStorage("formatStyle") private var timerFormatStyle: TimerFormatStyle.Style = .condensedAbbreviated
     @AppStorage("showSeconds") private var showSeconds: Bool = false
 
-    var userIdle: Duration {
-        .seconds(max(1, userIdleSeconds))
-    }
-
-    /// Set text refresh rate to 60 seconds, when minutes are shown
-    private var textRefreshRate: TimeInterval { showSeconds ? 1.0 : 60.0 }
-
     private var timerFormat: TimerFormatStyle {
-        TimerFormatStyle(style: timerFormatStyle, includeSeconds: showSeconds)
+        TimerFormatStyle(style: timerFormatStyle, showSeconds: showSeconds)
     }
 
     private var activityMonitorConfiguration: ActivityMonitor.Configuration {
-        ActivityMonitor.Configuration(userIdle: userIdle)
+        ActivityMonitor.Configuration(
+            userIdle: .seconds(max(1, userIdleSeconds))
+        )
     }
 
     var body: some View {
         Group {
             if let start = timerState.start {
-                MenuBarTimelineView(.periodic(from: start.date, by: textRefreshRate)) { context in
+                MenuBarTimelineView(.periodic(from: start.date, by: timerFormat.refreshInterval)) { context in
                     let duration = timerState.duration(to: UTCClock.Instant(context.date))
                     Text(duration, format: timerFormat)
                 }

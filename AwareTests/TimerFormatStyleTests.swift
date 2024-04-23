@@ -4,7 +4,7 @@ import XCTest
 
 final class TimerFormatStyleTests: XCTestCase {
     func testAbbreviatedWithoutSeconds() {
-        let format = TimerFormatStyle(style: .abbreviated, includeSeconds: false)
+        let format = TimerFormatStyle(style: .abbreviated, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "0 min")
 
         XCTAssertEqual(format.format(.seconds(1)), "0 min")
@@ -30,7 +30,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testAbbreviatedWithSeconds() {
-        let format = TimerFormatStyle(style: .abbreviated, includeSeconds: true)
+        let format = TimerFormatStyle(style: .abbreviated, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "0 sec")
 
         XCTAssertEqual(format.format(.seconds(1)), "1 sec")
@@ -57,7 +57,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testCondensedAbbreviatedWithoutSeconds() {
-        let format = TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: false)
+        let format = TimerFormatStyle(style: .condensedAbbreviated, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "0m")
 
         XCTAssertEqual(format.format(.seconds(1)), "0m")
@@ -83,7 +83,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testCondensedAbbreviatedWithSeconds() {
-        let format = TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: true)
+        let format = TimerFormatStyle(style: .condensedAbbreviated, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "0s")
 
         XCTAssertEqual(format.format(.seconds(1)), "1s")
@@ -110,7 +110,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testNarrowWithoutSeconds() {
-        let format = TimerFormatStyle(style: .narrow, includeSeconds: false)
+        let format = TimerFormatStyle(style: .narrow, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "0min")
 
         XCTAssertEqual(format.format(.seconds(1)), "0min")
@@ -136,7 +136,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testNarrowWithSeconds() {
-        let format = TimerFormatStyle(style: .narrow, includeSeconds: true)
+        let format = TimerFormatStyle(style: .narrow, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "0sec")
 
         XCTAssertEqual(format.format(.seconds(1)), "1sec")
@@ -163,7 +163,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testWideWithoutSeconds() {
-        let format = TimerFormatStyle(style: .wide, includeSeconds: false)
+        let format = TimerFormatStyle(style: .wide, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "0 minutes")
 
         XCTAssertEqual(format.format(.seconds(1)), "0 minutes")
@@ -189,7 +189,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testWideWithSeconds() {
-        let format = TimerFormatStyle(style: .wide, includeSeconds: true)
+        let format = TimerFormatStyle(style: .wide, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "0 seconds")
 
         XCTAssertEqual(format.format(.seconds(1)), "1 second")
@@ -216,7 +216,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testSpellOutWithoutSeconds() {
-        let format = TimerFormatStyle(style: .spellOut, includeSeconds: false)
+        let format = TimerFormatStyle(style: .spellOut, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "zero minutes")
 
         XCTAssertEqual(format.format(.seconds(1)), "zero minutes")
@@ -242,7 +242,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testSpellOutWithSeconds() {
-        let format = TimerFormatStyle(style: .spellOut, includeSeconds: true)
+        let format = TimerFormatStyle(style: .spellOut, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "zero seconds")
 
         XCTAssertEqual(format.format(.seconds(1)), "one second")
@@ -269,7 +269,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testDigitsWithoutSeconds() {
-        let format = TimerFormatStyle(style: .digits, includeSeconds: false)
+        let format = TimerFormatStyle(style: .digits, showSeconds: false)
         XCTAssertEqual(format.format(.zero), "0:00")
 
         XCTAssertEqual(format.format(.seconds(1)), "0:00")
@@ -295,7 +295,7 @@ final class TimerFormatStyleTests: XCTestCase {
     }
 
     func testDigitsWithSeconds() {
-        let format = TimerFormatStyle(style: .digits, includeSeconds: true)
+        let format = TimerFormatStyle(style: .digits, showSeconds: true)
         XCTAssertEqual(format.format(.zero), "0:00:00")
 
         XCTAssertEqual(format.format(.seconds(1)), "0:00:01")

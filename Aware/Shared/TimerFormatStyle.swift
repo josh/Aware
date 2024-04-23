@@ -40,7 +40,7 @@ struct TimerFormatStyle: FormatStyle, Codable {
     }
 
     var style: Style
-    var includeSeconds: Bool
+    var showSeconds: Bool
 
     func format(_ value: Duration) -> String {
         let clampedValue = value < .zero ? .zero : value
@@ -48,7 +48,7 @@ struct TimerFormatStyle: FormatStyle, Codable {
         switch style {
         case .digits:
             let pattern: Duration.TimeFormatStyle.Pattern =
-                includeSeconds
+                showSeconds
                     ? .hourMinuteSecond(padHourToLength: 1)
                     : .hourMinute(padHourToLength: 1, roundSeconds: .down)
             let format: Duration.TimeFormatStyle = .time(pattern: pattern)
@@ -60,7 +60,7 @@ struct TimerFormatStyle: FormatStyle, Codable {
             let range = referenceDate ..< Date(timeIntervalSinceReferenceDate: timeInterval)
 
             let componentsFormatFields: Set<Date.ComponentsFormatStyle.Field> =
-                if includeSeconds {
+                if showSeconds {
                     [.hour, .minute, .second]
                 } else {
                     [.hour, .minute]
@@ -82,5 +82,11 @@ struct TimerFormatStyle: FormatStyle, Codable {
 
             return formatStyle.format(range)
         }
+    }
+
+    /// Return interval formatted text needs to be updated at depending on if seconds are shown.
+    /// Also see <https://github.com/apple/swift-foundation/blob/main/Proposals/0003-discrete-format-style.md>
+    var refreshInterval: TimeInterval {
+        showSeconds ? 1.0 : 60.0
     }
 }
