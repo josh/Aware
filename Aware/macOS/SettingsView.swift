@@ -9,6 +9,7 @@ import ServiceManagement
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("reset") private var resetTimer: Bool = false
     @AppStorage("userIdleSeconds") private var userIdleSeconds: Int = 120
     @AppStorage("formatStyle") private var timerFormatStyle: TimerFormatStyle.Style = .condensedAbbreviated
     @AppStorage("showSeconds") private var showSeconds: Bool = false
@@ -32,6 +33,10 @@ struct SettingsView: View {
 
                 Toggle("Open at Login", isOn: openAtLogin)
                     .toggleStyle(.checkbox)
+
+                Button("Reset Timer") {
+                    self.resetTimer = true
+                }
             }
         }
     }
