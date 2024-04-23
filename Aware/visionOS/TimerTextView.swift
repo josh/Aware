@@ -11,10 +11,11 @@ import SwiftUI
 
 struct TimerTextView: View {
     var duration: Duration = .seconds(0)
+    var format = TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: false)
     var glassBackground: Bool = true
 
     var body: some View {
-        Text(duration, format: .abbreviatedDuration)
+        Text(duration, format: format)
             .lineLimit(1)
             .padding()
             .font(.system(size: 900, weight: .medium))

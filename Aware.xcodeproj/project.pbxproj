@@ -10,6 +10,8 @@
 		03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */; };
 		03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE22BB130880004BFDE /* AsyncStreamTests.swift */; };
 		032E60A82BD7243E008BB2B4 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 032E60A72BD7243E008BB2B4 /* Settings.bundle */; platformFilters = (xros, ); };
+		032E60AA2BD737A5008BB2B4 /* TimerFormatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E60A92BD737A5008BB2B4 /* TimerFormatStyle.swift */; };
+		032E60AC2BD737EC008BB2B4 /* TimerFormatStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E60AB2BD737EC008BB2B4 /* TimerFormatStyleTests.swift */; };
 		03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */; platformFilters = (xros, ); };
 		0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */; platformFilters = (macos, ); };
 		0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */; };
@@ -32,8 +34,6 @@
 		0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1762B84630E00FE7020 /* TimerTextView.swift */; platformFilters = (xros, ); };
 		03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */; };
 		03F1C34E2B92AE6E0084572C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */; };
-		03F9E2311C24CCA8001DBE86 /* FormatStyle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */; };
-		03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +50,8 @@
 		03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncStream+Extensions.swift"; sourceTree = "<group>"; };
 		03162DE22BB130880004BFDE /* AsyncStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncStreamTests.swift; sourceTree = "<group>"; };
 		032E60A72BD7243E008BB2B4 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		032E60A92BD737A5008BB2B4 /* TimerFormatStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerFormatStyle.swift; sourceTree = "<group>"; };
+		032E60AB2BD737EC008BB2B4 /* TimerFormatStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerFormatStyleTests.swift; sourceTree = "<group>"; };
 		03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityMonitor.swift; sourceTree = "<group>"; };
 		0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEvent+AsyncStream.swift"; sourceTree = "<group>"; };
 		0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTCClock.swift; sourceTree = "<group>"; };
@@ -76,8 +78,6 @@
 		03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Nonisolated.swift"; sourceTree = "<group>"; };
 		03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatStyle+Extensions.swift"; sourceTree = "<group>"; };
-		03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatStylesTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,11 +104,11 @@
 				03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */,
 				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
-				03F9E2301C24CCA8001DBE86 /* FormatStyle+Extensions.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
 				03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */,
 				0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */,
+				032E60A92BD737A5008BB2B4 /* TimerFormatStyle.swift */,
 				0341CB742B9CDEAC00CC0C96 /* TimerState.swift */,
 				0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */,
 			);
@@ -175,8 +175,8 @@
 			isa = PBXGroup;
 			children = (
 				03162DE22BB130880004BFDE /* AsyncStreamTests.swift */,
-				03F9E2321C24CD2E001DBE86 /* FormatStylesTests.swift */,
 				0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */,
+				032E60AB2BD737EC008BB2B4 /* TimerFormatStyleTests.swift */,
 				0341CB762B9CDEC400CC0C96 /* TimerStateTests.swift */,
 				0341CB722B9C456400CC0C96 /* UTCClockTests.swift */,
 			);
@@ -299,11 +299,11 @@
 				03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */,
 				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
-				03F9E2311C24CCA8001DBE86 /* FormatStyle+Extensions.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
 				03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */,
 				0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */,
+				032E60AA2BD737A5008BB2B4 /* TimerFormatStyle.swift in Sources */,
 				0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */,
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityMonitor.swift in Sources */,
@@ -322,8 +322,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */,
-				03F9E2331C24CD2E001DBE86 /* FormatStylesTests.swift in Sources */,
 				0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */,
+				032E60AC2BD737EC008BB2B4 /* TimerFormatStyleTests.swift in Sources */,
 				0341CB772B9CDEC400CC0C96 /* TimerStateTests.swift in Sources */,
 				0341CB732B9C456400CC0C96 /* UTCClockTests.swift in Sources */,
 			);

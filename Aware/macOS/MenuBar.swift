@@ -28,7 +28,7 @@ struct MenuBar: Scene {
         MenuBarExtra {
             MenuBarContentView()
         } label: {
-            TimerMenuBarLabel(userIdle: userIdle)
+            TimerMenuBarLabel(userIdle: userIdle, includeSeconds: false)
         }
     }
 }
@@ -36,8 +36,14 @@ struct MenuBar: Scene {
 struct TimerMenuBarLabel: View {
     let userIdle: Duration
 
-    /// Set text refresh rate to 60 seconds, as only minutes are shown
-    private let textRefreshRate: TimeInterval = 60.0
+    var includeSeconds: Bool = false
+
+    /// Set text refresh rate to 60 seconds, when minutes are shown
+    private var textRefreshRate: TimeInterval { includeSeconds ? 1.0 : 60.0 }
+
+    private var timerFormat: TimerFormatStyle {
+        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: includeSeconds)
+    }
 
     @State private var timerState = TimerState()
     @State private var statusBarButton: NSStatusBarButton?
@@ -47,10 +53,10 @@ struct TimerMenuBarLabel: View {
             if let start = timerState.start {
                 MenuBarTimelineView(.periodic(from: start.date, by: textRefreshRate)) { context in
                     let duration = timerState.duration(to: UTCClock.Instant(context.date))
-                    Text(duration, format: .abbreviatedDuration)
+                    Text(duration, format: timerFormat)
                 }
             } else {
-                Text(.seconds(0), format: .abbreviatedDuration)
+                Text(.seconds(0), format: timerFormat)
             }
         }
         .task {

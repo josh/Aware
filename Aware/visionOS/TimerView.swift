@@ -19,8 +19,14 @@ struct TimerView: View {
     @AppStorage("lockGracePeriod") private var lockGracePeriod: Int = 60
     @AppStorage("maxSuspendingClockDrift") private var maxSuspendingClockDrift: Int = 10
 
-    /// Set text refresh rate to 60 seconds, as only minutes are shown
-    private let textRefreshRate: TimeInterval = 60.0
+    var includeSeconds: Bool = false
+
+    /// Set text refresh rate to 60 seconds, when minutes are shown
+    private var textRefreshRate: TimeInterval { includeSeconds ? 1.0 : 60.0 }
+
+    private var timerFormat: TimerFormatStyle {
+        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: includeSeconds)
+    }
 
     private var activityMonitor: ActivityMonitor {
         ActivityMonitor(
@@ -37,10 +43,10 @@ struct TimerView: View {
             if let start = timerState.start {
                 TimelineView(.periodic(from: start.date, by: textRefreshRate)) { context in
                     let duration = timerState.duration(to: UTCClock.Instant(context.date))
-                    TimerTextView(duration: duration, glassBackground: glassBackground)
+                    TimerTextView(duration: duration, format: timerFormat, glassBackground: glassBackground)
                 }
             } else {
-                TimerTextView(duration: .zero, glassBackground: glassBackground)
+                TimerTextView(duration: .zero, format: timerFormat, glassBackground: glassBackground)
             }
         }
         .task(id: activityMonitor) {
