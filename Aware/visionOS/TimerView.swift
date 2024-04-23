@@ -12,6 +12,7 @@ import SwiftUI
 struct TimerView: View {
     @State private var timerState = TimerState()
 
+    @AppStorage("showSeconds") private var showSeconds: Bool = false
     @AppStorage("glassBackground") private var glassBackground: Bool = true
 
     @AppStorage("backgroundTaskInterval") private var backgroundTaskInterval: Int = 300
@@ -19,13 +20,11 @@ struct TimerView: View {
     @AppStorage("lockGracePeriod") private var lockGracePeriod: Int = 60
     @AppStorage("maxSuspendingClockDrift") private var maxSuspendingClockDrift: Int = 10
 
-    var includeSeconds: Bool = false
-
     /// Set text refresh rate to 60 seconds, when minutes are shown
-    private var textRefreshRate: TimeInterval { includeSeconds ? 1.0 : 60.0 }
+    private var textRefreshRate: TimeInterval { showSeconds ? 1.0 : 60.0 }
 
     private var timerFormat: TimerFormatStyle {
-        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: includeSeconds)
+        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: showSeconds)
     }
 
     private var activityMonitor: ActivityMonitor {

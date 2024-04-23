@@ -20,6 +20,8 @@ struct MenuBar: Scene {
     // User configurable idle time in seconds (defaults to 2 minutes)
     @AppStorage("userIdleSeconds") private var userIdleSeconds: Int = 120
 
+    @AppStorage("showSeconds") private var showSeconds: Bool = false
+
     var userIdle: Duration {
         .seconds(max(1, userIdleSeconds))
     }
@@ -28,7 +30,7 @@ struct MenuBar: Scene {
         MenuBarExtra {
             MenuBarContentView()
         } label: {
-            TimerMenuBarLabel(userIdle: userIdle, includeSeconds: false)
+            TimerMenuBarLabel(userIdle: userIdle, showSeconds: showSeconds)
         }
     }
 }
@@ -36,13 +38,13 @@ struct MenuBar: Scene {
 struct TimerMenuBarLabel: View {
     let userIdle: Duration
 
-    var includeSeconds: Bool = false
+    var showSeconds: Bool = false
 
     /// Set text refresh rate to 60 seconds, when minutes are shown
-    private var textRefreshRate: TimeInterval { includeSeconds ? 1.0 : 60.0 }
+    private var textRefreshRate: TimeInterval { showSeconds ? 1.0 : 60.0 }
 
     private var timerFormat: TimerFormatStyle {
-        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: includeSeconds)
+        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: showSeconds)
     }
 
     @State private var timerState = TimerState()
