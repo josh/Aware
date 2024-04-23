@@ -66,6 +66,21 @@ struct ActivityMonitor {
                     }
                 }()
 
+                async let userDefaultsTask: () = { @MainActor in
+                    let store = UserDefaults.standard
+                    for await value in store.updates(forKeyPath: "reset", type: Bool.self, initial: true) {
+                        logger.log("Received UserDefaults \"reset\" change")
+                        if value == true {
+                            state.deactivate()
+                            state.activate()
+                        }
+                        if value != nil {
+                            logger.debug("Cleaning up \"reset\" key")
+                            store.removeObject(forKey: "reset")
+                        }
+                    }
+                }()
+
                 while !Task.isCancelled {
                     let lastUserEvent = secondsSinceLastUserEvent()
                     let idleRemaining = configuration.userIdle - lastUserEvent
@@ -89,6 +104,7 @@ struct ActivityMonitor {
                 }
 
                 await notificationsTask
+                await userDefaultsTask
 
                 assert(Task.isCancelled)
                 try Task.checkCancellation()

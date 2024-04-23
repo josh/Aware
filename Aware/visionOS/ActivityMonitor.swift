@@ -80,6 +80,21 @@ struct ActivityMonitor {
                     }
                 }()
 
+                async let userDefaultsTask: () = { @MainActor in
+                    let store = UserDefaults.standard
+                    for await value in store.updates(forKeyPath: "reset", type: Bool.self, initial: true) {
+                        logger.log("Received UserDefaults \"reset\" change")
+                        if value == true {
+                            state.deactivate()
+                            state.activate()
+                        }
+                        if value != nil {
+                            logger.debug("Cleaning up \"reset\" key")
+                            store.removeObject(forKey: "reset")
+                        }
+                    }
+                }()
+
                 let notificationNames = [
                     UIApplication.didEnterBackgroundNotification,
                     UIApplication.willEnterForegroundNotification,
@@ -143,6 +158,7 @@ struct ActivityMonitor {
                 }
 
                 try await driftTask
+                await userDefaultsTask
 
                 assert(Task.isCancelled)
                 try Task.checkCancellation()
