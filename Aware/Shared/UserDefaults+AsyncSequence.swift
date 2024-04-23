@@ -41,9 +41,11 @@ extension UserDefaults {
         }
     }
 
-    func updates<Element>(forKeyPath keyPath: String, type _: Element.Type = Element.self, initial: Bool = false)
-        -> AsyncStream<Element?>
-    {
+    func updates<Element>(
+        forKeyPath keyPath: String,
+        type _: Element.Type = Element.self,
+        initial: Bool = false
+    ) -> AsyncStream<Element?> {
         .init(bufferingPolicy: .bufferingNewest(1)) { continuation in
             let observer = Observer<Element>(store: self, keyPath: keyPath) { value in
                 logger.debug("Yielding UserDefaults new \"\(keyPath, privacy: .public)\" value")
