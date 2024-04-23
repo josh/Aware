@@ -14,7 +14,7 @@ private nonisolated(unsafe) let logger = Logger(
     subsystem: "com.awaremac.Aware", category: "ActivityMonitor"
 )
 
-struct ActivityMonitor {
+struct ActivityMonitor: Equatable {
     /// Initial timer state
     let initialState: TimerState<UTCClock>
 

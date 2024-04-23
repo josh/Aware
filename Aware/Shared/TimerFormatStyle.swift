@@ -8,7 +8,7 @@
 import Foundation
 
 struct TimerFormatStyle: FormatStyle, Codable {
-    enum Style: String, Codable {
+    enum Style: String, CaseIterable, Codable {
         // 1 hr, 15 min
         case abbreviated
 
@@ -26,6 +26,17 @@ struct TimerFormatStyle: FormatStyle, Codable {
 
         // 1:15
         case digits
+
+        var exampleText: String {
+            switch self {
+            case .abbreviated: return "1 hr, 15 min"
+            case .condensedAbbreviated: return "1h 15m"
+            case .narrow: return "1hr 15min"
+            case .wide: return "1 hour, 15 minutes"
+            case .spellOut: return "one hour, fifteen minutes"
+            case .digits: return "1:15"
+            }
+        }
     }
 
     var style: Style

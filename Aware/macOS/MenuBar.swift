@@ -9,7 +9,6 @@
 
 import AppKit
 import OSLog
-import ServiceManagement
 import SwiftUI
 
 private nonisolated(unsafe) let logger = Logger(
@@ -48,6 +47,10 @@ struct TimerMenuBarLabel: View {
         TimerFormatStyle(style: timerFormatStyle, includeSeconds: showSeconds)
     }
 
+    private var activityMonitor: ActivityMonitor {
+        ActivityMonitor(initialState: timerState, userIdle: userIdle)
+    }
+
     @State private var timerState = TimerState()
     @State private var statusBarButton: NSStatusBarButton?
 
@@ -62,15 +65,15 @@ struct TimerMenuBarLabel: View {
                 Text(.seconds(0), format: timerFormat)
             }
         }
-        .task {
-            for await state in ActivityMonitor(initialState: timerState, userIdle: userIdle).updates() {
+        .task(id: activityMonitor) {
+            for await state in activityMonitor.updates() {
                 timerState = state
             }
         }
         .onAppear {
             statusBarButton = findStatusBarItem()?.button
         }
-        .onChange(of: timerState.isIdle) { isIdle in
+        .onChange(of: timerState.isIdle) { _, isIdle in
             assert(statusBarButton != nil)
             statusBarButton?.appearsDisabled = isIdle
         }
@@ -89,33 +92,12 @@ private func findStatusBarItem() -> NSStatusItem? {
 }
 
 struct MenuBarContentView: View {
-    @State private var lastLoginItemRegistration: Result<Bool, Error>?
-
     var body: some View {
-        Toggle("Open at Login", isOn: openAtLogin)
-            .toggleStyle(.checkbox)
+        SettingsLink()
         Divider()
         Button("Quit") {
             NSApplication.shared.terminate(nil)
         }.keyboardShortcut("q")
-    }
-
-    var openAtLogin: Binding<Bool> {
-        .init {
-            switch lastLoginItemRegistration {
-            case let .success(enabled): return enabled
-            default: return SMAppService.mainApp.status == .enabled
-            }
-        } set: { enabled in
-            lastLoginItemRegistration = Result {
-                if enabled {
-                    try SMAppService.mainApp.register()
-                } else {
-                    try SMAppService.mainApp.unregister()
-                }
-                return SMAppService.mainApp.status == .enabled
-            }
-        }
     }
 }
 

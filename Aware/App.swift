@@ -12,6 +12,9 @@ struct AwareApp: App {
     var body: some Scene {
         #if os(macOS)
         MenuBar()
+        Settings {
+            SettingsView()
+        }
         #endif
 
         #if os(visionOS)
