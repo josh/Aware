@@ -17,6 +17,8 @@ struct MenuBarTimelineView<Schedule, Content>: View
     let schedule: Schedule
     let content: (MenuBarTimelineViewDefaultContext) -> Content
 
+    private let startDate = Date()
+
     @State private var context: MenuBarTimelineViewDefaultContext = .init(date: .now)
 
     init(
@@ -29,8 +31,8 @@ struct MenuBarTimelineView<Schedule, Content>: View
 
     var body: some View {
         content(context)
-            .task {
-                for date in schedule.entries(from: .now, mode: .normal) {
+            .task(id: startDate) {
+                for date in schedule.entries(from: startDate, mode: .normal) {
                     let duration: Duration = .init(timeInterval: date.timeIntervalSinceNow)
                     if duration > .zero {
                         do {
