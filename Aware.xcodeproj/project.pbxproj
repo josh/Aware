@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030840142BD8498300C75EE3 /* UserDefaults+AsyncSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030840132BD8498300C75EE3 /* UserDefaults+AsyncSequence.swift */; };
 		03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */; };
 		03162DE32BB130880004BFDE /* AsyncStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03162DE22BB130880004BFDE /* AsyncStreamTests.swift */; };
 		032E60A82BD7243E008BB2B4 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 032E60A72BD7243E008BB2B4 /* Settings.bundle */; platformFilters = (xros, ); };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030840132BD8498300C75EE3 /* UserDefaults+AsyncSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+AsyncSequence.swift"; sourceTree = "<group>"; };
 		03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncStream+Extensions.swift"; sourceTree = "<group>"; };
 		03162DE22BB130880004BFDE /* AsyncStreamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncStreamTests.swift; sourceTree = "<group>"; };
 		032E60A72BD7243E008BB2B4 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */,
 				032E60A92BD737A5008BB2B4 /* TimerFormatStyle.swift */,
 				0341CB742B9CDEAC00CC0C96 /* TimerState.swift */,
+				030840132BD8498300C75EE3 /* UserDefaults+AsyncSequence.swift */,
 				0341CB702B9C3FCE00CC0C96 /* UTCClock.swift */,
 			);
 			path = Shared;
@@ -308,6 +311,7 @@
 				0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */,
 				032E60AA2BD737A5008BB2B4 /* TimerFormatStyle.swift in Sources */,
 				0341CB752B9CDEAC00CC0C96 /* TimerState.swift in Sources */,
+				030840142BD8498300C75EE3 /* UserDefaults+AsyncSequence.swift in Sources */,
 				0341CB712B9C3FCE00CC0C96 /* UTCClock.swift in Sources */,
 				037195362B804E4C00B807ED /* ActivityMonitor.swift in Sources */,
 				0381B4992B808A5A002213F6 /* MenuBar.swift in Sources */,
