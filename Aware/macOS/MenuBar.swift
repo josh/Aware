@@ -16,6 +16,19 @@ private nonisolated(unsafe) let logger = Logger(
 )
 
 struct MenuBar: Scene {
+    var body: some Scene {
+        MenuBarExtra {
+            MenuBarContentView()
+        } label: {
+            TimerMenuBarLabel()
+        }
+    }
+}
+
+struct TimerMenuBarLabel: View {
+    @State private var timerState = TimerState()
+    @State private var statusBarButton: NSStatusBarButton?
+
     // User configurable idle time in seconds (defaults to 2 minutes)
     @AppStorage("userIdleSeconds") private var userIdleSeconds: Int = 120
 
@@ -25,20 +38,6 @@ struct MenuBar: Scene {
     var userIdle: Duration {
         .seconds(max(1, userIdleSeconds))
     }
-
-    var body: some Scene {
-        MenuBarExtra {
-            MenuBarContentView()
-        } label: {
-            TimerMenuBarLabel(userIdle: userIdle, timerFormatStyle: timerFormatStyle, showSeconds: showSeconds)
-        }
-    }
-}
-
-struct TimerMenuBarLabel: View {
-    let userIdle: Duration
-    var timerFormatStyle: TimerFormatStyle.Style
-    var showSeconds: Bool
 
     /// Set text refresh rate to 60 seconds, when minutes are shown
     private var textRefreshRate: TimeInterval { showSeconds ? 1.0 : 60.0 }
@@ -50,9 +49,6 @@ struct TimerMenuBarLabel: View {
     private var activityMonitorConfiguration: ActivityMonitor.Configuration {
         ActivityMonitor.Configuration(userIdle: userIdle)
     }
-
-    @State private var timerState = TimerState()
-    @State private var statusBarButton: NSStatusBarButton?
 
     var body: some View {
         Group {
