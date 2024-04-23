@@ -47,8 +47,8 @@ struct TimerMenuBarLabel: View {
         TimerFormatStyle(style: timerFormatStyle, includeSeconds: showSeconds)
     }
 
-    private var activityMonitor: ActivityMonitor {
-        ActivityMonitor(initialState: timerState, userIdle: userIdle)
+    private var activityMonitorConfiguration: ActivityMonitor.Configuration {
+        ActivityMonitor.Configuration(userIdle: userIdle)
     }
 
     @State private var timerState = TimerState()
@@ -65,7 +65,8 @@ struct TimerMenuBarLabel: View {
                 Text(.seconds(0), format: timerFormat)
             }
         }
-        .task(id: activityMonitor) {
+        .task(id: activityMonitorConfiguration) {
+            let activityMonitor = ActivityMonitor(initialState: timerState, configuration: activityMonitorConfiguration)
             for await state in activityMonitor.updates() {
                 timerState = state
             }

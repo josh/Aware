@@ -14,15 +14,19 @@ private nonisolated(unsafe) let logger = Logger(
     subsystem: "com.awaremac.Aware", category: "ActivityMonitor"
 )
 
-struct ActivityMonitor: Equatable {
+struct ActivityMonitor {
     /// Initial timer state
     let initialState: TimerState<UTCClock>
 
-    /// The duration since the last user event to consider time idle.
-    let userIdle: Duration
+    struct Configuration: Equatable {
+        /// The duration since the last user event to consider time idle.
+        var userIdle: Duration
 
-    /// The duration of idle timer tolerance
-    let userIdleTolerance: Duration = .seconds(5)
+        /// The duration of idle timer tolerance
+        var userIdleTolerance: Duration = .seconds(5)
+    }
+
+    let configuration: Configuration
 
     /// Subscribe to an async stream of the latest `TimerState` events.
     /// - Returns: An async sequence of `TimerState` values.
@@ -64,7 +68,7 @@ struct ActivityMonitor: Equatable {
 
                 while !Task.isCancelled {
                     let lastUserEvent = secondsSinceLastUserEvent()
-                    let idleRemaining = userIdle - lastUserEvent
+                    let idleRemaining = configuration.userIdle - lastUserEvent
                     logger.debug("Last user event \(lastUserEvent, privacy: .public) ago")
 
                     if idleRemaining <= .zero || isMainDisplayAsleep() {
@@ -79,7 +83,7 @@ struct ActivityMonitor: Equatable {
 
                         logger.debug("Sleeping for \(idleRemaining, privacy: .public)")
                         let now: ContinuousClock.Instant = .now
-                        try await Task.sleep(for: idleRemaining, tolerance: userIdleTolerance)
+                        try await Task.sleep(for: idleRemaining, tolerance: configuration.userIdleTolerance)
                         logger.debug("Slept for \(.now - now, privacy: .public)")
                     }
                 }

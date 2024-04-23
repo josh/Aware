@@ -28,9 +28,8 @@ struct TimerView: View {
         TimerFormatStyle(style: timerFormatStyle, includeSeconds: showSeconds)
     }
 
-    private var activityMonitor: ActivityMonitor {
-        ActivityMonitor(
-            initialState: timerState,
+    private var activityMonitorConfiguration: ActivityMonitor.Configuration {
+        ActivityMonitor.Configuration(
             backgroundTaskInterval: .seconds(backgroundTaskInterval),
             backgroundGracePeriod: .seconds(backgroundGracePeriod),
             lockGracePeriod: .seconds(lockGracePeriod),
@@ -49,7 +48,8 @@ struct TimerView: View {
                 TimerTextView(duration: .zero, format: timerFormat, glassBackground: glassBackground)
             }
         }
-        .task(id: activityMonitor) {
+        .task(id: activityMonitorConfiguration) {
+            let activityMonitor = ActivityMonitor(initialState: timerState, configuration: activityMonitorConfiguration)
             for await state in activityMonitor.updates() {
                 timerState = state
             }

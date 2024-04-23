@@ -17,21 +17,25 @@ private nonisolated(unsafe) let logger = Logger(
 let fetchActivityMonitorTask: BackgroundTask = .appRefresh("fetchActivityMonitor")
 let processingActivityMonitorTask: BackgroundTask = .processing("processingActivityMonitor")
 
-struct ActivityMonitor: Equatable {
+struct ActivityMonitor {
     /// Initial timer state
     let initialState: TimerState<UTCClock>
 
-    /// The minimum number of seconds to schedule between background tasks.
-    let backgroundTaskInterval: Duration
+    struct Configuration: Equatable {
+        /// The minimum number of seconds to schedule between background tasks.
+        var backgroundTaskInterval: Duration
 
-    /// The duration the app can be in the background and be considered active if it's opened again.
-    let backgroundGracePeriod: Duration
+        /// The duration the app can be in the background and be considered active if it's opened again.
+        var backgroundGracePeriod: Duration
 
-    /// The duration after locking the device it can be considered active if it's unlocked again.
-    let lockGracePeriod: Duration
+        /// The duration after locking the device it can be considered active if it's unlocked again.
+        var lockGracePeriod: Duration
 
-    /// The max duration to allow the suspending clock to drift from the continuous clock.
-    let maxSuspendingClockDrift: Duration
+        /// The max duration to allow the suspending clock to drift from the continuous clock.
+        var maxSuspendingClockDrift: Duration
+    }
+
+    let configuration: Configuration
 
     /// Subscribe to an async stream of the latest `TimerState` events.
     /// - Returns: An async sequence of `TimerState` values.
@@ -64,14 +68,14 @@ struct ActivityMonitor: Equatable {
 
                 async let driftTask: () = { @MainActor in
                     while !Task.isCancelled {
-                        try await SuspendingClock().monitorDrift(threshold: maxSuspendingClockDrift)
+                        try await SuspendingClock().monitorDrift(threshold: configuration.maxSuspendingClockDrift)
                         state.deactivate()
 
                         if app.applicationState != .background {
                             assert(app.isProtectedDataAvailable, "expected protected data to be available")
                             state.activate()
                         } else if app.isProtectedDataAvailable {
-                            state.activate(for: backgroundGracePeriod)
+                            state.activate(for: configuration.backgroundGracePeriod)
                         }
                     }
                 }()
@@ -94,7 +98,7 @@ struct ActivityMonitor: Equatable {
                     case UIApplication.didEnterBackgroundNotification:
                         assert(app.applicationState == .background)
                         assert(app.isProtectedDataAvailable)
-                        state.activate(for: backgroundGracePeriod)
+                        state.activate(for: configuration.backgroundGracePeriod)
 
                     case UIApplication.willEnterForegroundNotification:
                         assert(app.applicationState != .background)
@@ -104,12 +108,12 @@ struct ActivityMonitor: Equatable {
                     case UIApplication.protectedDataDidBecomeAvailableNotification:
                         assert(app.applicationState == .background)
                         assert(app.isProtectedDataAvailable)
-                        state.activate(for: backgroundGracePeriod)
+                        state.activate(for: configuration.backgroundGracePeriod)
 
                     case UIApplication.protectedDataWillBecomeUnavailableNotification:
                         assert(app.applicationState == .background)
                         assert(app.isProtectedDataAvailable)
-                        state.activate(for: lockGracePeriod)
+                        state.activate(for: configuration.lockGracePeriod)
 
                     case fetchActivityMonitorTask.notification,
                          processingActivityMonitorTask.notification:
@@ -117,7 +121,7 @@ struct ActivityMonitor: Equatable {
                         if app.applicationState == .background {
                             if app.isProtectedDataAvailable {
                                 // Running in background while device is unlocked
-                                state.activate(for: backgroundGracePeriod)
+                                state.activate(for: configuration.backgroundGracePeriod)
                             } else {
                                 // Running in background while device is locked
                                 state.deactivate()
@@ -154,7 +158,7 @@ struct ActivityMonitor: Equatable {
 
     private func rescheduleBackgroundTasks(oldState: TimerState<UTCClock>, newState: TimerState<UTCClock>) async {
         if newState.hasExpiration {
-            let taskBeginDate = UTCClock.Instant.now.advanced(by: backgroundTaskInterval).date
+            let taskBeginDate = UTCClock.Instant.now.advanced(by: configuration.backgroundTaskInterval).date
             await fetchActivityMonitorTask.reschedule(for: taskBeginDate)
             await processingActivityMonitorTask.reschedule(for: taskBeginDate)
             // e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"fetchActivityMonitor"]
