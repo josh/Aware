@@ -13,6 +13,7 @@ struct TimerView: View {
     @State private var timerState = TimerState()
 
     @AppStorage("showSeconds") private var showSeconds: Bool = false
+    @AppStorage("formatStyle") private var timerFormatStyle: TimerFormatStyle.Style = .condensedAbbreviated
     @AppStorage("glassBackground") private var glassBackground: Bool = true
 
     @AppStorage("backgroundTaskInterval") private var backgroundTaskInterval: Int = 300
@@ -24,7 +25,7 @@ struct TimerView: View {
     private var textRefreshRate: TimeInterval { showSeconds ? 1.0 : 60.0 }
 
     private var timerFormat: TimerFormatStyle {
-        TimerFormatStyle(style: .condensedAbbreviated, includeSeconds: showSeconds)
+        TimerFormatStyle(style: timerFormatStyle, includeSeconds: showSeconds)
     }
 
     private var activityMonitor: ActivityMonitor {
