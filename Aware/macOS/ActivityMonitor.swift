@@ -59,6 +59,7 @@ struct ActivityMonitor {
                              NSWorkspace.willPowerOffNotification:
                             state.deactivate()
                         case NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification:
+                            state.deactivate()
                             state.activate()
                         default:
                             assertionFailure("unexpected notification: \(name.rawValue)")
