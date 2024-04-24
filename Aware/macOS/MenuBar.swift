@@ -58,12 +58,12 @@ struct TimerMenuBarLabel: View {
         }
         .task(id: activityMonitorConfiguration) {
             let activityMonitor = ActivityMonitor(initialState: timerState, configuration: activityMonitorConfiguration)
-            logger.info("Starting ActivityMonitor updates task: \(timerState, privacy: .public)")
+            logger.log("Starting ActivityMonitor updates task: \(timerState, privacy: .public)")
             for await state in activityMonitor.updates() {
-                logger.info("Received ActivityMonitor state: \(state, privacy: .public)")
+                logger.log("Received ActivityMonitor state: \(state, privacy: .public)")
                 timerState = state
             }
-            logger.info("Finished ActivityMonitor updates task: \(timerState, privacy: .public)")
+            logger.log("Finished ActivityMonitor updates task: \(timerState, privacy: .public)")
         }
         .onAppear {
             statusBarButton = findStatusBarItem()?.button

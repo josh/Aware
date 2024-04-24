@@ -33,7 +33,7 @@ struct ActivityMonitor {
     func updates() -> AsyncStream<TimerState<UTCClock>> {
         AsyncStream(bufferingPolicy: .bufferingNewest(1)) { @MainActor yield in
             do {
-                logger.info("Starting ActivityMonitor update task: \(initialState, privacy: .public)")
+                logger.log("Starting ActivityMonitor update task: \(initialState, privacy: .public)")
 
                 var state = initialState {
                     didSet {
@@ -108,9 +108,9 @@ struct ActivityMonitor {
                 assert(Task.isCancelled)
                 try Task.checkCancellation()
 
-                logger.info("Finished ActivityMonitor update task")
+                logger.log("Finished ActivityMonitor update task")
             } catch is CancellationError {
-                logger.info("ActivityMonitor update task canceled")
+                logger.log("ActivityMonitor update task canceled")
             } catch {
                 logger.error("ActivityMonitor update task canceled unexpectedly: \(error, privacy: .public)")
             }

@@ -47,9 +47,12 @@ struct TimerView: View {
         }
         .task(id: activityMonitorConfiguration) {
             let activityMonitor = ActivityMonitor(initialState: timerState, configuration: activityMonitorConfiguration)
+            logger.log("Starting ActivityMonitor updates task: \(timerState, privacy: .public)")
             for await state in activityMonitor.updates() {
+                logger.log("Received ActivityMonitor state: \(state, privacy: .public)")
                 timerState = state
             }
+            logger.log("Finished ActivityMonitor updates task: \(timerState, privacy: .public)")
         }
     }
 }
