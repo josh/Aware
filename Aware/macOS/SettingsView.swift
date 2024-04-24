@@ -16,6 +16,9 @@ struct SettingsView: View {
 
     @State private var lastLoginItemRegistration: Result<Bool, Error>?
 
+    @State private var exportingLogs: Bool = false
+    @State private var showExportErrored: Bool = false
+
     var body: some View {
         Form {
             Section {
@@ -56,6 +59,34 @@ struct SettingsView: View {
             Section {
                 LabeledContent("Login Item:") {
                     Toggle("Open at Login", isOn: openAtLogin)
+                }
+            }
+
+            Spacer()
+                .frame(width: 0, height: 0)
+                .padding(.top)
+
+            Section {
+                Button(exportingLogs ? "Exporting Developer Logs..." : "Export Developer Logs") {
+                    self.exportingLogs = true
+                    Task<Void, Never>(priority: .low) {
+                        do {
+                            let logURL = try await exportLogs()
+                            NSWorkspace.shared.activateFileViewerSelecting([logURL])
+                            self.showExportErrored = false
+                        } catch {
+                            self.showExportErrored = true
+                        }
+                        self.exportingLogs = false
+                    }
+                }
+                .disabled(exportingLogs)
+                .alert(isPresented: $showExportErrored) {
+                    Alert(
+                        title: Text("Export Error"),
+                        message: Text("Couldn't export logs"),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
             }
         }
