@@ -18,27 +18,49 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Timer")) {
-                Picker("Format Style", selection: $timerFormatStyle) {
+            Section {
+                Picker("Format Style:", selection: $timerFormatStyle) {
                     ForEach(TimerFormatStyle.Style.allCases, id: \.self) { style in
                         Text(style.exampleText)
                     }
                 }
 
                 Toggle("Show Seconds", isOn: $showSeconds)
+            }
 
-                TextField(value: $userIdleSeconds, format: .number) {
-                    Text("Idle Seconds")
+            Spacer()
+                .frame(width: 0, height: 0)
+                .padding(.top)
+
+            Section {
+                LabeledContent("Reset after:") {
+                    TextField("Idle Seconds", value: $userIdleSeconds, format: .number)
+                        .multilineTextAlignment(.trailing)
+                        .labelsHidden()
+                        .frame(width: 50)
+                    Stepper("Idle Seconds", value: $userIdleSeconds, step: 30)
+                        .labelsHidden()
+                    Text("seconds of inactivity")
+                        .padding(.leading, 5)
                 }
-
-                Toggle("Open at Login", isOn: openAtLogin)
-                    .toggleStyle(.checkbox)
 
                 Button("Reset Timer") {
                     self.resetTimer = true
                 }
             }
+
+            Spacer()
+                .frame(width: 0, height: 0)
+                .padding(.top)
+
+            Section {
+                LabeledContent("Login Item:") {
+                    Toggle("Open at Login", isOn: openAtLogin)
+                }
+            }
         }
+        .padding()
+        .frame(width: 350)
     }
 
     var openAtLogin: Binding<Bool> {

@@ -89,6 +89,7 @@ private func findStatusBarItem() -> NSStatusItem? {
 struct MenuBarContentView: View {
     var body: some View {
         SettingsLink()
+            .keyboardShortcut(",")
         // FIXME: Remove before next release
         Button("Export Logs") {
             Task<Void, Never>(priority: .background) {
