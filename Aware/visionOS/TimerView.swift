@@ -7,7 +7,12 @@
 
 #if os(visionOS)
 
+import OSLog
 import SwiftUI
+
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "TimerView"
+)
 
 struct TimerView: View {
     @State private var timerState = TimerState()
