@@ -34,6 +34,7 @@
 		038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0388587F2BA54DBA003E287D /* Duration+Extensions.swift */; };
 		0394D1752B845FB400FE7020 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1742B845FB400FE7020 /* TimerView.swift */; platformFilters = (xros, ); };
 		0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394D1762B84630E00FE7020 /* TimerTextView.swift */; platformFilters = (xros, ); };
+		03CC1F472BD8B241000BA17D /* LogExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CC1F462BD8B241000BA17D /* LogExport.swift */; };
 		03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */; };
 		03F1C34E2B92AE6E0084572C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
@@ -79,6 +80,7 @@
 		038D0B381C4DDD5600040C44 /* Aware.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Aware.entitlements; sourceTree = "<group>"; };
 		0394D1742B845FB400FE7020 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		0394D1762B84630E00FE7020 /* TimerTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTextView.swift; sourceTree = "<group>"; };
+		03CC1F462BD8B241000BA17D /* LogExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogExport.swift; sourceTree = "<group>"; };
 		03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Nonisolated.swift"; sourceTree = "<group>"; };
 		03F1C34D2B92AE300084572C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		03F9E2261C24CAD3001DBE86 /* AwareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AwareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +110,7 @@
 				03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */,
 				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
+				03CC1F462BD8B241000BA17D /* LogExport.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
 				03830C982BA6079D00532C40 /* NotificationCenter+Observer.swift */,
 				03E00DD32BB0A82100A6C522 /* NotificationName+Nonisolated.swift */,
@@ -305,6 +308,7 @@
 				03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */,
 				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
+				03CC1F472BD8B241000BA17D /* LogExport.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
 				03830C992BA6079D00532C40 /* NotificationCenter+Observer.swift in Sources */,
 				03E00DD42BB0A82100A6C522 /* NotificationName+Nonisolated.swift in Sources */,
