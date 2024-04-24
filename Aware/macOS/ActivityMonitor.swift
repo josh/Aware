@@ -59,8 +59,7 @@ struct ActivityMonitor {
                              NSWorkspace.willPowerOffNotification:
                             state.deactivate()
                         case NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification:
-                            state.deactivate()
-                            state.activate()
+                            state.restart()
                         default:
                             assertionFailure("unexpected notification: \(name.rawValue)")
                         }
@@ -72,8 +71,7 @@ struct ActivityMonitor {
                     for await value in store.updates(forKeyPath: "reset", type: Bool.self, initial: true) {
                         logger.log("Received UserDefaults \"reset\" change")
                         if value == true {
-                            state.deactivate()
-                            state.activate()
+                            state.restart()
                         }
                         if value != nil {
                             logger.debug("Cleaning up \"reset\" key")

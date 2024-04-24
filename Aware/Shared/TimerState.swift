@@ -153,6 +153,11 @@ struct TimerState<C: Clock>: Sendable {
         assert(duration > .zero, "duration should be positive")
         activate(until: clock.now.advanced(by: duration))
     }
+
+    /// Activates the timer state setting the start to now regardless of the current state.
+    mutating func restart() {
+        state = .active(start: clock.now)
+    }
 }
 
 extension TimerState: Equatable {
