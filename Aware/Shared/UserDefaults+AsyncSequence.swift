@@ -52,12 +52,8 @@ extension UserDefaults {
                 continuation.yield(value)
             }
 
-            if initial {
-                logger.debug("Yielding UserDefaults initial \"\(keyPath, privacy: .public)\" value")
-                continuation.yield(value(forKeyPath: keyPath) as? Element)
-            }
-
-            addObserver(observer, forKeyPath: keyPath, options: [.new], context: nil)
+            let options: NSKeyValueObservingOptions = initial ? [.initial, .new] : [.new]
+            addObserver(observer, forKeyPath: keyPath, options: options, context: nil)
 
             continuation.onTermination = { _ in
                 logger.debug("Canceling UserDefaults \"\(keyPath, privacy: .public)\" observer")
