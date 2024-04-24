@@ -48,7 +48,8 @@ extension UserDefaults {
     ) -> AsyncStream<Element?> {
         .init(bufferingPolicy: .bufferingNewest(1)) { continuation in
             let observer = Observer<Element>(store: self, keyPath: keyPath) { value in
-                logger.debug("Yielding UserDefaults new \"\(keyPath, privacy: .public)\" value")
+                logger.debug(
+                    "Yielding UserDefaults \"\(keyPath, privacy: .public)\" value: \(String(describing: value))")
                 continuation.yield(value)
             }
 

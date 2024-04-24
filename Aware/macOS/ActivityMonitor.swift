@@ -69,7 +69,7 @@ struct ActivityMonitor {
                 async let userDefaultsTask: () = { @MainActor in
                     let store = UserDefaults.standard
                     for await value in store.updates(forKeyPath: "reset", type: Bool.self, initial: true) {
-                        logger.log("Received UserDefaults \"reset\" change")
+                        logger.debug("Received UserDefaults \"reset\" change")
                         if value == true {
                             state.restart()
                         }
