@@ -89,10 +89,35 @@ private func findStatusBarItem() -> NSStatusItem? {
 struct MenuBarContentView: View {
     var body: some View {
         SettingsLink()
+        // FIXME: Remove before next release
+        Button("Export Logs") {
+            Task<Void, Never>(priority: .background) {
+                exportLogs()
+            }
+        }.keyboardShortcut("e")
         Divider()
         Button("Quit") {
             NSApplication.shared.terminate(nil)
         }.keyboardShortcut("q")
+    }
+
+    func exportLogs() {
+        let store = try! OSLogStore(scope: .currentProcessIdentifier)
+        let predicate = NSPredicate(format: "subsystem == 'com.awaremac.Aware'")
+        let date = Date.now.addingTimeInterval(-3600)
+        let position = store.position(date: date)
+        let data = try! store
+            .getEntries(at: position, matching: predicate)
+            .compactMap { $0 as? OSLogEntryLog }
+            .map { "[\($0.date.formatted(date: .omitted, time: .standard))] [\($0.category)] \($0.composedMessage)\n" }
+            .joined()
+            .data(using: .utf8)!
+        let fileURL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)
+            .first!
+            .appendingPathComponent("Logs", isDirectory: true)
+            .appendingPathComponent("Aware.log")
+        try! data.write(to: fileURL)
+        NSWorkspace.shared.activateFileViewerSelecting([fileURL])
     }
 }
 
