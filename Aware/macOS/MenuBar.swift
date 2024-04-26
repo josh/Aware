@@ -27,7 +27,7 @@ struct MenuBar: Scene {
 
 struct TimerMenuBarLabel: View {
     @State private var timerState = TimerState()
-    @State private var statusBarButton: NSStatusBarButton?
+    @State private var statusItem: NSStatusItem?
 
     // User configurable idle time in seconds (defaults to 2 minutes)
     @AppStorage("userIdleSeconds") private var userIdleSeconds: Int = 120
@@ -65,25 +65,12 @@ struct TimerMenuBarLabel: View {
             }
             logger.log("Finished ActivityMonitor updates task: \(timerState, privacy: .public)")
         }
-        .onAppear {
-            statusBarButton = findStatusBarItem()?.button
-        }
+        .bindStatusItem($statusItem)
         .onChange(of: timerState.isIdle) { _, isIdle in
-            assert(statusBarButton != nil)
-            statusBarButton?.appearsDisabled = isIdle
+            assert(statusItem?.button != nil, "missing statusItem button")
+            statusItem?.button?.appearsDisabled = isIdle
         }
     }
-}
-
-// Hack to get underlying NSStatusItem for MenuBarExtra
-// https://github.com/orchetect/MenuBarExtraAccess/blob/main/Sources/MenuBarExtraAccess/MenuBarExtraUtils.swift
-@MainActor
-private func findStatusBarItem() -> NSStatusItem? {
-    for window in NSApp.windows where window.className == "NSStatusBarWindow" {
-        return window.value(forKey: "statusItem") as? NSStatusItem
-    }
-    assertionFailure("couldn't find NSStatusBarWindow")
-    return nil
 }
 
 struct MenuBarContentView: View {

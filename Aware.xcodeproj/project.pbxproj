@@ -25,6 +25,7 @@
 		0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */; };
 		0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */; };
 		0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59E2BAFB97300C5741E /* BackgroundTask.swift */; };
+		035820952BDB11880099E707 /* View+NSStatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035820942BDB11880099E707 /* View+NSStatusItem.swift */; platformFilters = (macos, ); };
 		036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */; platformFilters = (macos, ); };
 		036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DA9B42B7AF52E0066B4B2 /* App.swift */; };
 		036EBD1B1C1408C200121D0B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 036EBD1A1C1408C200121D0B /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterTests.swift; sourceTree = "<group>"; };
 		0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuspendingClock+Drift.swift"; sourceTree = "<group>"; };
 		0347D59E2BAFB97300C5741E /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
+		035820942BDB11880099E707 /* View+NSStatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NSStatusItem.swift"; sourceTree = "<group>"; };
 		036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimelineView.swift; sourceTree = "<group>"; };
 		036DA9B42B7AF52E0066B4B2 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		036EBD151C1408C200121D0B /* Aware.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aware.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,6 +166,7 @@
 				036569CD2B9A40C8003D3DCA /* MenuBarTimelineView.swift */,
 				0341CB692B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift */,
 				032E60AD2BD74BEF008BB2B4 /* SettingsView.swift */,
+				035820942BDB11880099E707 /* View+NSStatusItem.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				036569CE2B9A40C8003D3DCA /* MenuBarTimelineView.swift in Sources */,
 				0341CB6A2B9C2CC800CC0C96 /* NSEvent+AsyncStream.swift in Sources */,
 				032E60AE2BD74BEF008BB2B4 /* SettingsView.swift in Sources */,
+				035820952BDB11880099E707 /* View+NSStatusItem.swift in Sources */,
 				03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */,
 				0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */,
 				0394D1752B845FB400FE7020 /* TimerView.swift in Sources */,
