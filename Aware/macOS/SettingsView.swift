@@ -101,6 +101,13 @@ struct SettingsView: View {
         .padding()
         .frame(width: 350)
         .bindWindow($window)
+        .onChange(of: windowIsVisible) { oldValue, newValue in
+            logger.debug("Window visibility change: \(oldValue) -> \(newValue)")
+
+            if oldValue == false && newValue == true {
+                NSApp.activateAggressively()
+            }
+        }
         .task(id: window) {
             guard let window else {
                 assertionFailure("no window is set")
