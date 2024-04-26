@@ -17,7 +17,7 @@ private nonisolated(unsafe) let logger = Logger(
 extension NSApplication {
     func activateAggressively() {
         let start: ContinuousClock.Instant = .now
-        let deadline: ContinuousClock.Instant = start.advanced(by: .seconds(1))
+        let deadline: ContinuousClock.Instant = start.advanced(by: .seconds(3))
 
         Task(priority: .high) {
             while isActive == false && deadline > .now && !Task.isCancelled {
