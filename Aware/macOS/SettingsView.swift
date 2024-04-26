@@ -5,8 +5,13 @@
 //  Created by Joshua Peek on 4/22/24.
 //
 
+import OSLog
 import ServiceManagement
 import SwiftUI
+
+private nonisolated(unsafe) let logger = Logger(
+    subsystem: "com.awaremac.Aware", category: "SettingsView"
+)
 
 struct SettingsView: View {
     @AppStorage("reset") private var resetTimer: Bool = false
@@ -18,6 +23,9 @@ struct SettingsView: View {
 
     @State private var exportingLogs: Bool = false
     @State private var showExportErrored: Bool = false
+
+    @State private var window: NSWindow?
+    @State private var windowIsVisible: Bool = false
 
     var body: some View {
         Form {
@@ -92,6 +100,28 @@ struct SettingsView: View {
         }
         .padding()
         .frame(width: 350)
+        .bindWindow($window)
+        .task(id: window) {
+            guard let window else {
+                assertionFailure("no window is set")
+                return
+            }
+
+            self.windowIsVisible = window.isVisible
+
+            logger.debug("Starting to observe occlusion state changes for \(window)")
+            let notifications = NotificationCenter.default.notifications(
+                named: NSWindow.didChangeOcclusionStateNotification,
+                object: window
+            ).map { _ in () }
+
+            for await _ in notifications {
+                logger.debug("Window occlusion state changed for \(window): \(window.isVisible)")
+                self.windowIsVisible = window.isVisible
+            }
+
+            logger.debug("Finished observing occlusion state changes for \(window)")
+        }
     }
 
     var openAtLogin: Binding<Bool> {
