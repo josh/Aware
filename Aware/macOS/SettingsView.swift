@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 4/22/24.
 //
 
+#if os(macOS)
+
 import OSLog
 import ServiceManagement
 import SwiftUI
@@ -153,3 +155,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
+
+#endif
