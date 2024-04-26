@@ -422,6 +422,7 @@
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
+				XROS_DEPLOYMENT_TARGET = 1.1;
 			};
 			name = Debug;
 		};
@@ -475,6 +476,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = complete;
+				XROS_DEPLOYMENT_TARGET = 1.1;
 			};
 			name = Release;
 		};
