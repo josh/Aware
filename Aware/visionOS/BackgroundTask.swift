@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 3/23/24.
 //
 
+#if canImport(BackgroundTasks)
+
 import BackgroundTasks
 import OSLog
 import SwiftUI
@@ -174,3 +176,5 @@ extension Scene {
         }
     }
 }
+
+#endif

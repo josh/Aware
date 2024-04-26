@@ -24,7 +24,7 @@
 		0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */; };
 		0347D59B2BAF8CB200C5741E /* NotificationCenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59A2BAF8CB200C5741E /* NotificationCenterTests.swift */; };
 		0347D59D2BAF9A3F00C5741E /* SuspendingClock+Drift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59C2BAF9A3F00C5741E /* SuspendingClock+Drift.swift */; };
-		0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59E2BAFB97300C5741E /* BackgroundTask.swift */; };
+		0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0347D59E2BAFB97300C5741E /* BackgroundTask.swift */; platformFilters = (xros, ); };
 		035820952BDB11880099E707 /* View+NSStatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035820942BDB11880099E707 /* View+NSStatusItem.swift */; platformFilters = (macos, ); };
 		035820972BDB122B0099E707 /* View+NSWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035820962BDB122B0099E707 /* View+NSWindow.swift */; platformFilters = (macos, ); };
 		035820992BDB24EC0099E707 /* NSApplication+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035820982BDB24EC0099E707 /* NSApplication+Activate.swift */; platformFilters = (macos, ); };
@@ -114,7 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				03162DE02BB12F3B0004BFDE /* AsyncStream+Extensions.swift */,
-				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0388587F2BA54DBA003E287D /* Duration+Extensions.swift */,
 				03CC1F462BD8B241000BA17D /* LogExport.swift */,
 				0347D5982BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift */,
@@ -181,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				03409BC32B897F7C00EF8EE9 /* ActivityMonitor.swift */,
+				0347D59E2BAFB97300C5741E /* BackgroundTask.swift */,
 				0394D1762B84630E00FE7020 /* TimerTextView.swift */,
 				0394D1742B845FB400FE7020 /* TimerView.swift */,
 				0341CB782B9D4CEB00CC0C96 /* TimerWindow.swift */,
@@ -315,7 +315,6 @@
 			files = (
 				036DA9B52B7AF52E0066B4B2 /* App.swift in Sources */,
 				03162DE12BB12F3B0004BFDE /* AsyncStream+Extensions.swift in Sources */,
-				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				038858802BA54DBA003E287D /* Duration+Extensions.swift in Sources */,
 				03CC1F472BD8B241000BA17D /* LogExport.swift in Sources */,
 				0347D5992BAF8B5400C5741E /* NotificationCenter+AsyncSequence.swift in Sources */,
@@ -335,6 +334,7 @@
 				035820952BDB11880099E707 /* View+NSStatusItem.swift in Sources */,
 				035820972BDB122B0099E707 /* View+NSWindow.swift in Sources */,
 				03409BC42B897F7C00EF8EE9 /* ActivityMonitor.swift in Sources */,
+				0347D59F2BAFB97300C5741E /* BackgroundTask.swift in Sources */,
 				0394D1772B84630E00FE7020 /* TimerTextView.swift in Sources */,
 				0394D1752B845FB400FE7020 /* TimerView.swift in Sources */,
 				0341CB792B9D4CEB00CC0C96 /* TimerWindow.swift in Sources */,
