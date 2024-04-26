@@ -5,6 +5,8 @@
 //  Created by Joshua Peek on 4/25/24.
 //
 
+#if canImport(AppKit)
+
 import AppKit
 import OSLog
 
@@ -28,3 +30,5 @@ extension NSApplication {
         }
     }
 }
+
+#endif
